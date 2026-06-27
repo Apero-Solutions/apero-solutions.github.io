@@ -1,0 +1,48 @@
+.. _variants:
+
+================
+Product Variants
+================
+
+This section is the landing page for hardware variant-specific documentation.
+As new variants are released, add a page per variant and link it from the
+``toctree`` below.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Variants
+
+   pro_v2
+
+
+How Variants Are Structured
+============================
+
+Each variant page documents what is **different** from the main
+documentation.  Content shared across all variants lives in the top-level
+``.rst`` files.  Variant-specific pages cover:
+
+* Hardware differences (board, GPIOs, additional peripherals)
+* Firmware feature differences (e.g., a Lite tier without Google Sheets)
+* Any partition or memory layout changes
+
+To add a new variant:
+
+1. Create ``docs/variants/<variant_name>.rst``.
+2. Add it to the ``toctree`` in this file.
+3. Document only what differs from the base ``Pro v2.2`` specification.
+4. If needed, guard feature sections in shared pages with the Sphinx ``only``
+   directive::
+
+      .. only:: pro
+
+         This content appears only when building for the Pro variant.
+
+      .. only:: lite
+
+         This content appears only when building for the Lite variant.
+
+   Build a variant-specific HTML output with::
+
+      sphinx-build -b html -t pro  docs/ docs/_build/pro/
+      sphinx-build -b html -t lite docs/ docs/_build/lite/
