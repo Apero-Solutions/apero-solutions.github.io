@@ -1,0 +1,56 @@
+.. _ota:
+
+==============================
+Over-the-Air Firmware Update
+==============================
+
+ModBridge Pro B15 supports wireless firmware updates delivered through the
+built-in browser interface.  No additional cables or tools are required.
+
+
+Performing a Firmware Update
+=============================
+
+Step 1 — Obtain the update file
+---------------------------------
+
+Contact Apero Solutions to receive the latest ``update_bundle.bin`` file for
+your device.
+
+Step 2 — Open the Firmware Update tab
+--------------------------------------
+
+In the web configuration interface, click the **Firmware Update** tab.  The
+current firmware version is displayed at the top of the page.
+
+Step 3 — Upload the file
+--------------------------
+
+Drag and drop ``update_bundle.bin`` onto the upload area, or click it and
+browse to the file.  A progress bar tracks the upload in real time.
+
+.. note::
+
+   The upload may take 30–90 seconds depending on your Wi-Fi connection
+   speed.  Do not close the browser tab or power off the device during the
+   upload.
+
+Step 4 — Wait for the reboot
+------------------------------
+
+Once the upload completes, the device installs the update and reboots
+automatically — this takes approximately 10–15 seconds.  The browser will
+lose connectivity momentarily during the reboot.
+
+Step 5 — Verify the new version
+---------------------------------
+
+Reconnect to the device and re-open the web configuration interface.  The
+version shown on the **Firmware Update** tab should reflect the new release.
+
+.. warning::
+
+   Only use update files provided by Apero Solutions for your specific
+   device model.  Uploading an incompatible file may cause the device to
+   stop responding.  If this happens, contact Apero Solutions for recovery
+   assistance.

@@ -1,0 +1,87 @@
+.. _overview:
+
+========
+Overview
+========
+
+What is ModBridge Pro?
+======================
+
+ModBridge Pro B15 is a compact, industrial-grade **IoT gateway** that continuously
+reads data from legacy **Modbus** field devices — energy meters, temperature
+controllers, PLCs, sensors — and forwards that data to modern cloud platforms
+such as **MQTT brokers** or **Google Sheets**, without requiring any changes
+to the existing field devices.
+
+Key capabilities
+----------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - **Modbus polling**
+     - Reads up to 5 Modbus slave devices with up to 50 registers each,
+       over RS-485 serial (RTU) or Ethernet (TCP).
+   * - **Dual connectivity**
+     - Connect to the internet via Wi-Fi or wired Ethernet.
+   * - **Cloud publishing**
+     - Push data to any MQTT broker (with optional TLS/SSL) or directly to
+       Google Sheets.
+   * - **Offline buffering**
+     - Readings are stored internally during network outages and
+       published automatically on reconnect.
+   * - **Web configuration UI**
+     - Full browser-based setup — no app or additional software required.
+   * - **Over-the-Air updates**
+     - Firmware updated wirelessly through the browser interface.
+
+
+System Architecture
+===================
+
+The diagram below shows how ModBridge Pro sits between your Modbus devices
+and the cloud::
+
+                    RS-485 / Modbus TCP
+   ┌─────────────┐                        ┌──────────────────────┐
+   │ Modbus Dev 1│ ──────────────────────▶│                      │
+   ├─────────────┤                        │    ModBridge Pro     │──▶ MQTT Broker
+   │ Modbus Dev 2│ ──────────────────────▶│                      │
+   ├─────────────┤                        │  Wi-Fi / Ethernet    │──▶ Google Sheets
+   │ Modbus Dev 3│ ──────────────────────▶│                      │
+   └─────────────┘                        └──────────────────────┘
+
+
+Device Information
+==================
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - **Firmware version**
+     - v2.2.1
+   * - **Time zone**
+     - IST (UTC +5:30), synchronised automatically every hour
+
+
+Document Conventions
+====================
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 0
+
+   * - ``code``
+     - File names, terminal commands, JSON keys.
+   * - **Bold**
+     - UI element names (tab labels, buttons, field names).
+   * - *Italic*
+     - Tab names when referring to the web configuration interface.
+   * - .. note:: Note
+     - Helpful background information.
+   * - .. warning:: Warning
+     - Actions that could cause data loss or misconfiguration.
+   * - .. danger:: Danger
+     - Potentially irreversible actions (factory reset, incompatible firmware).

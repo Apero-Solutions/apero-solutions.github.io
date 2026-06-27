@@ -1,0 +1,112 @@
+.. _hardware:
+
+==================
+Hardware Reference
+==================
+
+Device Photo
+============
+
+.. raw:: html
+
+   <div class="hw-photo-placeholder">
+     📷 &nbsp;<strong>[ Insert hardware photo here ]</strong><br><br>
+     Replace this block with a top-down photograph of the assembled
+     ModBridge Pro B15, showing all connectors, LEDs, and the
+     RS-485 terminal block.<br><br>
+     Recommended: 1200 × 900 px, good lighting, plain background.
+   </div>
+
+To add the photo, place the image file in ``docs/images/`` and replace the
+block above with:
+
+.. code-block:: rst
+
+   .. figure:: images/modbridge_pro_top.jpg
+      :alt: ModBridge Pro top view
+      :align: center
+      :width: 80%
+
+      ModBridge Pro — assembled device (top view)
+
+
+Specifications
+==============
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Parameter
+     - Value
+   * - Wi-Fi
+     - 2.4 GHz, built-in antenna
+   * - Ethernet
+     - 10 Mbps wired port
+   * - RS-485
+     - 3-pin screw terminal (A, B, GND)
+   * - Power Supply
+     - 24 V DC
+   * - Operating Temperature
+     - 0 °C to 70 °C
+   * - Firmware Version
+     - v2.2.1
+
+
+Connectors and Peripherals
+===========================
+
+Wi-Fi
+-----
+
+Built-in 2.4 GHz antenna — no external antenna required.  Place the
+ModBridge Pro B15 away from large metal enclosures to avoid signal
+interference.
+
+Ethernet Port
+-------------
+
+A wired Ethernet port that serves one of two roles depending on
+configuration:
+
+* **Internet uplink** — alternative to Wi-Fi when a wired connection is
+  preferred.
+* **Modbus TCP transport** — dedicated network for communicating with a
+  Modbus TCP server (e.g., a PLC).  In this mode the port is not used for
+  internet traffic.
+
+RS-485 Terminal Block
+---------------------
+
+A 3-pin screw terminal for connecting Modbus RTU devices over RS-485 cable:
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Pin label
+     - Description
+   * - **A (D+)**
+     - RS-485 non-inverting data line
+   * - **B (D−)**
+     - RS-485 inverting data line
+   * - **GND**
+     - Signal ground — connect to Modbus bus ground
+
+Use twisted-pair cable (e.g., CAT5e) for runs longer than 3 m.  Terminate
+the bus with a 120 Ω resistor at each end for runs longer than ~10 m.
+
+Power Supply
+------------
+
+Connect a **24 V DC** supply to the power terminals to power the ModBridge Pro B15.
+
+Status LEDs
+-----------
+
+Four indicator LEDs are described in detail in :ref:`leds_buttons`.
+
+Control Buttons
+---------------
+
+Two push-buttons are described in detail in :ref:`leds_buttons`.

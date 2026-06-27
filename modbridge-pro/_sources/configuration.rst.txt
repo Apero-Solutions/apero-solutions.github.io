@@ -1,0 +1,234 @@
+.. _configuration:
+
+=======================
+Configuration Reference
+=======================
+
+All settings are configured through the browser-based web interface.  Open
+``http://192.168.4.1`` when in configuration (AP) mode, or the device's
+assigned IP address once it is connected to your network.
+
+The interface is divided into five tabs, described below.
+
+
+Internet Connection Tab
+========================
+
+Defines how ModBridge Pro reaches the internet to publish data.
+
+.. list-table::
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Setting
+     - Options
+     - Notes
+   * - Connection Type
+     - Wi-Fi / Ethernet
+     - Wi-Fi is recommended for most installations.
+   * - Wi-Fi SSID
+     - Text or scan list
+     - Click **Scan Networks** for auto-detection.  Currently connected
+       SSID is highlighted.
+   * - Wi-Fi Password
+     - Text
+     - Stored encrypted.  Toggle visibility with the eye icon.
+   * - Ethernet IP Mode
+     - DHCP / Static
+     - Static mode requires IP address, Subnet Mask, Gateway, and DNS.
+
+.. note::
+
+   When **Modbus TCP** is selected in Protocol Settings, the Ethernet port
+   is dedicated to Modbus communication and **cannot** simultaneously serve
+   as the internet uplink.  Use Wi-Fi as the internet connection in that
+   scenario.
+
+
+Protocol Settings Tab
+======================
+
+Defines how ModBridge Pro communicates with your Modbus field devices.
+
+Modbus RTU (RS-485)
+-------------------
+
+.. list-table::
+   :widths: 25 35 40
+   :header-rows: 1
+
+   * - Setting
+     - Options
+     - Notes
+   * - Baud Rate
+     - 9600 / 19200 / 38400 / 57600 / 115200 bps
+     - Must match every slave on the bus.
+   * - Data Bits
+     - 7 / 8
+     - Virtually always 8.
+   * - Parity
+     - None / Even / Odd
+     - Must match slave configuration.
+   * - Stop Bits
+     - 1 / 2
+     - Typically 1 when parity is enabled; 2 when parity is None.
+
+Modbus TCP (Ethernet)
+---------------------
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Setting
+     - Notes
+   * - Server IP
+     - IPv4 address of the Modbus TCP server (e.g., a PLC or another
+       gateway).
+   * - Server Port
+     - Standard is **502**.  Change only if the server uses a non-standard
+       port.
+   * - Device Ethernet IP
+     - Static IP assigned to ModBridge Pro's Ethernet interface in TCP
+       mode.  Must be on the same subnet as the server.
+
+
+Modbus Devices Tab
+==================
+
+Define each Modbus slave device and the registers you want to read.  Up to
+**5 devices** and **50 registers per device** are supported.
+
+Per-device parameters
+---------------------
+
+.. list-table::
+   :widths: 20 20 60
+   :header-rows: 1
+
+   * - Parameter
+     - Range
+     - Description
+   * - Slave ID
+     - 1–247
+     - The Modbus device address configured on the slave.
+   * - Device Name
+     - Text
+     - A human-readable label, used in log output and the summary tab.
+
+Per-register parameters
+-----------------------
+
+.. list-table::
+   :widths: 20 30 50
+   :header-rows: 1
+
+   * - Parameter
+     - Options / Range
+     - Description
+   * - Register Name
+     - Text
+     - Becomes the JSON key in the published data payload.  Use short,
+       meaningful names (e.g., ``voltage_L1``, ``active_power``).
+   * - Register Address
+     - 1–49999
+     - Modbus-style 5-digit address (see table below).
+   * - Data Type
+     - Boolean, INT16, UINT16, INT32, UINT32, FLOAT32
+     - See :ref:`data_types`.
+   * - Byte Swap
+     - None / Word Swap / Byte Swap / Word+Byte Swap
+     - Adjust for endianness differences.  Consult the device's Modbus
+       register map.
+
+Register address ranges
+-----------------------
+
+Most Modbus device manuals use a 5-digit address notation:
+
+.. list-table::
+   :widths: 20 20 60
+   :header-rows: 1
+
+   * - Address range
+     - Register type
+     - Typical content
+   * - 00001–09999
+     - Coils (read/write)
+     - Digital outputs, relay states
+   * - 10001–19999
+     - Discrete Inputs (read-only)
+     - Digital inputs, alarm flags
+   * - 30001–39999
+     - Input Registers (read-only)
+     - Measured values (voltage, current, temperature)
+   * - 40001–49999
+     - Holding Registers (read/write)
+     - Setpoints, configuration parameters
+
+.. _data_types:
+
+Data Types
+----------
+
+.. list-table::
+   :widths: 15 10 30 45
+   :header-rows: 1
+
+   * - Type
+     - Registers
+     - Value Range
+     - Typical Use
+   * - BOOL
+     - 1
+     - 0 or 1
+     - On/Off states, relay outputs, alarm flags
+   * - INT16
+     - 1
+     - −32 768 to 32 767
+     - Signed temperature, current, status
+   * - UINT16
+     - 1
+     - 0 to 65 535
+     - Unsigned counters, percentages, raw ADC
+   * - INT32
+     - 2
+     - −2 147 483 648 to 2 147 483 647
+     - Energy accumulators, pulse counters
+   * - UINT32
+     - 2
+     - 0 to 4 294 967 295
+     - High-range counters, uptime, flow totals
+   * - FLOAT32
+     - 2
+     - IEEE 754 single precision
+     - Voltage, power, frequency, temperature with decimals
+
+Byte Swap Modes
+---------------
+
+Some devices store 32-bit values with a non-standard byte/word order.
+The four swap modes cover all common conventions:
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Mode
+     - When to use
+   * - No swap
+     - Big-endian devices (most common; try this first).
+   * - Word Swap
+     - Little-endian 32-bit values stored as two swapped 16-bit words.
+   * - Byte Swap
+     - Bytes within each word are reversed.
+   * - Word + Byte Swap
+     - Both word and byte order reversed (fully little-endian).
+
+
+Summary Tab
+============
+
+The *Summary* tab displays a read-only overview of the current configuration
+before you click **Save Configuration**.  Verify the settings here before
+committing to ensure no typos in register addresses or server IPs.

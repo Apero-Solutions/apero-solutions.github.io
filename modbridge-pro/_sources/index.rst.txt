@@ -1,0 +1,63 @@
+.. ModBridge Pro Documentation master file
+
+============================
+ModBridge Pro Documentation
+============================
+
+.. Place your logo at docs/_static/logo.png and uncomment the block below:
+.. .. image:: _static/logo.png
+..    :alt: Apero Solutions
+..    :align: right
+..    :width: 140px
+
+**ModBridge Pro B15** is a professional-grade industrial IoT gateway that bridges
+Modbus devices (sensors, energy meters, PLCs) with modern cloud platforms such
+as MQTT brokers and Google Sheets, using an ESP32-S3 microcontroller.
+
+.. note::
+
+   This documentation covers firmware **v2.2.1**.
+   For variant-specific pages (future hardware revisions or product tiers),
+   see :ref:`variants`.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   overview
+   quickstart
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Hardware Reference
+
+   hardware
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Configuration Guide
+
+   configuration
+   iot
+   leds_buttons
+   security
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Maintenance
+
+   ota
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Product Variants
+
+   variants/index
+
+----
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`

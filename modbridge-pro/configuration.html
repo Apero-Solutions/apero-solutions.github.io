@@ -1,0 +1,533 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration Reference &mdash; ModBridge Pro Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=81b034b1" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IoT Publishing Guide" href="iot.html" />
+    <link rel="prev" title="Hardware Reference" href="hardware.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ModBridge Pro
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-modbridge-pro">What is ModBridge Pro?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#key-capabilities">Key capabilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#device-information">Device Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#document-conventions">Document Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#step-by-step-setup">Step-by-Step Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-1-power-on-the-modbridge-pro-b15">Step 1 — Power on the ModBridge Pro B15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-2-connect-to-the-configuration-access-point">Step 2 — Connect to the configuration access point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-3-open-the-configuration-page">Step 3 — Open the configuration page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-4-configure-internet-connectivity">Step 4 — Configure internet connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-5-configure-the-modbus-protocol">Step 5 — Configure the Modbus protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-6-add-modbus-slave-devices-and-registers">Step 6 — Add Modbus slave devices and registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-7-set-up-cloud-publishing">Step 7 — Set up cloud publishing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-8-save-and-reboot">Step 8 — Save and reboot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-next">What Next?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-photo">Device Photo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#connectors-and-peripherals">Connectors and Peripherals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#wi-fi">Wi-Fi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#ethernet-port">Ethernet Port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#rs-485-terminal-block">RS-485 Terminal Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#power-supply">Power Supply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#status-leds">Status LEDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#internet-connection-tab">Internet Connection Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#protocol-settings-tab">Protocol Settings Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modbus-rtu-rs-485">Modbus RTU (RS-485)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modbus-tcp-ethernet">Modbus TCP (Ethernet)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#modbus-devices-tab">Modbus Devices Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#register-address-ranges">Register address ranges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-types">Data Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byte-swap-modes">Byte Swap Modes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary-tab">Summary Tab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iot.html">IoT Publishing Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-2-open-the-firmware-update-tab">Step 2 — Open the Firmware Update tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-3-upload-the-file">Step 3 — Upload the file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-4-wait-for-the-reboot">Step 4 — Wait for the reboot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ModBridge Pro</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-reference">
+<span id="configuration"></span><h1>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this heading"></a></h1>
+<p>All settings are configured through the browser-based web interface.  Open
+<code class="docutils literal notranslate"><span class="pre">http://192.168.4.1</span></code> when in configuration (AP) mode, or the device’s
+assigned IP address once it is connected to your network.</p>
+<p>The interface is divided into five tabs, described below.</p>
+<section id="internet-connection-tab">
+<h2>Internet Connection Tab<a class="headerlink" href="#internet-connection-tab" title="Link to this heading"></a></h2>
+<p>Defines how ModBridge Pro reaches the internet to publish data.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Options</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Connection Type</p></td>
+<td><p>Wi-Fi / Ethernet</p></td>
+<td><p>Wi-Fi is recommended for most installations.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wi-Fi SSID</p></td>
+<td><p>Text or scan list</p></td>
+<td><p>Click <strong>Scan Networks</strong> for auto-detection.  Currently connected
+SSID is highlighted.</p></td>
+</tr>
+<tr class="row-even"><td><p>Wi-Fi Password</p></td>
+<td><p>Text</p></td>
+<td><p>Stored encrypted.  Toggle visibility with the eye icon.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ethernet IP Mode</p></td>
+<td><p>DHCP / Static</p></td>
+<td><p>Static mode requires IP address, Subnet Mask, Gateway, and DNS.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When <strong>Modbus TCP</strong> is selected in Protocol Settings, the Ethernet port
+is dedicated to Modbus communication and <strong>cannot</strong> simultaneously serve
+as the internet uplink.  Use Wi-Fi as the internet connection in that
+scenario.</p>
+</div>
+</section>
+<section id="protocol-settings-tab">
+<h2>Protocol Settings Tab<a class="headerlink" href="#protocol-settings-tab" title="Link to this heading"></a></h2>
+<p>Defines how ModBridge Pro communicates with your Modbus field devices.</p>
+<section id="modbus-rtu-rs-485">
+<h3>Modbus RTU (RS-485)<a class="headerlink" href="#modbus-rtu-rs-485" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Options</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Baud Rate</p></td>
+<td><p>9600 / 19200 / 38400 / 57600 / 115200 bps</p></td>
+<td><p>Must match every slave on the bus.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data Bits</p></td>
+<td><p>7 / 8</p></td>
+<td><p>Virtually always 8.</p></td>
+</tr>
+<tr class="row-even"><td><p>Parity</p></td>
+<td><p>None / Even / Odd</p></td>
+<td><p>Must match slave configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stop Bits</p></td>
+<td><p>1 / 2</p></td>
+<td><p>Typically 1 when parity is enabled; 2 when parity is None.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modbus-tcp-ethernet">
+<h3>Modbus TCP (Ethernet)<a class="headerlink" href="#modbus-tcp-ethernet" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Server IP</p></td>
+<td><p>IPv4 address of the Modbus TCP server (e.g., a PLC or another
+gateway).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Server Port</p></td>
+<td><p>Standard is <strong>502</strong>.  Change only if the server uses a non-standard
+port.</p></td>
+</tr>
+<tr class="row-even"><td><p>Device Ethernet IP</p></td>
+<td><p>Static IP assigned to ModBridge Pro’s Ethernet interface in TCP
+mode.  Must be on the same subnet as the server.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="modbus-devices-tab">
+<h2>Modbus Devices Tab<a class="headerlink" href="#modbus-devices-tab" title="Link to this heading"></a></h2>
+<p>Define each Modbus slave device and the registers you want to read.  Up to
+<strong>5 devices</strong> and <strong>50 registers per device</strong> are supported.</p>
+<section id="per-device-parameters">
+<h3>Per-device parameters<a class="headerlink" href="#per-device-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Range</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Slave ID</p></td>
+<td><p>1–247</p></td>
+<td><p>The Modbus device address configured on the slave.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Device Name</p></td>
+<td><p>Text</p></td>
+<td><p>A human-readable label, used in log output and the summary tab.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="per-register-parameters">
+<h3>Per-register parameters<a class="headerlink" href="#per-register-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Options / Range</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Register Name</p></td>
+<td><p>Text</p></td>
+<td><p>Becomes the JSON key in the published data payload.  Use short,
+meaningful names (e.g., <code class="docutils literal notranslate"><span class="pre">voltage_L1</span></code>, <code class="docutils literal notranslate"><span class="pre">active_power</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Register Address</p></td>
+<td><p>1–49999</p></td>
+<td><p>Modbus-style 5-digit address (see table below).</p></td>
+</tr>
+<tr class="row-even"><td><p>Data Type</p></td>
+<td><p>Boolean, INT16, UINT16, INT32, UINT32, FLOAT32</p></td>
+<td><p>See <a class="reference internal" href="#data-types"><span class="std std-ref">Data Types</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Byte Swap</p></td>
+<td><p>None / Word Swap / Byte Swap / Word+Byte Swap</p></td>
+<td><p>Adjust for endianness differences.  Consult the device’s Modbus
+register map.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="register-address-ranges">
+<h3>Register address ranges<a class="headerlink" href="#register-address-ranges" title="Link to this heading"></a></h3>
+<p>Most Modbus device manuals use a 5-digit address notation:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Address range</p></th>
+<th class="head"><p>Register type</p></th>
+<th class="head"><p>Typical content</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>00001–09999</p></td>
+<td><p>Coils (read/write)</p></td>
+<td><p>Digital outputs, relay states</p></td>
+</tr>
+<tr class="row-odd"><td><p>10001–19999</p></td>
+<td><p>Discrete Inputs (read-only)</p></td>
+<td><p>Digital inputs, alarm flags</p></td>
+</tr>
+<tr class="row-even"><td><p>30001–39999</p></td>
+<td><p>Input Registers (read-only)</p></td>
+<td><p>Measured values (voltage, current, temperature)</p></td>
+</tr>
+<tr class="row-odd"><td><p>40001–49999</p></td>
+<td><p>Holding Registers (read/write)</p></td>
+<td><p>Setpoints, configuration parameters</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-types">
+<span id="id1"></span><h3>Data Types<a class="headerlink" href="#data-types" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 30.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Registers</p></th>
+<th class="head"><p>Value Range</p></th>
+<th class="head"><p>Typical Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BOOL</p></td>
+<td><p>1</p></td>
+<td><p>0 or 1</p></td>
+<td><p>On/Off states, relay outputs, alarm flags</p></td>
+</tr>
+<tr class="row-odd"><td><p>INT16</p></td>
+<td><p>1</p></td>
+<td><p>−32 768 to 32 767</p></td>
+<td><p>Signed temperature, current, status</p></td>
+</tr>
+<tr class="row-even"><td><p>UINT16</p></td>
+<td><p>1</p></td>
+<td><p>0 to 65 535</p></td>
+<td><p>Unsigned counters, percentages, raw ADC</p></td>
+</tr>
+<tr class="row-odd"><td><p>INT32</p></td>
+<td><p>2</p></td>
+<td><p>−2 147 483 648 to 2 147 483 647</p></td>
+<td><p>Energy accumulators, pulse counters</p></td>
+</tr>
+<tr class="row-even"><td><p>UINT32</p></td>
+<td><p>2</p></td>
+<td><p>0 to 4 294 967 295</p></td>
+<td><p>High-range counters, uptime, flow totals</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLOAT32</p></td>
+<td><p>2</p></td>
+<td><p>IEEE 754 single precision</p></td>
+<td><p>Voltage, power, frequency, temperature with decimals</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="byte-swap-modes">
+<h3>Byte Swap Modes<a class="headerlink" href="#byte-swap-modes" title="Link to this heading"></a></h3>
+<p>Some devices store 32-bit values with a non-standard byte/word order.
+The four swap modes cover all common conventions:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>When to use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No swap</p></td>
+<td><p>Big-endian devices (most common; try this first).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Word Swap</p></td>
+<td><p>Little-endian 32-bit values stored as two swapped 16-bit words.</p></td>
+</tr>
+<tr class="row-even"><td><p>Byte Swap</p></td>
+<td><p>Bytes within each word are reversed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Word + Byte Swap</p></td>
+<td><p>Both word and byte order reversed (fully little-endian).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="summary-tab">
+<h2>Summary Tab<a class="headerlink" href="#summary-tab" title="Link to this heading"></a></h2>
+<p>The <em>Summary</em> tab displays a read-only overview of the current configuration
+before you click <strong>Save Configuration</strong>.  Verify the settings here before
+committing to ensure no typos in register addresses or server IPs.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hardware.html" class="btn btn-neutral float-left" title="Hardware Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iot.html" class="btn btn-neutral float-right" title="IoT Publishing Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Apero Solutions.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

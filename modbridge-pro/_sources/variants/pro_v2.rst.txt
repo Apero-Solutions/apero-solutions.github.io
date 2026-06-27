@@ -1,0 +1,54 @@
+.. _variant_pro_v2:
+
+======================
+ModBridge Pro — v2.x
+======================
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - **Firmware version**
+     - v2.2.1
+   * - **Status**
+     - Current production variant
+
+This is the baseline variant (ModBridge Pro B15).  All top-level
+documentation pages describe this variant in full.
+
+Feature set
+-----------
+
+* Modbus RTU (RS-485) and Modbus TCP
+* Wi-Fi + Ethernet dual connectivity
+* MQTT publishing (with TLS/SSL and offline buffering)
+* Google Sheets publishing (with offline buffering)
+* Over-the-Air firmware updates
+* Encrypted credential storage
+* Web-based configuration UI
+
+Known limitations
+-----------------
+
+* Maximum 5 Modbus slave devices.
+* Maximum 50 registers per slave.
+* Google Sheets output supports tabular or JSON format only.
+* Custom TLS certificates are not uploadable via the web UI.
+
+Revision history
+----------------
+
+.. list-table::
+   :widths: 15 85
+   :header-rows: 1
+
+   * - Version
+     - Changes
+   * - v2.2.1
+     - Stronger credential encryption; Google Sheets tabular/JSON output
+       format selection; improved OTA update reliability.
+   * - v2.1.x
+     - Encrypted IoT credential storage; password visibility toggle.
+   * - v2.0.x
+     - Initial release — Wi-Fi + Ethernet dual connectivity; offline
+       buffering; MQTT QoS 0/1/2 support.
