@@ -58,7 +58,7 @@ Network Security Recommendations
    Apply firmware updates promptly — see :ref:`ota`.
 
 5. **Factory Reset is protected by design.**
-   The Factory Reset button is located inside the device enclosure and is
+   The Factory Reset button (IO0) is located inside the ModBridge Pro B15 enclosure and is
    not accessible from the outside, preventing accidental or unauthorised
    resets in the field.
 
