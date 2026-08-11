@@ -1,324 +1,556 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ModbridgePro — Modbus data to a live Google Sheet in five minutes</title>
+<meta name="description" content="A plug-in gateway that streams Modbus RTU/TCP data straight into a Google Sheet — or over MQTT. No server, no broker, no code." />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ModBridge Pro Documentation &mdash; ModBridge Pro Documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=81b034b1" />
+<link rel="canonical" href="https://aperosolutions.in/modbridgepro/" />
 
-  
-    <link rel="canonical" href="https://apero-solutions.github.io/modbridgepro/index.html" />
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview" href="overview.html" /> 
+<!-- ============================================================
+     This page is deployed to /modbridgepro/ and the Sphinx docs
+     to /modbridgepro/docs/, so all doc links are relative ("docs/").
+
+     Contact address: contact@aperosolutions.in
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#EDF1F0;
+    --surface:#FFFFFF;
+    --ink:#0B1F2A;
+    --ink-soft:#41565F;
+    --grid:#D3DEDA;
+    --grid-soft:#E3EAE7;
+    --live:#12935A;
+    --live-deep:#0C7245;
+    --spark:#EF9C1E;
+    --shadow:0 1px 2px rgba(11,31,42,.05), 0 12px 32px -12px rgba(11,31,42,.18);
+
+    --display:'Archivo', system-ui, sans-serif;
+    --body:'Inter', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    /* faint engineering grid on the page background */
+    background-image:
+      linear-gradient(var(--grid-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-soft) 1px, transparent 1px);
+    background-size:34px 34px;
+    background-position:center top;
+  }
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;line-height:1.05;}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--live-deep);
+    display:inline-flex;align-items:center;gap:.55rem;
+  }
+  .eyebrow::before{
+    content:"";width:7px;height:7px;border-radius:50%;
+    background:var(--live);
+    box-shadow:0 0 0 3px rgba(18,147,90,.18);
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:var(--body);font-weight:600;font-size:.95rem;
+    padding:.72rem 1.25rem;border-radius:8px;border:1.5px solid transparent;
+    cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(11,31,42,.6);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--grid);}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .btn-live{background:var(--live);color:#fff;}
+  .btn-live:hover{background:var(--live-deep);transform:translateY(-2px);}
+  .btn .arw{font-family:var(--mono);}
+
+  a:focus-visible,.btn:focus-visible{outline:3px solid var(--spark);outline-offset:2px;}
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(237,241,240,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--grid);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--display);font-weight:800;font-size:1.18rem;letter-spacing:-.01em;}
+  .brand-mark{
+    width:26px;height:26px;border-radius:6px;background:var(--ink);
+    display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;padding:5px;
+  }
+  .brand-mark i{background:var(--grid);border-radius:1px;}
+  .brand-mark i:first-child{background:var(--live);}
+  .nav-links{display:flex;gap:1.6rem;align-items:center;font-size:.92rem;font-weight:500;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{display:flex;align-items:center;gap:1rem;}
+  .nav-links, .nav-cta .btn-ghost{}
+  @media(max-width:860px){ .nav-links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{padding:74px 0 60px;}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center;}
+  @media(max-width:920px){ .hero-grid{grid-template-columns:1fr;gap:40px;} }
+
+  .hero h1{font-size:clamp(2.3rem,5vw,3.65rem);font-weight:800;margin:20px 0 18px;}
+  .hero h1 .hl{color:var(--live-deep);}
+  .hero-sub{font-size:1.14rem;color:var(--ink-soft);max-width:33ch;margin-bottom:28px;}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .hero-spec{
+    margin-top:30px;font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;
+    color:var(--ink-soft);display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;
+  }
+  .hero-spec b{color:var(--ink);font-weight:500;}
+  .hero-spec .dot{color:var(--grid);}
+
+  /* ---------- signature: live sheet ---------- */
+  .device-line{display:flex;align-items:stretch;gap:0;}
+  .device{
+    flex:0 0 auto;align-self:center;
+    background:var(--ink);color:#fff;border-radius:10px;padding:14px 14px 12px;
+    width:120px;box-shadow:var(--shadow);position:relative;
+  }
+  .device .led{
+    position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;
+    background:var(--spark);box-shadow:0 0 0 3px rgba(239,156,30,.22);
+    animation:blink 1.8s steps(1) infinite;
+  }
+  @keyframes blink{0%,60%{opacity:1;}61%,100%{opacity:.25;}}
+  .device .d-title{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;opacity:.7;text-transform:uppercase;}
+  .device .d-name{font-family:var(--display);font-weight:700;font-size:1rem;margin-top:6px;line-height:1.1;}
+  .device .terminals{display:flex;gap:5px;margin-top:12px;}
+  .device .terminals span{flex:1;height:16px;border-radius:2px;background:#22414d;border-bottom:2px solid var(--live);}
+  .connector{flex:0 0 34px;align-self:center;height:2px;background:repeating-linear-gradient(90deg,var(--live) 0 7px,transparent 7px 13px);}
+
+  .sheet{
+    flex:1 1 auto;background:var(--surface);border-radius:12px;overflow:hidden;
+    box-shadow:var(--shadow);border:1px solid var(--grid);min-width:0;
+  }
+  .sheet-bar{
+    display:flex;align-items:center;gap:.5rem;padding:9px 12px;border-bottom:1px solid var(--grid);
+    background:#F7F9F8;
+  }
+  .sheet-bar .tabdot{width:9px;height:9px;border-radius:50%;background:var(--grid);}
+  .sheet-bar .tabdot.g{background:var(--live);}
+  .sheet-bar .fname{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);margin-left:.3rem;}
+  .sheet-bar .status{margin-left:auto;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--live-deep);display:flex;align-items:center;gap:.4rem;}
+  .sheet-bar .status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--live);animation:blink 1.8s steps(1) infinite;}
+
+  table.grid-tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.74rem;table-layout:fixed;}
+  table.grid-tbl th{
+    text-align:left;font-weight:500;color:var(--ink-soft);background:#FBFCFC;
+    padding:8px 10px;border-bottom:1px solid var(--grid);border-right:1px solid var(--grid-soft);
+    font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+  }
+  table.grid-tbl td{
+    padding:8px 10px;border-bottom:1px solid var(--grid-soft);border-right:1px solid var(--grid-soft);
+    color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  table.grid-tbl th:first-child, table.grid-tbl td:first-child{color:var(--ink-soft);}
+  table.grid-tbl td .cellval{opacity:0;transform:translateY(4px);display:inline-block;}
+  table.grid-tbl td.filled .cellval{opacity:1;transform:none;transition:opacity .35s ease, transform .35s ease;}
+  table.grid-tbl tr:last-child td{border-bottom:none;}
+  .rowcount{font-family:var(--mono);font-size:.64rem;color:var(--ink-soft);padding:7px 12px;border-top:1px solid var(--grid);background:#F7F9F8;}
+
+  /* ---------- value band ---------- */
+  .band{border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);background:var(--surface);}
+  .band .wrap{padding:34px 24px;}
+  .band p{font-family:var(--display);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.6rem);max-width:46ch;margin:0;line-height:1.25;}
+  .band p .u{color:var(--live-deep);}
+
+  /* ---------- generic section ---------- */
+  section.blk{padding:76px 0;}
+  .sec-head{max-width:52ch;margin-bottom:44px;}
+  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:700;margin:14px 0 12px;}
+  .sec-head p{color:var(--ink-soft);font-size:1.05rem;margin:0;}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:820px){ .steps{grid-template-columns:1fr;} }
+  .step{background:var(--surface);border:1px solid var(--grid);border-radius:12px;padding:26px 24px;position:relative;overflow:hidden;}
+  .step .num{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--live-deep);letter-spacing:.1em;}
+  .step h3{font-size:1.24rem;font-weight:700;margin:14px 0 10px;}
+  .step p{color:var(--ink-soft);font-size:.96rem;margin:0;}
+  .step .rail{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--live);opacity:.9;}
+
+  /* ---------- features ---------- */
+  .specsheet{background:var(--surface);border:1px solid var(--grid);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+  @media(max-width:820px){ .feat-grid{grid-template-columns:1fr;} }
+  .feat{padding:26px 24px;border-right:1px solid var(--grid-soft);border-bottom:1px solid var(--grid-soft);}
+  .feat-grid .feat:nth-child(3n){border-right:none;}
+  .feat .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .feat h3{font-size:1.08rem;font-weight:700;margin:9px 0 6px;}
+  .feat p{color:var(--ink-soft);font-size:.92rem;margin:0;}
+  .feat-note{padding:16px 24px;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);background:#F7F9F8;}
+  .feat-note b{color:var(--ink);font-weight:500;}
+
+  .specblock{margin-top:24px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:center;
+    background:var(--ink);color:#fff;border-radius:14px;padding:34px 36px;}
+  @media(max-width:820px){ .specblock{grid-template-columns:1fr;gap:22px;padding:28px 24px;} }
+  .specblock-head h3{font-size:1.5rem;font-weight:700;margin:12px 0 10px;}
+  .specblock-head .eyebrow{color:#7FE3B0;}
+  .specblock-head .eyebrow::before{background:#7FE3B0;box-shadow:0 0 0 3px rgba(127,227,176,.2);}
+  .specblock-head p{color:#B7C6CC;margin:0;font-size:.98rem;}
+  .spec-dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:480px){ .spec-dl{grid-template-columns:1fr;} }
+  .spec-dl > div{padding:12px 0;border-bottom:1px solid #22414d;display:flex;justify-content:space-between;gap:14px;}
+  .spec-dl dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#8AA1AB;margin:0;}
+  .spec-dl dd{margin:0;font-size:.9rem;font-weight:500;text-align:right;}
+
+  /* ---------- use cases ---------- */
+  .uses{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:820px){ .uses{grid-template-columns:1fr;} }
+  .use{background:var(--surface);border:1px solid var(--grid);border-radius:12px;padding:26px 24px;}
+  .use .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--live-deep);}
+  .use h3{font-size:1.18rem;font-weight:700;margin:12px 0 10px;}
+  .use p{color:var(--ink-soft);font-size:.95rem;margin:0 0 14px;}
+  .use .hook{font-size:.9rem;color:var(--ink);border-top:1px dashed var(--grid);padding-top:12px;}
+  .use .hook span{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:4px;}
+
+  /* ---------- pricing ---------- */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;}
+  @media(max-width:820px){ .price-grid{grid-template-columns:1fr;} }
+  .tier{background:var(--surface);border:1px solid var(--grid);border-radius:14px;padding:28px 26px;display:flex;flex-direction:column;}
+  .tier.feature{border-color:var(--live);box-shadow:0 0 0 1px var(--live), var(--shadow);}
+  .tier .badge{align-self:flex-start;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--live);padding:.3rem .55rem;border-radius:5px;margin-bottom:14px;}
+  .tier .tname{font-family:var(--display);font-weight:700;font-size:1.05rem;}
+  .tier .amt{font-family:var(--display);font-weight:800;font-size:2.3rem;margin:10px 0 2px;letter-spacing:-.03em;}
+  .tier .amt small{font-size:1rem;font-weight:600;color:var(--ink-soft);}
+  .tier .for{color:var(--ink-soft);font-size:.92rem;min-height:2.6em;margin-bottom:18px;}
+  .tier .btn{width:100%;justify-content:center;margin-top:auto;}
+  .price-foot{margin-top:22px;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);}
+
+  /* ---------- cta band ---------- */
+  .cta{background:var(--ink);color:#fff;border-radius:16px;padding:52px 44px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
+  .cta h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;max-width:20ch;}
+  .cta p{color:#B7C6CC;margin:10px 0 0;max-width:40ch;}
+  .cta .cta-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+  /* ---------- footer ---------- */
+  footer{padding:44px 0 60px;color:var(--ink-soft);}
+  .foot-inner{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--grid);padding-top:28px;}
+  .foot-brand{font-family:var(--display);font-weight:800;color:var(--ink);font-size:1.05rem;}
+  .foot-links{display:flex;gap:1.4rem;font-size:.9rem;flex-wrap:wrap;}
+  .foot-links a:hover{color:var(--ink);}
+  .foot-meta{font-family:var(--mono);font-size:.72rem;margin-top:8px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    table.grid-tbl td .cellval{opacity:1;transform:none;}
+  }
+</style>
 </head>
+<body>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      ModbridgePro
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#uses">Use cases</a>
+      <a href="#pricing">Pricing</a>
+      <a href="docs/">Docs</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</nav>
 
-          
-          
-          <a href="#" class="icon icon-home">
-            ModBridge Pro
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-modbridge-pro">What is ModBridge Pro?</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#key-capabilities">Key capabilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#system-architecture">System Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#device-information">Device Information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#document-conventions">Document Conventions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#step-by-step-setup">Step-by-Step Setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-1-power-on-the-modbridge-pro-b15">Step 1 — Power on the ModBridge Pro B15</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-2-connect-to-the-configuration-access-point">Step 2 — Connect to the configuration access point</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-3-open-the-configuration-page">Step 3 — Open the configuration page</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-4-configure-internet-connectivity">Step 4 — Configure internet connectivity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-5-configure-the-modbus-protocol">Step 5 — Configure the Modbus protocol</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-6-add-modbus-slave-devices-and-registers">Step 6 — Add Modbus slave devices and registers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-7-set-up-cloud-publishing">Step 7 — Set up cloud publishing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-8-save-and-reboot">Step 8 — Save and reboot</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-next">What Next?</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Hardware Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-photo">Device Photo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#specifications">Specifications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#connectors-and-peripherals">Connectors and Peripherals</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#wi-fi">Wi-Fi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#ethernet-port">Ethernet Port</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#rs-485-terminal-block">RS-485 Terminal Block</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#power-supply">Power Supply</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#status-leds">Status LEDs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#internet-connection-tab">Internet Connection Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#protocol-settings-tab">Protocol Settings Tab</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-rtu-rs-485">Modbus RTU (RS-485)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-tcp-ethernet">Modbus TCP (Ethernet)</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="iot.html">IoT Publishing Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#control-buttons">Control Buttons</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ota.html#step-2-open-the-firmware-update-tab">Step 2 — Open the Firmware Update tab</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ota.html#step-3-upload-the-file">Step 3 — Upload the file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ota.html#step-4-wait-for-the-reboot">Step 4 — Wait for the reboot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
-</ul>
-</li>
-</ul>
-
-        </div>
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Modbus RTU / TCP → Cloud</span>
+      <h1>From your machine to a <span class="hl">live Google Sheet</span> in five minutes.</h1>
+      <p class="hero-sub">A plug-in gateway that streams Modbus data straight into a spreadsheet — or over MQTT. No server. No broker. No code.</p>
+      <div class="hero-actions">
+        <a class="btn btn-live" href="#contact">Get in touch <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="docs/">Read the docs</a>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">ModBridge Pro</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content style-external-links">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ModBridge Pro Documentation</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="modbridge-pro-documentation">
-<h1>ModBridge Pro Documentation<a class="headerlink" href="#modbridge-pro-documentation" title="Link to this heading"></a></h1>
-<p><strong>ModBridge Pro B15</strong> is a professional-grade industrial IoT gateway that bridges
-Modbus devices (sensors, energy meters, PLCs) with modern cloud platforms such
-as MQTT brokers and Google Sheets, using an ESP32-S3 microcontroller.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This documentation covers firmware <strong>v2.2.1</strong>.
-For variant-specific pages (future hardware revisions or product tiers),
-see <a class="reference internal" href="variants/index.html#variants"><span class="std std-ref">Product Variants</span></a>.</p>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-modbridge-pro">What is ModBridge Pro?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#system-architecture">System Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#device-information">Device Information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#document-conventions">Document Conventions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#step-by-step-setup">Step-by-Step Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-next">What Next?</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Hardware Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-photo">Device Photo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#specifications">Specifications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#connectors-and-peripherals">Connectors and Peripherals</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#internet-connection-tab">Internet Connection Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#protocol-settings-tab">Protocol Settings Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="iot.html">IoT Publishing Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
-<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#control-buttons">Control Buttons</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a></li>
-</ul>
-</div>
-<hr class="docutils" />
-<section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-</section>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+      <div class="hero-spec">
+        <b>Wi-Fi or Ethernet</b><span class="dot">·</span>
+        <b>Modbus RTU &amp; TCP</b><span class="dot">·</span>
+        <b>MQTT &amp; Google Sheets</b>
+      </div>
     </div>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2026, Apero Solutions.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+    <!-- SIGNATURE: device wired into a live-filling sheet -->
+    <div class="device-line" aria-hidden="true">
+      <div class="device">
+        <span class="led"></span>
+        <div class="d-title">RS-485</div>
+        <div class="d-name">ModbridgePro</div>
+        <div class="terminals"><span></span><span></span><span></span><span></span></div>
       </div>
-    </section>
+      <div class="connector"></div>
+      <div class="sheet">
+        <div class="sheet-bar">
+          <span class="tabdot g"></span><span class="tabdot"></span><span class="tabdot"></span>
+          <span class="fname">plant_readings.gsheet</span>
+          <span class="status">Live</span>
+        </div>
+        <table class="grid-tbl" id="liveSheet">
+          <thead>
+            <tr><th>Time</th><th>Volt (V)</th><th>Curr (A)</th><th>Power (kW)</th></tr>
+          </thead>
+          <tbody><!-- rows injected by script; static fallback below --></tbody>
+        </table>
+        <div class="rowcount" id="rowCount">appending rows…</div>
+      </div>
+    </div>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+</header>
 
+<!-- VALUE BAND -->
+<div class="band">
+  <div class="wrap">
+    <p>Most gateways stop at MQTT and a broker you still have to run. This one drops readings <span class="u">straight into a Google Sheet you already know how to use.</span></p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="blk" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps to data in the cloud.</h2>
+      <p>No middleware, no database to stand up, no monthly platform fee. Wire it in and you are logging.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="rail"></span>
+        <span class="num">01</span>
+        <h3>Wire it in</h3>
+        <p>Connect your energy meter, PLC, VFD, or sensor over Modbus RTU (RS-485) or Modbus TCP.</p>
+      </div>
+      <div class="step"><span class="rail"></span>
+        <span class="num">02</span>
+        <h3>Configure once</h3>
+        <p>Enter your Wi-Fi or Ethernet details and a Google service account. Nothing else to buy or subscribe to.</p>
+      </div>
+      <div class="step"><span class="rail"></span>
+        <span class="num">03</span>
+        <h3>Watch data flow</h3>
+        <p>Readings land in your Sheet on the interval you choose — or publish over MQTT into a larger system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="blk" id="features" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Specification</span>
+      <h2>Everything on one small box.</h2>
+    </div>
+    <div class="specsheet">
+      <div class="feat-grid">
+        <div class="feat"><div class="k">Inputs</div><h3>Modbus RTU &amp; TCP</h3><p>Read RS-485 serial devices or Modbus TCP equipment, single or multiple slaves.</p></div>
+        <div class="feat"><div class="k">Outputs</div><h3>Sheets &amp; MQTT</h3><p>Publish directly to Google Sheets, or over MQTT for a full data pipeline.</p></div>
+        <div class="feat"><div class="k">Connectivity</div><h3>Wi-Fi or Ethernet</h3><p>Bring the device online whichever way suits the site.</p></div>
+        <div class="feat"><div class="k">Reliability</div><h3>Offline buffering</h3><p>Lose connection and readings are held on the device, then pushed once you're back — no gaps in your data.</p></div>
+        <div class="feat"><div class="k">Security</div><h3>Encrypted publishing</h3><p>MQTT over TLS/SSL, with credentials stored securely on the device.</p></div>
+        <div class="feat"><div class="k">Alerting</div><h3>No-internet output</h3><p>A dedicated output flags a dropped connection, so unattended installs never fail silently.</p></div>
+        <div class="feat"><div class="k">Maintenance</div><h3>Over-the-air updates</h3><p>Push firmware remotely — no site visit, no downtime.</p></div>
+        <div class="feat"><div class="k">Ownership</div><h3>Your own account</h3><p>Data lands in a Google Sheet you own, through your own service account.</p></div>
+        <div class="feat"><div class="k">Infrastructure</div><h3>None required</h3><p>No server to run, no broker to host, no code to write to get started.</p></div>
+      </div>
+      <div class="feat-note">
+        <b>Note:</b> uplink is over Wi-Fi or Ethernet. When Ethernet is used for the uplink, Modbus input is via RTU (RS-485).
+      </div>
+    </div>
+
+    <!-- B15 spec block -->
+    <div class="specblock">
+      <div class="specblock-head">
+        <span class="eyebrow">Hardware</span>
+        <h3>The B15 — first in the ModbridgePro line.</h3>
+        <p>Built on an ESP32-S3, designed to be wired into a panel and left to run.</p>
+      </div>
+      <dl class="spec-dl">
+        <div><dt>Platform</dt><dd>ESP32-S3</dd></div>
+        <div><dt>Modbus RTU</dt><dd>RS-485 terminal block</dd></div>
+        <div><dt>Modbus TCP</dt><dd>Ethernet</dd></div>
+        <div><dt>Uplink</dt><dd>Wi-Fi or Ethernet</dd></div>
+        <div><dt>Indicators</dt><dd>Status LEDs &amp; control buttons</dd></div>
+        <div><dt>Firmware</dt><dd>v2.2.1 · field-updatable OTA</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="blk" id="uses" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Who it's for</span>
+      <h2>Built for teams without a data team.</h2>
+    </div>
+    <div class="uses">
+      <div class="use">
+        <span class="tag">Small manufacturers</span>
+        <h3>Plants &amp; factories</h3>
+        <p>Monitor energy and machine data without hiring anyone or standing up IT infrastructure.</p>
+        <div class="hook"><span>The pitch</span>See your production and energy numbers in a shared Sheet today.</div>
+      </div>
+      <div class="use">
+        <span class="tag">Integrators &amp; auditors</span>
+        <h3>Consultants &amp; panel builders</h3>
+        <p>Spec one affordable box across many client sites, with reports clients can open instantly.</p>
+        <div class="hook"><span>The pitch</span>Hand your client a live dashboard on day one.</div>
+      </div>
+      <div class="use">
+        <span class="tag">Labs &amp; OEM</span>
+        <h3>R&amp;D &amp; prototyping</h3>
+        <p>The fastest, cheapest way to log Modbus data to the cloud for a project or product trial.</p>
+        <div class="hook"><span>The pitch</span>From wiring to logged data in an afternoon.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="blk" id="pricing" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>One box. Honest pricing.</h2>
+      <p>Priced below the imported gateways, without racing to the bottom.</p>
+    </div>
+    <div class="price-single" style="max-width:380px;margin:0 auto;">
+      <div class="tier feature">
+        <div class="tname">ModbridgePro</div>
+        <div class="amt">₹4,499</div>
+        <div class="for">One box, ready to deploy — Modbus in, Google Sheets &amp; MQTT out.</div>
+        <a class="btn btn-live" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <p class="price-foot" style="text-align:center;">Price in INR, excluding taxes and shipping. Contact us for volume and integrator pricing.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="blk" id="contact" style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta">
+      <div>
+        <h2>See it running on your equipment.</h2>
+        <p>Tell us what you want to monitor and we'll help you get your first readings into a Sheet.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-live" href="mailto:contact@aperosolutions.in">Email us <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="docs/" style="color:#fff;border-color:#2c4653;">Read the docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-inner">
+    <div>
+      <div class="foot-brand">ModbridgePro</div>
+      <div class="foot-meta">Modbus → Google Sheets &amp; MQTT gateway · by Apero Solutions</div>
+    </div>
+    <div class="foot-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="docs/">Documentation</a>
+      <a href="mailto:contact@aperosolutions.in">contact@aperosolutions.in</a>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:20px;"><span class="foot-meta">© <span id="yr"></span> Apero Solutions. All rights reserved.</span></div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ---- live sheet fill animation (with reduced-motion fallback) ----
+  (function(){
+    var tbody = document.querySelector('#liveSheet tbody');
+    var rowCount = document.getElementById('rowCount');
+    if(!tbody) return;
+
+    function two(n){ return (n<10?'0':'')+n; }
+    function t(base, i){
+      var d = new Date(base.getTime() - (5-i)*3000);
+      return two(d.getHours())+':'+two(d.getMinutes())+':'+two(d.getSeconds());
+    }
+    var now = new Date();
+    var rows = [];
+    for(var i=0;i<5;i++){
+      rows.push([
+        t(now,i),
+        (228 + Math.random()*6).toFixed(1),
+        (11.4 + Math.random()*2.2).toFixed(2),
+        (2.6 + Math.random()*0.6).toFixed(2)
+      ]);
+    }
+
+    // build static markup first (this is also the no-JS/reduced-motion result)
+    rows.forEach(function(r){
+      var tr = document.createElement('tr');
+      r.forEach(function(v){
+        var td = document.createElement('td');
+        var s = document.createElement('span'); s.className='cellval'; s.textContent=v;
+        td.appendChild(s); tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cells = tbody.querySelectorAll('td');
+
+    if(reduce){
+      cells.forEach(function(c){ c.classList.add('filled'); });
+      rowCount.textContent = '5 rows appended · live';
+      return;
+    }
+
+    var idx = 0;
+    function step(){
+      if(idx < cells.length){
+        cells[idx].classList.add('filled');
+        idx++;
+        setTimeout(step, 90);
+      } else {
+        rowCount.textContent = '5 rows appended · live';
+      }
+    }
+    // small delay so it reads as "filling in"
+    setTimeout(step, 350);
+  })();
+</script>
 </body>
 </html>

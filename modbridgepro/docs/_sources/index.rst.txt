@@ -10,6 +10,8 @@ ModBridge Pro Documentation
 ..    :align: right
 ..    :width: 140px
 
+`← Back to the ModbridgePro product page <../>`_
+
 **ModBridge Pro B15** is a professional-grade industrial IoT gateway that bridges
 Modbus devices (sensors, energy meters, PLCs) with modern cloud platforms such
 as MQTT brokers and Google Sheets, using an ESP32-S3 microcontroller.
