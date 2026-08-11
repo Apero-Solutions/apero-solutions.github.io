@@ -254,9 +254,13 @@
   table.grid-tbl th:first-child{width:38%;}
   @media(max-width:560px){
     table.grid-tbl{font-size:.66rem;}
-    table.grid-tbl td{padding:8px 6px;}
-    table.grid-tbl th{padding:8px 6px;}
-    table.grid-tbl th:first-child{width:42%;}
+    table.grid-tbl th, table.grid-tbl td{padding:8px 6px;}
+    table.grid-tbl th{white-space:normal;letter-spacing:.05em;}
+    table.grid-tbl th:first-child{width:40%;}
+  }
+  @media(max-width:400px){
+    table.grid-tbl{font-size:.58rem;}
+    table.grid-tbl th:first-child{width:48%;}
   }
   table.grid-tbl td .cellval{opacity:0;transform:translateY(4px);display:inline-block;}
   table.grid-tbl td.filled .cellval{opacity:1;transform:none;transition:opacity .35s ease, transform .35s ease;}
@@ -582,6 +586,8 @@
     var lcd = document.getElementById('lcdVal');
     if(!tbody) return;
 
+    // the device polls and publishes on the interval the user picks;
+    // the demo runs that at five seconds
     var ROWS = 5, TICK = 5000;
 
     function two(n){ return (n<10?'0':'')+n; }
@@ -596,65 +602,71 @@
       var i = 11.4 + Math.random()*2.2;
       return [stamp(at), v.toFixed(1), i.toFixed(2), (2.6 + Math.random()*0.6).toFixed(2)];
     }
-    function addRow(r){
+    function addRow(){
       var tr = document.createElement('tr');
-      r.forEach(function(v){
+      for(var j=0;j<4;j++){
         var td = document.createElement('td');
-        var s = document.createElement('span'); s.className='cellval'; s.textContent=v;
+        var s = document.createElement('span'); s.className='cellval';
         td.appendChild(s); tr.appendChild(td);
-      });
+      }
       tbody.appendChild(tr);
       return tr;
     }
-
-    var now = new Date();
-    var total = ROWS;
-    for(var i=0;i<ROWS;i++){
-      addRow(reading(new Date(now.getTime() - (ROWS-1-i)*TICK)));
+    function write(tr, r){
+      var spans = tr.querySelectorAll('.cellval');
+      for(var j=0;j<r.length;j++){ spans[j].textContent = r[j]; }
+      requestAnimationFrame(function(){
+        tr.querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
+      });
     }
 
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var cells = tbody.querySelectorAll('td');
+    // an empty grid up front holds the sheet's height while readings arrive
+    for(var i=0;i<ROWS;i++){ addRow(); }
 
-    function count(){ rowCount.textContent = total + ' rows appended · live'; }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var total = 0, filled = 0;
+
+    function count(){
+      rowCount.textContent = total
+        ? total + ' rows appended · every 5 s'
+        : 'waiting for first reading…';
+    }
+    count();
 
     if(reduce){
-      cells.forEach(function(c){ c.classList.add('filled'); });
-      count();
+      // no timers: show the sheet as it looks after five polls
+      var base = new Date(), trs = tbody.querySelectorAll('tr'), last;
+      for(var k=0;k<ROWS;k++){
+        last = reading(new Date(base.getTime() - (ROWS-1-k)*TICK));
+        write(trs[k], last);
+        trs[k].querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
+      }
+      total = ROWS; count();
+      if(lcd) lcd.textContent = last[1];
       return;
     }
 
-    // keep the chain reading as cause and effect: the meter updates,
-    // then the row lands in the sheet a moment later
+    // one poll = one published row, so the value on the meter is the value
+    // that lands in the sheet — a row per interval, exactly as the device runs
     function poll(){
       if(document.hidden) return;
       var r = reading(new Date());
       if(lcd) lcd.textContent = r[1];
-      setTimeout(function(){
-        if(tbody.firstElementChild) tbody.removeChild(tbody.firstElementChild);
-        var tr = addRow(r);
-        total++;
-        requestAnimationFrame(function(){
-          tr.querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
-          count();
-        });
-      }, 520);
+      var tr;
+      if(filled < ROWS){
+        tr = tbody.children[filled];
+        filled++;
+      } else {
+        tbody.removeChild(tbody.firstElementChild);
+        tr = addRow();
+      }
+      write(tr, r);
+      total++;
+      count();
     }
 
-    var idx = 0;
-    function step(){
-      if(idx < cells.length){
-        cells[idx].classList.add('filled');
-        idx++;
-        setTimeout(step, 90);
-      } else {
-        count();
-        if(lcd) lcd.textContent = cells[cells.length-3].textContent;
-        setInterval(poll, TICK);
-      }
-    }
-    // small delay so it reads as "filling in"
-    setTimeout(step, 350);
+    // first reading lands shortly after the page settles, then on the interval
+    setTimeout(function(){ poll(); setInterval(poll, TICK); }, 900);
   })();
 </script>
 </body>
