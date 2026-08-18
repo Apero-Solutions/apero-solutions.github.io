@@ -7,6 +7,9 @@ Over-the-Air Firmware Update
 ModBridge Pro B15 supports wireless firmware updates delivered through the
 built-in browser interface.  No additional cables or tools are required.
 
+An update is shipped as a single ``update_bundle.bin`` — the application and
+the web interface travel together, so the two can never end up mismatched.
+
 
 Performing a Firmware Update
 =============================
@@ -48,9 +51,108 @@ Step 5 — Verify the new version
 Reconnect to the device and re-open the web configuration interface.  The
 version shown on the **Firmware Update** tab should reflect the new release.
 
+
+What survives an update
+=======================
+
+The update replaces both the application and the filesystem holding the web
+interface, but your **configuration is carried across**: the device copies
+``config.json`` out before the filesystem is rewritten and restores it
+afterwards.  Wi-Fi credentials, Modbus register definitions, IoT settings
+and your web login all survive.
+
+.. note::
+
+   Buffered readings do **not** survive — the buffer lives in RAM and the
+   device reboots.  If an outage has left a large backlog, wait until it has
+   drained to the cloud before starting an update.
+
 .. warning::
 
    Only use update files provided by Apero Solutions for your specific
    device model.  Uploading an incompatible file may cause the device to
-   stop responding.  If this happens, contact Apero Solutions for recovery
-   assistance.
+   stop responding.
+
+
+.. _usb_recovery:
+
+USB Recovery Flash
+==================
+
+If a wireless update is interrupted — power lost mid-write, or the browser
+closed during the upload — the device may be left unable to update itself
+again.  It can always be recovered over USB.
+
+.. danger::
+
+   Recovery **erases the chip completely**, including the saved
+   configuration.  The device comes back as factory-fresh and must be
+   reconfigured from scratch.  Use it only when over-the-air updating is no
+   longer possible.
+
+What you need
+-------------
+
+* A CH340 USB-to-UART adapter and four jumper wires.
+* Chrome or Edge — the flashing tool needs Web Serial, which Safari and
+  Firefox do not support.
+* The four image files for your firmware version, supplied by Apero
+  Solutions: ``bootloader.bin``, ``partitions.bin``, ``firmware.bin`` and
+  ``littlefs.bin``.
+
+Wiring
+------
+
+Open the enclosure and connect the adapter to the board.  **TX and RX
+cross over**:
+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - USB/UART adapter pin
+     - ESP32-S3 board pin
+   * - GND
+     - GND
+   * - TXD
+     - RX
+   * - RXD
+     - TX
+
+A bare CH340 adapter has no auto-reset circuit, so the board must be put
+into download mode by hand: **press Reset and IO0 together, release Reset
+first, then release IO0.**
+
+Flashing
+--------
+
+1. Plug the adapter into your computer and open
+   `the Adafruit WebSerial ESPTool <https://adafruit.github.io/Adafruit_WebSerial_ESPTool/>`_
+   in Chrome or Edge.
+2. Click **Connect** and choose the board's serial port.  If it does not
+   appear, re-check the wiring and repeat the download-mode button sequence.
+3. Click **Erase** and wait for it to finish (10–20 seconds).  This clears
+   any leftover state from the failed update and is not optional.
+4. Add all four files at these exact addresses:
+
+   .. list-table::
+      :widths: 50 50
+      :header-rows: 1
+
+      * - File
+        - Address
+      * - ``bootloader.bin``
+        - ``0x0``
+      * - ``partitions.bin``
+        - ``0x8000``
+      * - ``firmware.bin``
+        - ``0x10000``
+      * - ``littlefs.bin``
+        - ``0x3E1000``
+
+5. Click **Program**.  This takes a minute or two — do not unplug the board
+   or close the tab while it runs.
+6. Power-cycle the board when it finishes.
+
+The device boots factory-fresh and starts its configuration access point.
+Work through :ref:`quickstart` again to reconfigure it.

@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostics and Error Codes &mdash; ModBridge Pro Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=81b034b1" />
+
+  
+    <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/diagnostics.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Over-the-Air Firmware Update" href="ota.html" />
+    <link rel="prev" title="Security" href="security.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ModBridge Pro
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-modbridge-pro">What is ModBridge Pro?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#key-capabilities">Key capabilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#device-information">Device Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#document-conventions">Document Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#step-by-step-setup">Step-by-Step Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-1-power-on-the-modbridge-pro-b15">Step 1 — Power on the ModBridge Pro B15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-2-connect-to-the-configuration-access-point">Step 2 — Connect to the configuration access point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-3-open-the-configuration-page">Step 3 — Open the configuration page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-4-configure-internet-connectivity">Step 4 — Configure internet connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-5-configure-the-modbus-protocol">Step 5 — Configure the Modbus protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-6-add-modbus-slave-devices-and-registers">Step 6 — Add Modbus slave devices and registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-7-set-up-cloud-publishing">Step 7 — Set up cloud publishing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-8-save-and-reboot">Step 8 — Save and reboot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-next">What Next?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-photo">Device Photo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#connectors-and-peripherals">Connectors and Peripherals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#wi-fi">Wi-Fi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#ethernet-port">Ethernet Port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#rs-485-terminal-block">RS-485 Terminal Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#power-supply">Power Supply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#status-leds">Status LEDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#internet-connection-tab">Internet Connection Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#protocol-settings-tab">Protocol Settings Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-rtu-rs-485">Modbus RTU (RS-485)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-tcp-ethernet">Modbus TCP (Ethernet)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iot.html">IoT Publishing Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-2-open-the-firmware-update-tab">Step 2 — Open the Firmware Update tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-3-upload-the-file">Step 3 — Upload the file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-4-wait-for-the-reboot">Step 4 — Wait for the reboot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ModBridge Pro</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Diagnostics and Error Codes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/diagnostics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="diagnostics-and-error-codes">
+<span id="diagnostics"></span><h1>Diagnostics and Error Codes<a class="headerlink" href="#diagnostics-and-error-codes" title="Link to this heading"></a></h1>
+<p>Every reading ModBridge Pro publishes carries its own verdict.  When a
+register does not read, the payload says <em>why</em> — this is the primary
+diagnostic channel for a device in the field with no serial console
+attached.</p>
+<section id="where-the-codes-appear">
+<h2>Where the codes appear<a class="headerlink" href="#where-the-codes-appear" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Destination</p></th>
+<th class="head"><p>How a failure looks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MQTT</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;CommQuality&quot;:</span> <span class="pre">&quot;BAD&quot;</span></code> on that register, plus <code class="docutils literal notranslate"><span class="pre">err</span></code> (numeric) and
+<code class="docutils literal notranslate"><span class="pre">errText</span></code> (name), e.g. <code class="docutils literal notranslate"><span class="pre">&quot;err&quot;:</span> <span class="pre">224,</span> <span class="pre">&quot;errText&quot;:</span> <span class="pre">&quot;TIMEOUT&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Google Sheets — tabular</p></td>
+<td><p>The register’s cell reads <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">TIMEOUT</span></code> instead of a value.</p></td>
+</tr>
+<tr class="row-even"><td><p>Google Sheets — JSON</p></td>
+<td><p>The cell holds the full payload, including the <code class="docutils literal notranslate"><span class="pre">err</span></code> / <code class="docutils literal notranslate"><span class="pre">errText</span></code>
+fields.</p></td>
+</tr>
+</tbody>
+</table>
+<p>A failed register still appears in every message with a value of <code class="docutils literal notranslate"><span class="pre">0</span></code>, so
+downstream systems see a complete, consistently-shaped record.  Always test
+<code class="docutils literal notranslate"><span class="pre">CommQuality</span></code> before trusting a value.</p>
+</section>
+<section id="error-code-reference">
+<h2>Error code reference<a class="headerlink" href="#error-code-reference" title="Link to this heading"></a></h2>
+<section id="exception-codes-the-device-answered-and-refused">
+<h3>Exception codes — the device answered and refused<a class="headerlink" href="#exception-codes-the-device-answered-and-refused" title="Link to this heading"></a></h3>
+<p>The field device is alive, addressed correctly and talking.  It is the
+<em>request</em> it does not like, which almost always means the register list
+needs correcting rather than the wiring.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12.0%" />
+<col style="width: 15.0%" />
+<col style="width: 33.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Hex</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Usual cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0x01</p></td>
+<td><p>ILLEGAL_FUNCTION</p></td>
+<td><p>The device does not implement that register space — e.g. an address
+in the 3xxxx range on a device that only serves holding registers.
+Try the 4xxxx equivalent.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0x02</p></td>
+<td><p>ILLEGAL_DATA_ADDRESS</p></td>
+<td><p>The address does not exist on that device.  Most often an off-by-one
+(see <a class="reference internal" href="configuration.html#register-addressing"><span class="std std-ref">Register address ranges</span></a>) or a 32-bit type on the last
+register of a block.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>0x03</p></td>
+<td><p>ILLEGAL_DATA_VALUE</p></td>
+<td><p>The request was malformed for this device — commonly a read that is
+longer than it will serve in one go.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>0x04</p></td>
+<td><p>SERVER_DEVICE_FAILURE</p></td>
+<td><p>Unrecoverable fault inside the field device itself.</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>0x05</p></td>
+<td><p>ACKNOWLEDGE</p></td>
+<td><p>The device accepted the request but needs longer to answer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>0x06</p></td>
+<td><p>SERVER_DEVICE_BUSY</p></td>
+<td><p>Device busy — usually another master is polling it hard, or its own
+processing is saturated.  Lengthen the Update Interval.</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0x07</p></td>
+<td><p>NEGATIVE_ACKNOWLEDGE</p></td>
+<td><p>The device rejected the function it was asked to perform.</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>0x08</p></td>
+<td><p>MEMORY_PARITY_ERROR</p></td>
+<td><p>The device reports corrupt internal memory.</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>0x0A</p></td>
+<td><p>GATEWAY_PATH_UNAVAIL</p></td>
+<td><p>A Modbus gateway between us and the device has no route to it.</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>0x0B</p></td>
+<td><p>GATEWAY_TARGET_NO_RESP</p></td>
+<td><p>A Modbus gateway reached the target and got nothing back.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="transport-failures-nothing-usable-came-back">
+<h3>Transport failures — nothing usable came back<a class="headerlink" href="#transport-failures-nothing-usable-came-back" title="Link to this heading"></a></h3>
+<p>Raised locally, because the exchange itself failed.  These point at the
+physical layer, the serial settings, or the network.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12.0%" />
+<col style="width: 15.0%" />
+<col style="width: 33.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Hex</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Usual cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>224</p></td>
+<td><p>0xE0</p></td>
+<td><p>TIMEOUT</p></td>
+<td><p>No answer at all.  The most common error by far: wrong Device ID,
+wrong baud rate or parity, A/B swapped, or the device unpowered.</p></td>
+</tr>
+<tr class="row-odd"><td><p>225</p></td>
+<td><p>0xE1</p></td>
+<td><p>INVALID_SERVER</p></td>
+<td><p>The configured Device ID is out of the valid 1–247 range.</p></td>
+</tr>
+<tr class="row-even"><td><p>226</p></td>
+<td><p>0xE2</p></td>
+<td><p>CRC_ERROR</p></td>
+<td><p>A reply arrived but was corrupt — noise on the bus, missing
+termination, or a marginal baud rate on a long run.</p></td>
+</tr>
+<tr class="row-odd"><td><p>227</p></td>
+<td><p>0xE3</p></td>
+<td><p>FC_MISMATCH</p></td>
+<td><p>The reply answered a different function than was asked.</p></td>
+</tr>
+<tr class="row-even"><td><p>228</p></td>
+<td><p>0xE4</p></td>
+<td><p>SERVER_ID_MISMATCH</p></td>
+<td><p>Another device answered — two slaves share a Device ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>229</p></td>
+<td><p>0xE5</p></td>
+<td><p>PACKET_LENGTH_ERROR</p></td>
+<td><p>The reply was truncated or shorter than its own byte count claims.</p></td>
+</tr>
+<tr class="row-even"><td><p>230–231</p></td>
+<td><p>0xE6–0xE7</p></td>
+<td><p>PARAMETER_COUNT_ERROR, PARAMETER_LIMIT_ERROR</p></td>
+<td><p>Internal request-building faults; report these with your register
+list.</p></td>
+</tr>
+<tr class="row-odd"><td><p>232</p></td>
+<td><p>0xE8</p></td>
+<td><p>REQUEST_QUEUE_FULL</p></td>
+<td><p>Requests are being issued faster than the bus can carry them.
+Lengthen the Update Interval.</p></td>
+</tr>
+<tr class="row-even"><td><p>233</p></td>
+<td><p>0xE9</p></td>
+<td><p>ILLEGAL_IP_OR_PORT</p></td>
+<td><p>Modbus TCP: the server IP or port in the configuration is not valid.</p></td>
+</tr>
+<tr class="row-odd"><td><p>234</p></td>
+<td><p>0xEA</p></td>
+<td><p>IP_CONNECTION_FAILED</p></td>
+<td><p>Modbus TCP: could not open the connection.  The device retries once
+automatically before reporting this.</p></td>
+</tr>
+<tr class="row-even"><td><p>235</p></td>
+<td><p>0xEB</p></td>
+<td><p>TCP_HEAD_MISMATCH</p></td>
+<td><p>Modbus TCP: the reply did not match the request it answers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>236</p></td>
+<td><p>0xEC</p></td>
+<td><p>EMPTY_MESSAGE</p></td>
+<td><p>A zero-length reply.</p></td>
+</tr>
+<tr class="row-even"><td><p>241</p></td>
+<td><p>0xF1</p></td>
+<td><p>ADDR_UNMAPPED</p></td>
+<td><p><strong>Nothing was ever sent.</strong>  The configured address falls outside
+every Modbus space — see <a class="reference internal" href="configuration.html#register-addressing"><span class="std std-ref">Register address ranges</span></a>.  Fix the
+address; the bus is not involved.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="working-through-a-silent-device">
+<h2>Working through a silent device<a class="headerlink" href="#working-through-a-silent-device" title="Link to this heading"></a></h2>
+<p>When a device reads nothing at all, work down this list in order — each step
+rules out a whole class of cause:</p>
+<ol class="arabic simple">
+<li><p><strong>Check the error code first.</strong>  <code class="docutils literal notranslate"><span class="pre">ADDR_UNMAPPED</span></code> is a configuration
+typo and no amount of wiring work will fix it.  <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ILLEGAL_DATA_ADDRESS</span></code> point in opposite directions: the first means
+nothing answered, the second means the device answered and is telling
+you the address is wrong.</p></li>
+<li><p><strong>Does the RX LED pulse at all?</strong>  A pulse means at least one register on
+some device is reading, which proves the bus, the serial settings and the
+transceiver.  No pulse at all points at the bus itself.</p></li>
+<li><p><strong>Confirm the serial settings.</strong>  Baud rate and parity must match every
+device on the bus.  A device set to 8E1 against a gateway on 8N1 is
+silent, exactly like a broken wire.</p></li>
+<li><p><strong>Confirm the Device ID.</strong>  It is the ID configured <em>on the field
+device</em>, not its position in the list.  <code class="docutils literal notranslate"><span class="pre">SERVER_ID_MISMATCH</span></code> means two
+devices share one ID.</p></li>
+<li><p><strong>Check A/B polarity and termination.</strong>  Reversed A/B is silent;
+missing termination on a long run shows up as intermittent
+<code class="docutils literal notranslate"><span class="pre">CRC_ERROR</span></code>.  Terminate with 120 Ω at each end for runs over ~10 m.</p></li>
+<li><p><strong>Check the address convention.</strong>  If values arrive but are wrong,
+suspect an off-by-one before suspecting the device — a shifted read
+returns the neighbouring register’s perfectly plausible value.</p></li>
+<li><p><strong>Check the byte order.</strong>  Absurd FLOAT32 values (<code class="docutils literal notranslate"><span class="pre">1e-38</span></code>,
+<code class="docutils literal notranslate"><span class="pre">4.7e24</span></code>) mean the word order is wrong: try CDAB.</p></li>
+</ol>
+</section>
+<section id="interpreting-a-partly-working-device">
+<h2>Interpreting a partly-working device<a class="headerlink" href="#interpreting-a-partly-working-device" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symptom</p></th>
+<th class="head"><p>Likely cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Some registers good, others <code class="docutils literal notranslate"><span class="pre">ILLEGAL_DATA_ADDRESS</span></code></p></td>
+<td><p>Those addresses are not implemented on the device.  The gateway has
+already retried them individually, so the verdict is per-register and
+reliable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>All registers on one device time out, others fine</p></td>
+<td><p>That device alone: its ID, its power, or its drop cable.</p></td>
+</tr>
+<tr class="row-even"><td><p>Everything times out intermittently</p></td>
+<td><p>Bus contention, marginal termination, or a device too slow at the
+configured interval.  Lengthen the Update Interval first.</p></td>
+</tr>
+<tr class="row-odd"><td><p>A register sits at <code class="docutils literal notranslate"><span class="pre">0</span></code> and never moves</p></td>
+<td><p>Check <code class="docutils literal notranslate"><span class="pre">CommQuality</span></code> for that register before assuming the process
+value really is zero — a failed read publishes <code class="docutils literal notranslate"><span class="pre">0</span></code> too, and the two
+are indistinguishable without it.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="security.html" class="btn btn-neutral float-left" title="Security" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ota.html" class="btn btn-neutral float-right" title="Over-the-Air Firmware Update" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Apero Solutions.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

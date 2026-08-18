@@ -27,13 +27,15 @@ Step 1 — Power on the ModBridge Pro B15
 ----------------------------------------
 
 Connect the 24 V DC supply to the ModBridge Pro B15.  The Config Mode LED blinks slowly
-during startup — this is normal.
+for the first 10 seconds — this is the button window described in
+:ref:`leds_buttons`, and it is normal.
 
 Step 2 — Connect to the configuration access point
 ---------------------------------------------------
 
-On your phone or laptop, open the Wi-Fi settings and look for a network
-named::
+A factory-fresh device — or one whose **Internet Reset** button was held at
+boot — starts its own access point.  On your phone or laptop, open the Wi-Fi
+settings and look for a network named::
 
    ModBridgePro_XXXXXX
 
@@ -44,11 +46,17 @@ required**.
 
 .. note::
 
-   The unique 6-character suffix is printed
-   on the device label.
+   The unique 6-character suffix is printed on the device label, next to the
+   documentation QR code.  It is derived from the last three octets of the
+   MAC address in reverse order, so it will not match a MAC printed
+   elsewhere on the unit character-for-character — always use the SSID as
+   printed on the label.
 
 Step 3 — Open the configuration page
 --------------------------------------
+
+In configuration mode both interfaces are live, so you can reach the page
+over Wi-Fi or over a directly connected Ethernet cable.
 
 If connected through WiFi then navigate to::
 
@@ -96,19 +104,26 @@ On the *Protocol Settings* tab:
 3. For TCP, enter the Modbus server IP, port (default 502), and the static
    Ethernet IP to assign to the device.
 
+.. note::
+
+   Modbus TCP claims the Ethernet port for the field network, so the
+   internet connection must be Wi-Fi in that case.  The device refuses to
+   start otherwise.
+
 Step 6 — Add Modbus slave devices and registers
 -------------------------------------------------
 
 On the *Modbus Devices* tab:
 
 1. Click **Add Device**.
-2. Enter the **Slave ID** (1–247) as configured on the Modbus device.
-3. Add registers: for each register provide a name, address, data type, and
-   byte-swap setting.
-4. Repeat for up to 5 devices.
+2. Enter the **Device ID** (1–247) as configured on the Modbus device.
+3. Add registers: for each register provide a variable name, data type,
+   address, and byte order.
+4. Repeat for up to 5 devices, 50 registers each.
 
 See :ref:`configuration` for a full explanation of register addressing and
-data types.
+data types.  Getting the address convention right is the single most common
+source of a device that reads nothing.
 
 Step 7 — Set up cloud publishing
 ----------------------------------
@@ -117,22 +132,33 @@ On the *IoT Publishing* tab:
 
 1. Select **MQTT** or **Google Sheets** (or **Disabled** to skip).
 2. Fill in the broker / spreadsheet credentials.
-3. Set the **Update Interval** (1–900 seconds).
-4. Click **Test Connection** to verify before saving.
+3. Choose the **Update Interval** — this sets both the Modbus poll cadence
+   and the publish cadence.
+4. Leave **Enable Data Buffering** ticked.  It is the path all data takes to
+   the cloud, not an optional extra.
 
 See :ref:`iot` for full MQTT and Google Sheets configuration details.
+
+.. note::
+
+   **Test Connection** checks that the fields on this tab are filled in
+   sensibly.  It does not contact the broker or the spreadsheet — the first
+   real connection attempt happens after the reboot in Step 8.
 
 Step 8 — Save and reboot
 --------------------------
 
 Click **Save Configuration** at the bottom of the page.  The device saves
-all settings and reboots automatically.
+all settings and reboots automatically after about 3 seconds.
 
 After reboot:
 
-* The **Internet LED** lights solid green when the internet is reachable.
+* The **Internet LED** lights solid when the internet is reachable, and the
+  no-internet output stays at 0 V.
 * The **Modbus RX Activity LED** pulses briefly with each successful Modbus
   poll.
+* The first publish happens one full Update Interval after boot, not
+  immediately.
 
 .. warning::
 
@@ -145,7 +171,7 @@ What Next?
 ==========
 
 * Customise register names and verify the JSON payload: :ref:`iot`
-* Enable TLS/SSL for MQTT: :ref:`iot`
+* Work out why a register is not reading: :ref:`diagnostics`
 * Understand LED blink patterns: :ref:`leds_buttons`
 * Perform a firmware update: :ref:`ota`
 * Security hardening checklist: :ref:`security`

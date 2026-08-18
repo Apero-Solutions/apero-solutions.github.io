@@ -6,16 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ModBridge Pro — v2.x &mdash; ModBridge Pro Documentation</title>
+  <title>ModBridge Pro B15 &mdash; ModBridge Pro Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=81b034b1" />
 
   
-    <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/variants/pro_v2.html" />
+    <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/variants/b15.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=edd18f37"></script>
+      <script src="../_static/documentation_options.js?v=35c0298d"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -104,8 +105,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -113,21 +117,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -137,13 +145,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -153,13 +173,20 @@
 <li class="toctree-l3"><a class="reference internal" href="../ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Product Variants</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">ModBridge Pro — v2.x</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ModBridge Pro B15</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#feature-set">Feature set</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#known-limitations">Known limitations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#revision-history">Revision history</a></li>
@@ -185,9 +212,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Product Variants</a></li>
-      <li class="breadcrumb-item active">ModBridge Pro — v2.x</li>
+      <li class="breadcrumb-item active">ModBridge Pro B15</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/variants/pro_v2.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/variants/b15.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -195,8 +222,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="modbridge-pro-v2-x">
-<span id="variant-pro-v2"></span><h1>ModBridge Pro — v2.x<a class="headerlink" href="#modbridge-pro-v2-x" title="Link to this heading"></a></h1>
+  <section id="modbridge-pro-b15">
+<span id="variant-b15"></span><h1>ModBridge Pro B15<a class="headerlink" href="#modbridge-pro-b15" title="Link to this heading"></a></h1>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30.0%" />
@@ -204,23 +231,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Firmware version</strong></p></td>
-<td><p>v2.2.1</p></td>
+<td><p>v5.0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Status</strong></p></td>
 <td><p>Current production variant</p></td>
 </tr>
 </tbody>
 </table>
-<p>This is the baseline variant (ModBridge Pro B15).  All top-level
-documentation pages describe this variant in full.</p>
+<p>This is the baseline variant.  All top-level documentation pages describe
+this variant in full.</p>
 <section id="feature-set">
 <h2>Feature set<a class="headerlink" href="#feature-set" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Modbus RTU (RS-485) and Modbus TCP</p></li>
+<li><p>Modbus RTU (RS-485) and Modbus TCP, with contiguous registers merged into
+single block reads</p></li>
 <li><p>Wi-Fi + Ethernet dual connectivity</p></li>
-<li><p>MQTT publishing (with TLS/SSL and offline buffering)</p></li>
-<li><p>Google Sheets publishing (with offline buffering)</p></li>
-<li><p>Over-the-Air firmware updates</p></li>
+<li><p>MQTT publishing with store-and-forward buffering</p></li>
+<li><p>Google Sheets publishing, tabular or JSON, with managed headers and
+automatic row trimming</p></li>
+<li><p>Per-register error reporting in every published payload</p></li>
+<li><p>Bundled Over-the-Air firmware updates, configuration preserved</p></li>
 <li><p>Encrypted credential storage</p></li>
 <li><p>Web-based configuration UI</p></li>
 </ul>
@@ -230,8 +260,16 @@ documentation pages describe this variant in full.</p>
 <ul class="simple">
 <li><p>Maximum 5 Modbus slave devices.</p></li>
 <li><p>Maximum 50 registers per slave.</p></li>
-<li><p>Google Sheets output supports tabular or JSON format only.</p></li>
+<li><p>Read-only: the gateway polls registers and never writes to a field device.</p></li>
+<li><p>MQTT publishes at QoS 0; the QoS setting selects the broker retain flag
+instead (see <a class="reference internal" href="../iot.html#iot"><span class="std std-ref">IoT Publishing Guide</span></a>).</p></li>
+<li><p>MQTT TLS/SSL cannot connect — no CA trust store is provisioned, and TLS is
+unsupported over Ethernet (see <a class="reference internal" href="../security.html#security"><span class="std std-ref">Security</span></a>).</p></li>
 <li><p>Custom TLS certificates are not uploadable via the web UI.</p></li>
+<li><p>The buffer is in RAM, so buffered data does not survive a reboot or power
+cut.</p></li>
+<li><p>Google Sheets writes to a tab named <code class="docutils literal notranslate"><span class="pre">Sheet1</span></code> only.</p></li>
+<li><p>Timestamps are fixed to IST (UTC +5:30).</p></li>
 </ul>
 </section>
 <section id="revision-history">
@@ -247,14 +285,21 @@ documentation pages describe this variant in full.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>v2.2.1</p></td>
+<tr class="row-even"><td><p>v5.0.0</p></td>
+<td><p>Store-and-forward buffering on every publish path; per-register error
+codes in MQTT and Google Sheets output; block reads that merge
+neighbouring registers into one request; Google Sheets header
+management and column-aware row trimming; configuration preserved
+across bundled OTA updates; USB recovery procedure documented.</p></td>
+</tr>
+<tr class="row-odd"><td><p>v2.2.1</p></td>
 <td><p>Stronger credential encryption; Google Sheets tabular/JSON output
 format selection; improved OTA update reliability.</p></td>
 </tr>
-<tr class="row-odd"><td><p>v2.1.x</p></td>
+<tr class="row-even"><td><p>v2.1.x</p></td>
 <td><p>Encrypted IoT credential storage; password visibility toggle.</p></td>
 </tr>
-<tr class="row-even"><td><p>v2.0.x</p></td>
+<tr class="row-odd"><td><p>v2.0.x</p></td>
 <td><p>Initial release — Wi-Fi + Ethernet dual connectivity; offline
 buffering; MQTT QoS 0/1/2 support.</p></td>
 </tr>

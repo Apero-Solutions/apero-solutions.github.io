@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/iot.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
@@ -200,6 +227,13 @@
 <p>ModBridge Pro supports two cloud publishing destinations: <strong>MQTT</strong> and
 <strong>Google Sheets</strong>.  Both are configured on the <em>IoT Publishing</em> tab of the
 web interface.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Test Connection</strong> on this tab validates the form — that a protocol is
+selected and the required fields are filled in.  It does not open a
+connection to the broker or the spreadsheet.  Real connectivity is proved
+only after saving and rebooting, by data arriving at the destination.</p>
+</div>
 <section id="mqtt">
 <h2>MQTT<a class="headerlink" href="#mqtt" title="Link to this heading"></a></h2>
 <p>MQTT is the recommended protocol for real-time industrial data streams.
@@ -218,12 +252,12 @@ topics.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Broker Address</p></td>
+<tr class="row-even"><td><p>Server Address</p></td>
 <td><p>Hostname or IP of your MQTT broker (e.g., <code class="docutils literal notranslate"><span class="pre">broker.hivemq.com</span></code>,
 or the IP of a local Mosquitto instance).</p></td>
 </tr>
 <tr class="row-odd"><td><p>Port</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">1883</span></code> for plain TCP, <code class="docutils literal notranslate"><span class="pre">8883</span></code> for TLS/SSL.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1883</span></code> for plain TCP.</p></td>
 </tr>
 <tr class="row-even"><td><p>Username</p></td>
 <td><p>Leave blank for anonymous connections.  Stored encrypted.</p></td>
@@ -232,70 +266,154 @@ or the IP of a local Mosquitto instance).</p></td>
 <td><p>Leave blank for anonymous connections.  Stored encrypted (AES-128).</p></td>
 </tr>
 <tr class="row-even"><td><p>Client ID</p></td>
-<td><p>Unique identifier for this device on the broker.  Defaults to
-<code class="docutils literal notranslate"><span class="pre">ModBridge_</span></code> followed by the device MAC address (e.g.,
+<td><p>Unique identifier for this device on the broker.  Leave blank and the
+device uses <code class="docutils literal notranslate"><span class="pre">ModBridge_</span></code> followed by its Wi-Fi MAC address (e.g.,
 <code class="docutils literal notranslate"><span class="pre">ModBridge_A4CF12ABCDEF</span></code>).  Two devices with the same Client ID
 will disconnect each other.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Topic</p></td>
 <td><p>MQTT publish topic, e.g., <code class="docutils literal notranslate"><span class="pre">modbridge/data</span></code>.  Use hierarchy for
-organisation: <code class="docutils literal notranslate"><span class="pre">plant1/line2/gateway</span></code>.</p></td>
+organisation: <code class="docutils literal notranslate"><span class="pre">plant1/line2/gateway</span></code>.  Every message goes to this
+one topic.</p></td>
 </tr>
 <tr class="row-even"><td><p>QoS</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> = fire-and-forget, <code class="docutils literal notranslate"><span class="pre">1</span></code> = at-least-once (recommended),
-<code class="docutils literal notranslate"><span class="pre">2</span></code> = exactly-once (slowest).</p></td>
+<td><p>See <a class="reference internal" href="#quality-of-service">Quality of Service</a> below.</p></td>
 </tr>
 <tr class="row-odd"><td><p>TLS/SSL</p></td>
-<td><p>Toggle on to encrypt all traffic.  Required when using port 8883.</p></td>
+<td><p>See <a class="reference internal" href="#tls-ssl">TLS/SSL</a> below.</p></td>
 </tr>
-<tr class="row-even"><td><p>Enable Buffering</p></td>
-<td><p>Stores readings in PSRAM while offline; drains on reconnect.
-Available for both MQTT and Google Sheets.</p></td>
+<tr class="row-even"><td><p>Enable Data Buffering</p></td>
+<td><p>Leave this <strong>on</strong>.  See <a class="reference internal" href="#store-and-forward-buffering">Store-and-forward buffering</a>.</p></td>
 </tr>
 </tbody>
 </table>
+<p>If the broker is unreachable the device retries every 30 seconds, and
+readings accumulate in the buffer until it succeeds.</p>
 </section>
 <section id="payload-format">
 <h3>Payload format<a class="headerlink" href="#payload-format" title="Link to this heading"></a></h3>
-<p>Data is published as a JSON object.  Register names defined in the
-<em>Modbus Devices</em> tab become the JSON keys.</p>
-<p>Example payload for two slave devices:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="s2">&quot;ModBridgePro_A4CF12ABCDEF&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span>  <span class="s2">&quot;2025-06-25T09:30:00&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;slave_1&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;voltage_L1&quot;</span><span class="p">:</span>    <span class="mf">230.4</span><span class="p">,</span>
-    <span class="s2">&quot;current_L1&quot;</span><span class="p">:</span>     <span class="mf">12.8</span><span class="p">,</span>
-    <span class="s2">&quot;active_power&quot;</span><span class="p">:</span> <span class="mf">2941.0</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;slave_2&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">24.5</span><span class="p">,</span>
-    <span class="s2">&quot;humidity&quot;</span><span class="p">:</span>    <span class="mi">61</span>
-  <span class="p">}</span>
+<p>One MQTT message is published per poll cycle per device.  Each message is a
+JSON object: a cycle timestamp plus one entry per configured register.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-08-18T09:30:00"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"modbusPro"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"slaveId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"rName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"voltage_L1"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"rAddr"</span><span class="p">:</span><span class="w"> </span><span class="mi">30001</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"dataType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FLOAT32"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"val"</span><span class="p">:</span><span class="w"> </span><span class="s2">"230.399994"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"byteSwap"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NO_SWAP"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"CommQuality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GOOD"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"slaveId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"rName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"current_L1"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"rAddr"</span><span class="p">:</span><span class="w"> </span><span class="mi">30003</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"dataType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FLOAT32"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"val"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"byteSwap"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NO_SWAP"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"CommQuality"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAD"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"err"</span><span class="p">:</span><span class="w"> </span><span class="mi">224</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"errText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TIMEOUT"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code></p></td>
+<td><p>Local time (IST) of the poll cycle, <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:MM:SS</span></code>.  Shared
+by every reading in the message, which is what lets a consumer treat
+them as one row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slaveId</span></code></p></td>
+<td><p>Modbus device ID the reading came from.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rName</span></code> / <code class="docutils literal notranslate"><span class="pre">rAddr</span></code></p></td>
+<td><p>Variable name and 5-digit address as configured.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dataType</span></code> / <code class="docutils literal notranslate"><span class="pre">byteSwap</span></code></p></td>
+<td><p>The decoding applied, echoed back so a consumer can audit it.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">val</span></code></p></td>
+<td><p>The decoded value, <strong>as a string</strong>.  FLOAT32 carries 6 decimals.
+A failed read publishes <code class="docutils literal notranslate"><span class="pre">0</span></code> (<code class="docutils literal notranslate"><span class="pre">0.000000</span></code> for FLOAT32) — a real
+zero and a dead device look identical here, which is why
+<code class="docutils literal notranslate"><span class="pre">CommQuality</span></code> must be checked before using the value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CommQuality</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GOOD</span></code> or <code class="docutils literal notranslate"><span class="pre">BAD</span></code> for this individual register.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">err</span></code> / <code class="docutils literal notranslate"><span class="pre">errText</span></code></p></td>
+<td><p>Present only when <code class="docutils literal notranslate"><span class="pre">CommQuality</span></code> is <code class="docutils literal notranslate"><span class="pre">BAD</span></code>: the numeric Modbus
+error and its name.  See <a class="reference internal" href="diagnostics.html#diagnostics"><span class="std std-ref">Diagnostics and Error Codes</span></a> for the full list.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use short, lowercase register names with underscores (e.g.,
-<code class="docutils literal notranslate"><span class="pre">active_power</span></code>) to keep the JSON payload readable and compatible with
-time-series databases like InfluxDB or Grafana.</p>
+<p><code class="docutils literal notranslate"><span class="pre">val</span></code> is a JSON string, not a number — quote-strip it in your consumer
+(Node-RED, Telegraf, a Lambda) before writing to a time-series database.
+Filter on <code class="docutils literal notranslate"><span class="pre">CommQuality</span> <span class="pre">==</span> <span class="pre">&quot;GOOD&quot;</span></code> in the same step, or a dropped device
+will silently flat-line at its last value in your dashboards.</p>
 </div>
 </section>
-<section id="tls-ssl-setup">
-<h3>TLS/SSL setup<a class="headerlink" href="#tls-ssl-setup" title="Link to this heading"></a></h3>
-<ol class="arabic simple">
-<li><p>Set <strong>Port</strong> to <code class="docutils literal notranslate"><span class="pre">8883</span></code>.</p></li>
-<li><p>Toggle <strong>TLS/SSL</strong> on.</p></li>
-<li><p>Ensure the broker’s certificate chain is signed by a public CA (e.g.,
-Let’s Encrypt).  Custom CA certificates are not currently uploadable
-via the web UI.</p></li>
-</ol>
+<section id="quality-of-service">
+<h3>Quality of Service<a class="headerlink" href="#quality-of-service" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Behaviour</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>QoS 0 — At most once</p></td>
+<td><p>Fire-and-forget.  This is how every message is actually sent.</p></td>
+</tr>
+<tr class="row-odd"><td><p>QoS 1 / QoS 2</p></td>
+<td><p>Selecting either still publishes at QoS 0, and additionally sets the
+broker’s <strong>retain</strong> flag, so the last message stays on the topic for
+new subscribers.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If TLS is enabled but the broker certificate cannot be verified, the
-connection will fail silently.  Use the <strong>Test Connection</strong> button
-before saving to confirm the broker is reachable.</p>
+<p>The underlying MQTT client publishes at QoS 0 only, so QoS 1 and 2 do not
+give you broker-level acknowledgement in this firmware.  Delivery
+guarantees come from the device-side buffer instead: a message that
+cannot be handed to the broker stays in the buffer and is re-sent.  Set
+QoS to 0 unless you specifically want retained messages.</p>
+</div>
+</section>
+<section id="tls-ssl">
+<h3>TLS/SSL<a class="headerlink" href="#tls-ssl" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>TLS is not usable in v5.0.0.</strong>  No CA trust store is provisioned in the
+firmware, so a TLS connection has nothing to validate the broker against
+and the connection attempt fails before it reaches the network.  On an
+Ethernet uplink the option is ignored outright — the ENC28J60 network
+stack in use has no TLS support — and traffic would go out unencrypted.</p>
+<p>Leave TLS/SSL <strong>off</strong> and port <code class="docutils literal notranslate"><span class="pre">1883</span></code>.  Where the link must be
+protected, terminate it below the application: a site VPN, or an MQTT
+broker on the same isolated network segment as the gateway.  See
+<a class="reference internal" href="security.html#security"><span class="std std-ref">Security</span></a>.</p>
 </div>
 </section>
 </section>
@@ -340,8 +458,8 @@ automatically — keep it safe, this is your only copy.</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">client_email</span></code> — this is your <strong>Service Account Email</strong>
 (e.g., <code class="docutils literal notranslate"><span class="pre">modbridge-sheets&#64;your-project.iam.gserviceaccount.com</span></code>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">private_key</span></code> — this is your <strong>Private Key</strong>, a long block of text
-starting with <code class="docutils literal notranslate"><span class="pre">-----BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">private_key</span></code> — a long block of text starting with
+<code class="docutils literal notranslate"><span class="pre">-----BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code>.</p></li>
 </ul>
 </li>
 </ol>
@@ -349,6 +467,8 @@ starting with <code class="docutils literal notranslate"><span class="pre">-----
 <ol class="arabic">
 <li><p>Go to <a class="reference external" href="https://sheets.google.com">Google Sheets</a> and create a new
 spreadsheet.</p></li>
+<li><p>Leave the first tab named <strong>Sheet1</strong> — the device writes to
+<code class="docutils literal notranslate"><span class="pre">Sheet1</span></code> and does not create or look for any other tab.</p></li>
 <li><p>Click <strong>Share</strong> (top-right corner).</p></li>
 <li><p>Paste the <strong>Service Account Email</strong> from Step 4 into the share field.</p></li>
 <li><p>Set the permission to <strong>Editor</strong> and click <strong>Send</strong>.</p></li>
@@ -366,15 +486,27 @@ fill in:</p>
 <ul class="simple">
 <li><p><strong>Service Account Email</strong> — the <code class="docutils literal notranslate"><span class="pre">client_email</span></code> value from the JSON file.</p></li>
 <li><p><strong>Spreadsheet ID</strong> — copied from the sheet URL in Step 5.</p></li>
-<li><p><strong>Private Key</strong> — the full <code class="docutils literal notranslate"><span class="pre">private_key</span></code> value from the JSON file,
-including the <code class="docutils literal notranslate"><span class="pre">-----BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code> and
-<code class="docutils literal notranslate"><span class="pre">-----END</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code> lines.</p></li>
+<li><p><strong>API Key</strong> — despite the label, this field takes the <code class="docutils literal notranslate"><span class="pre">private_key</span></code>
+value from the JSON file, including the <code class="docutils literal notranslate"><span class="pre">-----BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code>
+and <code class="docutils literal notranslate"><span class="pre">-----END</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code> lines.  Paste it exactly as it appears
+in the JSON, <code class="docutils literal notranslate"><span class="pre">\n</span></code> escapes and all; the device converts them to real line
+breaks when it authenticates.</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The private key JSON file downloaded in Step 4 grants full access to your
 Google Sheets API.  Do not share it or commit it to version control.
 ModBridge Pro encrypts the key before storing it on the device.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Google Cloud <strong>project ID</strong> is not entered anywhere — the device
+derives it from the service account email, taking the part between
+<code class="docutils literal notranslate"><span class="pre">&#64;</span></code> and the first <code class="docutils literal notranslate"><span class="pre">.</span></code>.  This works for the standard
+<code class="docutils literal notranslate"><span class="pre">name&#64;project-id.iam.gserviceaccount.com</span></code> form.  A legacy
+<code class="docutils literal notranslate"><span class="pre">&#64;developer.gserviceaccount.com</span></code> address does not carry a project ID
+and will not authenticate; generate a new key on a modern service
+account instead.</p>
 </div>
 </section>
 <section id="google-sheets-parameters">
@@ -391,46 +523,125 @@ ModBridge Pro encrypts the key before storing it on the device.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Service Account Email</p></td>
-<td><p>The <code class="docutils literal notranslate"><span class="pre">&#64;developer.gserviceaccount.com</span></code> email from your Google Cloud
-service account.  This account must have <strong>Editor</strong> access on the
-target spreadsheet.</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">...&#64;&lt;project-id&gt;.iam.gserviceaccount.com</span></code> address from your
+Google Cloud service account.  This account must have <strong>Editor</strong>
+access on the target spreadsheet.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Spreadsheet ID</p></td>
 <td><p>The alphanumeric ID in the Google Sheets URL:
-<code class="docutils literal notranslate"><span class="pre">https://docs.google.com/spreadsheets/d/**&lt;ID&gt;**/edit</span></code></p></td>
+<code class="docutils literal notranslate"><span class="pre">https://docs.google.com/spreadsheets/d/&lt;ID&gt;/edit</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Private Key</p></td>
-<td><p>The full private key from the service account JSON file, including
-the <code class="docutils literal notranslate"><span class="pre">-----BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code> and <code class="docutils literal notranslate"><span class="pre">-----END</span> <span class="pre">PRIVATE</span> <span class="pre">KEY-----</span></code>
-lines.  Stored encrypted on the device.</p></td>
+<tr class="row-even"><td><p>API Key</p></td>
+<td><p>The service account <strong>private key</strong> (see Step 6).  Stored encrypted
+on the device.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Output Format</p></td>
 <td><p><strong>Tabular</strong> — one column per register (best for charts and pivot
 tables). <br/>
-<strong>JSON</strong> — each row contains the full JSON payload.</p></td>
+<strong>JSON</strong> — each row is a single cell containing the whole JSON
+payload for that poll cycle.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="tabular-output">
+<h3>Tabular output<a class="headerlink" href="#tabular-output" title="Link to this heading"></a></h3>
+<p>In tabular mode each poll cycle becomes one row:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Timestamp             | voltage_L1  | current_L1 | temperature
+2026-08-18T09:30:00   | 230.399994  | 12.800000  | 24.500000
+2026-08-18T09:31:00   | 230.100006  | Error: TIMEOUT | 24.500000
+</pre></div>
+</div>
+<p>Columns follow the configured order — every register of device 1, then every
+register of device 2, and so on.  A register that failed to read shows
+<code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">&lt;CODE&gt;</span></code> in its cell instead of a value, so a gap in the data is
+visible in the sheet itself rather than having to be inferred.</p>
+<p>The header row is managed for you.  On the first upload after each boot the
+device compares row 1 against the current register configuration and, if it
+differs, rewrites it — so renaming a register or adding one is reflected in
+the sheet automatically.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The sheet grows continuously.  Older rows are cleaned up automatically
-when the sheet reaches a large size, but periodically archiving data to
-a separate sheet is recommended for long-running deployments.</p>
+<p>Because the header is rewritten but historical rows are not, adding or
+removing registers mid-life leaves older rows misaligned with the new
+column headings.  Start a fresh spreadsheet when the register list
+changes, and keep the old one as an archive.</p>
+</div>
+</section>
+<section id="automatic-row-trimming">
+<h3>Automatic row trimming<a class="headerlink" href="#automatic-row-trimming" title="Link to this heading"></a></h3>
+<p>The device keeps the sheet inside a workable size on its own.  A Google
+spreadsheet has a hard ceiling of 10 million cells, and a sheet becomes
+unpleasant to open long before that, so the trim point is derived from how
+wide your rows are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Rule</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cell budget</p></td>
+<td><p>1,500,000 cells — the row limit is this divided by the column count</p></td>
+</tr>
+<tr class="row-odd"><td><p>Maximum rows</p></td>
+<td><p>250,000, whatever the budget allows</p></td>
+</tr>
+<tr class="row-even"><td><p>Minimum rows</p></td>
+<td><p>5,000, for very wide configurations</p></td>
+</tr>
+<tr class="row-odd"><td><p>Trim size</p></td>
+<td><p>20% of the limit, deleted oldest-first, header row preserved</p></td>
+</tr>
+</tbody>
+</table>
+<p>For example, 20 registers in tabular mode gives 21 columns, so the limit is
+71,428 rows; at a 1-minute interval the sheet holds about 7 weeks before the
+oldest fifth is dropped.  In JSON mode a row is one cell wide, so the 250,000
+row cap applies.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Trimming is a housekeeping measure, not an archive strategy.  If the data
+has long-term value, copy it out — a scheduled Apps Script export, or a
+second sheet fed by <code class="docutils literal notranslate"><span class="pre">IMPORTRANGE</span></code> — before it ages out.</p>
 </div>
 </section>
 </section>
 <section id="publish-interval">
 <h2>Publish Interval<a class="headerlink" href="#publish-interval" title="Link to this heading"></a></h2>
-<p>Both MQTT and Google Sheets use the same global <strong>Update Interval</strong> field
-(1–900 seconds).  This governs how often a new data record is pushed to the
-cloud.  The Modbus polling loop on Core 0 runs at the same cadence.</p>
+<p>Both MQTT and Google Sheets use the same <strong>Update Interval</strong> dropdown:
+1 second, 5 seconds, 10 seconds, 30 seconds, 1 minute, 5 minutes or
+15 minutes.  It sets one cadence for the device — each interval triggers one
+Modbus poll cycle and one publish of everything collected.</p>
+<p>The first publish happens one full interval after boot, so a 15-minute
+interval means no data for the first 15 minutes.  Use 30 seconds or faster
+while commissioning, then lengthen it.</p>
 </section>
-<section id="offline-buffering">
-<h2>Offline Buffering<a class="headerlink" href="#offline-buffering" title="Link to this heading"></a></h2>
-<p>When buffering is enabled and the internet is unavailable, new Modbus
-readings are stored internally (8 MB).  When connectivity is restored the
-buffer is drained oldest-first.  The table below shows how long data can be
-buffered for a single device at a 1-minute publish interval:</p>
+<section id="store-and-forward-buffering">
+<span id="store-and-forward"></span><h2>Store-and-forward buffering<a class="headerlink" href="#store-and-forward-buffering" title="Link to this heading"></a></h2>
+<p>Every reading is written to a buffer in PSRAM first, and published <em>from</em>
+the buffer.  There is no separate live path — this is how data reaches the
+cloud whether the link is up or down:</p>
+<ul class="simple">
+<li><p><strong>Online</strong> — each cycle is buffered and drained immediately after.</p></li>
+<li><p><strong>Offline</strong> — cycles accumulate.  When connectivity returns the whole
+backlog drains oldest-first: as individual MQTT messages, or as one
+batched append for Google Sheets.</p></li>
+</ul>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p><strong>Leave “Enable Data Buffering” ticked.</strong>  Because the buffer is the only
+publish path, unticking it stops the device from sending anything at all
+— it does not switch to direct publishing.</p>
+</div>
+<p>The buffer holds <strong>94,208 readings</strong> — individual register values, shared
+across all configured devices.  Divide by the total number of registers you
+poll to get the number of cycles it can hold.  At a 1-minute interval that
+works out as:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 40.0%" />
@@ -459,19 +670,22 @@ buffered for a single device at a 1-minute publish interval:</p>
 </tr>
 </tbody>
 </table>
-<p>When the buffer is full, the oldest entry is overwritten automatically.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Buffering works for both MQTT and Google Sheets.  For Google Sheets,
-all buffered readings are sent as a single batch when the connection is
-restored.</p>
+<p>When the buffer is full the oldest reading is overwritten, so an outage
+longer than the figures above loses the start of the outage, not the end.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The buffer lives in RAM.  A power cut or a reboot empties it — including
+anything queued during an outage.  Where the site’s power is as
+unreliable as its network, shorten the publish interval so less is in
+flight at any moment.</p>
 </div>
 <p>Best practice for reliable data delivery:</p>
 <ul class="simple">
-<li><p>Use <strong>QoS 1</strong> (at-least-once delivery).</p></li>
-<li><p>Enable <strong>buffering</strong>.</p></li>
-<li><p>Set the update interval to a value that produces a buffer fill time
-greater than your typical outage duration.</p></li>
+<li><p>Keep <strong>buffering</strong> enabled.</p></li>
+<li><p>Set an update interval whose buffer fill time comfortably exceeds your
+typical outage duration.</p></li>
+<li><p>For Google Sheets, remember a long backlog drains as one large append —
+give the device a few minutes after reconnection before judging it.</p></li>
 </ul>
 </section>
 </section>

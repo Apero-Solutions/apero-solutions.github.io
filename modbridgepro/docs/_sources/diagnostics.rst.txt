@@ -1,0 +1,226 @@
+.. _diagnostics:
+
+===========================
+Diagnostics and Error Codes
+===========================
+
+Every reading ModBridge Pro publishes carries its own verdict.  When a
+register does not read, the payload says *why* — this is the primary
+diagnostic channel for a device in the field with no serial console
+attached.
+
+Where the codes appear
+======================
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Destination
+     - How a failure looks
+   * - MQTT
+     - ``"CommQuality": "BAD"`` on that register, plus ``err`` (numeric) and
+       ``errText`` (name), e.g. ``"err": 224, "errText": "TIMEOUT"``.
+   * - Google Sheets — tabular
+     - The register's cell reads ``Error: TIMEOUT`` instead of a value.
+   * - Google Sheets — JSON
+     - The cell holds the full payload, including the ``err`` / ``errText``
+       fields.
+
+A failed register still appears in every message with a value of ``0``, so
+downstream systems see a complete, consistently-shaped record.  Always test
+``CommQuality`` before trusting a value.
+
+
+Error code reference
+====================
+
+Exception codes — the device answered and refused
+-------------------------------------------------
+
+The field device is alive, addressed correctly and talking.  It is the
+*request* it does not like, which almost always means the register list
+needs correcting rather than the wiring.
+
+.. list-table::
+   :widths: 12 15 33 40
+   :header-rows: 1
+
+   * - Code
+     - Hex
+     - Name
+     - Usual cause
+   * - 1
+     - 0x01
+     - ILLEGAL_FUNCTION
+     - The device does not implement that register space — e.g. an address
+       in the 3xxxx range on a device that only serves holding registers.
+       Try the 4xxxx equivalent.
+   * - 2
+     - 0x02
+     - ILLEGAL_DATA_ADDRESS
+     - The address does not exist on that device.  Most often an off-by-one
+       (see :ref:`register_addressing`) or a 32-bit type on the last
+       register of a block.
+   * - 3
+     - 0x03
+     - ILLEGAL_DATA_VALUE
+     - The request was malformed for this device — commonly a read that is
+       longer than it will serve in one go.
+   * - 4
+     - 0x04
+     - SERVER_DEVICE_FAILURE
+     - Unrecoverable fault inside the field device itself.
+   * - 5
+     - 0x05
+     - ACKNOWLEDGE
+     - The device accepted the request but needs longer to answer.
+   * - 6
+     - 0x06
+     - SERVER_DEVICE_BUSY
+     - Device busy — usually another master is polling it hard, or its own
+       processing is saturated.  Lengthen the Update Interval.
+   * - 7
+     - 0x07
+     - NEGATIVE_ACKNOWLEDGE
+     - The device rejected the function it was asked to perform.
+   * - 8
+     - 0x08
+     - MEMORY_PARITY_ERROR
+     - The device reports corrupt internal memory.
+   * - 10
+     - 0x0A
+     - GATEWAY_PATH_UNAVAIL
+     - A Modbus gateway between us and the device has no route to it.
+   * - 11
+     - 0x0B
+     - GATEWAY_TARGET_NO_RESP
+     - A Modbus gateway reached the target and got nothing back.
+
+Transport failures — nothing usable came back
+---------------------------------------------
+
+Raised locally, because the exchange itself failed.  These point at the
+physical layer, the serial settings, or the network.
+
+.. list-table::
+   :widths: 12 15 33 40
+   :header-rows: 1
+
+   * - Code
+     - Hex
+     - Name
+     - Usual cause
+   * - 224
+     - 0xE0
+     - TIMEOUT
+     - No answer at all.  The most common error by far: wrong Device ID,
+       wrong baud rate or parity, A/B swapped, or the device unpowered.
+   * - 225
+     - 0xE1
+     - INVALID_SERVER
+     - The configured Device ID is out of the valid 1–247 range.
+   * - 226
+     - 0xE2
+     - CRC_ERROR
+     - A reply arrived but was corrupt — noise on the bus, missing
+       termination, or a marginal baud rate on a long run.
+   * - 227
+     - 0xE3
+     - FC_MISMATCH
+     - The reply answered a different function than was asked.
+   * - 228
+     - 0xE4
+     - SERVER_ID_MISMATCH
+     - Another device answered — two slaves share a Device ID.
+   * - 229
+     - 0xE5
+     - PACKET_LENGTH_ERROR
+     - The reply was truncated or shorter than its own byte count claims.
+   * - 230–231
+     - 0xE6–0xE7
+     - PARAMETER_COUNT_ERROR, PARAMETER_LIMIT_ERROR
+     - Internal request-building faults; report these with your register
+       list.
+   * - 232
+     - 0xE8
+     - REQUEST_QUEUE_FULL
+     - Requests are being issued faster than the bus can carry them.
+       Lengthen the Update Interval.
+   * - 233
+     - 0xE9
+     - ILLEGAL_IP_OR_PORT
+     - Modbus TCP: the server IP or port in the configuration is not valid.
+   * - 234
+     - 0xEA
+     - IP_CONNECTION_FAILED
+     - Modbus TCP: could not open the connection.  The device retries once
+       automatically before reporting this.
+   * - 235
+     - 0xEB
+     - TCP_HEAD_MISMATCH
+     - Modbus TCP: the reply did not match the request it answers.
+   * - 236
+     - 0xEC
+     - EMPTY_MESSAGE
+     - A zero-length reply.
+   * - 241
+     - 0xF1
+     - ADDR_UNMAPPED
+     - **Nothing was ever sent.**  The configured address falls outside
+       every Modbus space — see :ref:`register_addressing`.  Fix the
+       address; the bus is not involved.
+
+
+Working through a silent device
+===============================
+
+When a device reads nothing at all, work down this list in order — each step
+rules out a whole class of cause:
+
+1. **Check the error code first.**  ``ADDR_UNMAPPED`` is a configuration
+   typo and no amount of wiring work will fix it.  ``TIMEOUT`` and
+   ``ILLEGAL_DATA_ADDRESS`` point in opposite directions: the first means
+   nothing answered, the second means the device answered and is telling
+   you the address is wrong.
+2. **Does the RX LED pulse at all?**  A pulse means at least one register on
+   some device is reading, which proves the bus, the serial settings and the
+   transceiver.  No pulse at all points at the bus itself.
+3. **Confirm the serial settings.**  Baud rate and parity must match every
+   device on the bus.  A device set to 8E1 against a gateway on 8N1 is
+   silent, exactly like a broken wire.
+4. **Confirm the Device ID.**  It is the ID configured *on the field
+   device*, not its position in the list.  ``SERVER_ID_MISMATCH`` means two
+   devices share one ID.
+5. **Check A/B polarity and termination.**  Reversed A/B is silent;
+   missing termination on a long run shows up as intermittent
+   ``CRC_ERROR``.  Terminate with 120 Ω at each end for runs over ~10 m.
+6. **Check the address convention.**  If values arrive but are wrong,
+   suspect an off-by-one before suspecting the device — a shifted read
+   returns the neighbouring register's perfectly plausible value.
+7. **Check the byte order.**  Absurd FLOAT32 values (``1e-38``,
+   ``4.7e24``) mean the word order is wrong: try CDAB.
+
+
+Interpreting a partly-working device
+====================================
+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Symptom
+     - Likely cause
+   * - Some registers good, others ``ILLEGAL_DATA_ADDRESS``
+     - Those addresses are not implemented on the device.  The gateway has
+       already retried them individually, so the verdict is per-register and
+       reliable.
+   * - All registers on one device time out, others fine
+     - That device alone: its ID, its power, or its drop cable.
+   * - Everything times out intermittently
+     - Bus contention, marginal termination, or a device too slow at the
+       configured interval.  Lengthen the Update Interval first.
+   * - A register sits at ``0`` and never moves
+     - Check ``CommQuality`` for that register before assuming the process
+       value really is zero — a failed read publishes ``0`` too, and the two
+       are indistinguishable without it.

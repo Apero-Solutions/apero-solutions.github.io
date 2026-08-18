@@ -8,6 +8,13 @@ ModBridge Pro supports two cloud publishing destinations: **MQTT** and
 **Google Sheets**.  Both are configured on the *IoT Publishing* tab of the
 web interface.
 
+.. note::
+
+   **Test Connection** on this tab validates the form — that a protocol is
+   selected and the required fields are filled in.  It does not open a
+   connection to the broker or the spreadsheet.  Real connectivity is proved
+   only after saving and rebooting, by data arriving at the destination.
+
 
 MQTT
 ====
@@ -25,74 +32,141 @@ Configuration parameters
 
    * - Setting
      - Description
-   * - Broker Address
+   * - Server Address
      - Hostname or IP of your MQTT broker (e.g., ``broker.hivemq.com``,
        or the IP of a local Mosquitto instance).
    * - Port
-     - ``1883`` for plain TCP, ``8883`` for TLS/SSL.
+     - ``1883`` for plain TCP.
    * - Username
      - Leave blank for anonymous connections.  Stored encrypted.
    * - Password
      - Leave blank for anonymous connections.  Stored encrypted (AES-128).
    * - Client ID
-     - Unique identifier for this device on the broker.  Defaults to
-       ``ModBridge_`` followed by the device MAC address (e.g.,
+     - Unique identifier for this device on the broker.  Leave blank and the
+       device uses ``ModBridge_`` followed by its Wi-Fi MAC address (e.g.,
        ``ModBridge_A4CF12ABCDEF``).  Two devices with the same Client ID
        will disconnect each other.
    * - Topic
      - MQTT publish topic, e.g., ``modbridge/data``.  Use hierarchy for
-       organisation: ``plant1/line2/gateway``.
+       organisation: ``plant1/line2/gateway``.  Every message goes to this
+       one topic.
    * - QoS
-     - ``0`` = fire-and-forget, ``1`` = at-least-once (recommended),
-       ``2`` = exactly-once (slowest).
+     - See `Quality of Service`_ below.
    * - TLS/SSL
-     - Toggle on to encrypt all traffic.  Required when using port 8883.
-   * - Enable Buffering
-     - Stores readings in PSRAM while offline; drains on reconnect.
-       Available for both MQTT and Google Sheets.
+     - See `TLS/SSL`_ below.
+   * - Enable Data Buffering
+     - Leave this **on**.  See `Store-and-forward buffering`_.
+
+If the broker is unreachable the device retries every 30 seconds, and
+readings accumulate in the buffer until it succeeds.
 
 Payload format
 --------------
 
-Data is published as a JSON object.  Register names defined in the
-*Modbus Devices* tab become the JSON keys.
+One MQTT message is published per poll cycle per device.  Each message is a
+JSON object: a cycle timestamp plus one entry per configured register.
 
-Example payload for two slave devices::
+.. code-block:: json
 
    {
-     "device_id": "ModBridgePro_A4CF12ABCDEF",
-     "timestamp":  "2025-06-25T09:30:00",
-     "slave_1": {
-       "voltage_L1":    230.4,
-       "current_L1":     12.8,
-       "active_power": 2941.0
-     },
-     "slave_2": {
-       "temperature": 24.5,
-       "humidity":    61
-     }
+     "timestamp": "2026-08-18T09:30:00",
+     "modbusPro": [
+       {
+         "slaveId": 1,
+         "rName": "voltage_L1",
+         "rAddr": 30001,
+         "dataType": "FLOAT32",
+         "val": "230.399994",
+         "byteSwap": "NO_SWAP",
+         "CommQuality": "GOOD"
+       },
+       {
+         "slaveId": 1,
+         "rName": "current_L1",
+         "rAddr": 30003,
+         "dataType": "FLOAT32",
+         "val": "0.000000",
+         "byteSwap": "NO_SWAP",
+         "CommQuality": "BAD",
+         "err": 224,
+         "errText": "TIMEOUT"
+       }
+     ]
    }
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Field
+     - Meaning
+   * - ``timestamp``
+     - Local time (IST) of the poll cycle, ``YYYY-MM-DDTHH:MM:SS``.  Shared
+       by every reading in the message, which is what lets a consumer treat
+       them as one row.
+   * - ``slaveId``
+     - Modbus device ID the reading came from.
+   * - ``rName`` / ``rAddr``
+     - Variable name and 5-digit address as configured.
+   * - ``dataType`` / ``byteSwap``
+     - The decoding applied, echoed back so a consumer can audit it.
+   * - ``val``
+     - The decoded value, **as a string**.  FLOAT32 carries 6 decimals.
+       A failed read publishes ``0`` (``0.000000`` for FLOAT32) — a real
+       zero and a dead device look identical here, which is why
+       ``CommQuality`` must be checked before using the value.
+   * - ``CommQuality``
+     - ``GOOD`` or ``BAD`` for this individual register.
+   * - ``err`` / ``errText``
+     - Present only when ``CommQuality`` is ``BAD``: the numeric Modbus
+       error and its name.  See :ref:`diagnostics` for the full list.
 
 .. tip::
 
-   Use short, lowercase register names with underscores (e.g.,
-   ``active_power``) to keep the JSON payload readable and compatible with
-   time-series databases like InfluxDB or Grafana.
+   ``val`` is a JSON string, not a number — quote-strip it in your consumer
+   (Node-RED, Telegraf, a Lambda) before writing to a time-series database.
+   Filter on ``CommQuality == "GOOD"`` in the same step, or a dropped device
+   will silently flat-line at its last value in your dashboards.
 
-TLS/SSL setup
--------------
+Quality of Service
+------------------
 
-1. Set **Port** to ``8883``.
-2. Toggle **TLS/SSL** on.
-3. Ensure the broker's certificate chain is signed by a public CA (e.g.,
-   Let's Encrypt).  Custom CA certificates are not currently uploadable
-   via the web UI.
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Setting
+     - Behaviour
+   * - QoS 0 — At most once
+     - Fire-and-forget.  This is how every message is actually sent.
+   * - QoS 1 / QoS 2
+     - Selecting either still publishes at QoS 0, and additionally sets the
+       broker's **retain** flag, so the last message stays on the topic for
+       new subscribers.
 
 .. warning::
 
-   If TLS is enabled but the broker certificate cannot be verified, the
-   connection will fail silently.  Use the **Test Connection** button
-   before saving to confirm the broker is reachable.
+   The underlying MQTT client publishes at QoS 0 only, so QoS 1 and 2 do not
+   give you broker-level acknowledgement in this firmware.  Delivery
+   guarantees come from the device-side buffer instead: a message that
+   cannot be handed to the broker stays in the buffer and is re-sent.  Set
+   QoS to 0 unless you specifically want retained messages.
+
+TLS/SSL
+-------
+
+.. warning::
+
+   **TLS is not usable in v5.0.0.**  No CA trust store is provisioned in the
+   firmware, so a TLS connection has nothing to validate the broker against
+   and the connection attempt fails before it reaches the network.  On an
+   Ethernet uplink the option is ignored outright — the ENC28J60 network
+   stack in use has no TLS support — and traffic would go out unencrypted.
+
+   Leave TLS/SSL **off** and port ``1883``.  Where the link must be
+   protected, terminate it below the application: a site VPN, or an MQTT
+   broker on the same isolated network segment as the gateway.  See
+   :ref:`security`.
 
 
 Google Sheets
@@ -140,17 +214,19 @@ credentials required by ModBridge Pro.
 
    * ``client_email`` — this is your **Service Account Email**
      (e.g., ``modbridge-sheets@your-project.iam.gserviceaccount.com``).
-   * ``private_key`` — this is your **Private Key**, a long block of text
-     starting with ``-----BEGIN PRIVATE KEY-----``.
+   * ``private_key`` — a long block of text starting with
+     ``-----BEGIN PRIVATE KEY-----``.
 
 **Step 5 — Create and share the Google Sheet**
 
 1. Go to `Google Sheets <https://sheets.google.com>`_ and create a new
    spreadsheet.
-2. Click **Share** (top-right corner).
-3. Paste the **Service Account Email** from Step 4 into the share field.
-4. Set the permission to **Editor** and click **Send**.
-5. Copy the **Spreadsheet ID** from the URL:
+2. Leave the first tab named **Sheet1** — the device writes to
+   ``Sheet1`` and does not create or look for any other tab.
+3. Click **Share** (top-right corner).
+4. Paste the **Service Account Email** from Step 4 into the share field.
+5. Set the permission to **Editor** and click **Send**.
+6. Copy the **Spreadsheet ID** from the URL:
 
    .. code-block:: text
 
@@ -166,15 +242,27 @@ fill in:
 
 * **Service Account Email** — the ``client_email`` value from the JSON file.
 * **Spreadsheet ID** — copied from the sheet URL in Step 5.
-* **Private Key** — the full ``private_key`` value from the JSON file,
-  including the ``-----BEGIN PRIVATE KEY-----`` and
-  ``-----END PRIVATE KEY-----`` lines.
+* **API Key** — despite the label, this field takes the ``private_key``
+  value from the JSON file, including the ``-----BEGIN PRIVATE KEY-----``
+  and ``-----END PRIVATE KEY-----`` lines.  Paste it exactly as it appears
+  in the JSON, ``\n`` escapes and all; the device converts them to real line
+  breaks when it authenticates.
 
 .. warning::
 
    The private key JSON file downloaded in Step 4 grants full access to your
    Google Sheets API.  Do not share it or commit it to version control.
    ModBridge Pro encrypts the key before storing it on the device.
+
+.. note::
+
+   The Google Cloud **project ID** is not entered anywhere — the device
+   derives it from the service account email, taking the part between
+   ``@`` and the first ``.``.  This works for the standard
+   ``name@project-id.iam.gserviceaccount.com`` form.  A legacy
+   ``@developer.gserviceaccount.com`` address does not carry a project ID
+   and will not authenticate; generate a new key on a modern service
+   account instead.
 
 Google Sheets parameters
 -------------------------
@@ -186,47 +274,125 @@ Google Sheets parameters
    * - Setting
      - Description
    * - Service Account Email
-     - The ``@developer.gserviceaccount.com`` email from your Google Cloud
-       service account.  This account must have **Editor** access on the
-       target spreadsheet.
+     - The ``...@<project-id>.iam.gserviceaccount.com`` address from your
+       Google Cloud service account.  This account must have **Editor**
+       access on the target spreadsheet.
    * - Spreadsheet ID
      - The alphanumeric ID in the Google Sheets URL:
-       ``https://docs.google.com/spreadsheets/d/**<ID>**/edit``
-   * - Private Key
-     - The full private key from the service account JSON file, including
-       the ``-----BEGIN PRIVATE KEY-----`` and ``-----END PRIVATE KEY-----``
-       lines.  Stored encrypted on the device.
+       ``https://docs.google.com/spreadsheets/d/<ID>/edit``
+   * - API Key
+     - The service account **private key** (see Step 6).  Stored encrypted
+       on the device.
    * - Output Format
      - **Tabular** — one column per register (best for charts and pivot
        tables). |br|
-       **JSON** — each row contains the full JSON payload.
+       **JSON** — each row is a single cell containing the whole JSON
+       payload for that poll cycle.
 
 .. |br| raw:: html
 
    <br/>
 
+Tabular output
+--------------
+
+In tabular mode each poll cycle becomes one row:
+
+.. code-block:: text
+
+   Timestamp             | voltage_L1  | current_L1 | temperature
+   2026-08-18T09:30:00   | 230.399994  | 12.800000  | 24.500000
+   2026-08-18T09:31:00   | 230.100006  | Error: TIMEOUT | 24.500000
+
+Columns follow the configured order — every register of device 1, then every
+register of device 2, and so on.  A register that failed to read shows
+``Error: <CODE>`` in its cell instead of a value, so a gap in the data is
+visible in the sheet itself rather than having to be inferred.
+
+The header row is managed for you.  On the first upload after each boot the
+device compares row 1 against the current register configuration and, if it
+differs, rewrites it — so renaming a register or adding one is reflected in
+the sheet automatically.
+
 .. warning::
 
-   The sheet grows continuously.  Older rows are cleaned up automatically
-   when the sheet reaches a large size, but periodically archiving data to
-   a separate sheet is recommended for long-running deployments.
+   Because the header is rewritten but historical rows are not, adding or
+   removing registers mid-life leaves older rows misaligned with the new
+   column headings.  Start a fresh spreadsheet when the register list
+   changes, and keep the old one as an archive.
+
+Automatic row trimming
+----------------------
+
+The device keeps the sheet inside a workable size on its own.  A Google
+spreadsheet has a hard ceiling of 10 million cells, and a sheet becomes
+unpleasant to open long before that, so the trim point is derived from how
+wide your rows are:
+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Rule
+     - Value
+   * - Cell budget
+     - 1,500,000 cells — the row limit is this divided by the column count
+   * - Maximum rows
+     - 250,000, whatever the budget allows
+   * - Minimum rows
+     - 5,000, for very wide configurations
+   * - Trim size
+     - 20% of the limit, deleted oldest-first, header row preserved
+
+For example, 20 registers in tabular mode gives 21 columns, so the limit is
+71,428 rows; at a 1-minute interval the sheet holds about 7 weeks before the
+oldest fifth is dropped.  In JSON mode a row is one cell wide, so the 250,000
+row cap applies.
+
+.. note::
+
+   Trimming is a housekeeping measure, not an archive strategy.  If the data
+   has long-term value, copy it out — a scheduled Apps Script export, or a
+   second sheet fed by ``IMPORTRANGE`` — before it ages out.
 
 
 Publish Interval
 ================
 
-Both MQTT and Google Sheets use the same global **Update Interval** field
-(1–900 seconds).  This governs how often a new data record is pushed to the
-cloud.  The Modbus polling loop on Core 0 runs at the same cadence.
+Both MQTT and Google Sheets use the same **Update Interval** dropdown:
+1 second, 5 seconds, 10 seconds, 30 seconds, 1 minute, 5 minutes or
+15 minutes.  It sets one cadence for the device — each interval triggers one
+Modbus poll cycle and one publish of everything collected.
+
+The first publish happens one full interval after boot, so a 15-minute
+interval means no data for the first 15 minutes.  Use 30 seconds or faster
+while commissioning, then lengthen it.
 
 
-Offline Buffering
-=================
+.. _store_and_forward:
 
-When buffering is enabled and the internet is unavailable, new Modbus
-readings are stored internally (8 MB).  When connectivity is restored the
-buffer is drained oldest-first.  The table below shows how long data can be
-buffered for a single device at a 1-minute publish interval:
+Store-and-forward buffering
+===========================
+
+Every reading is written to a buffer in PSRAM first, and published *from*
+the buffer.  There is no separate live path — this is how data reaches the
+cloud whether the link is up or down:
+
+* **Online** — each cycle is buffered and drained immediately after.
+* **Offline** — cycles accumulate.  When connectivity returns the whole
+  backlog drains oldest-first: as individual MQTT messages, or as one
+  batched append for Google Sheets.
+
+.. danger::
+
+   **Leave "Enable Data Buffering" ticked.**  Because the buffer is the only
+   publish path, unticking it stops the device from sending anything at all
+   — it does not switch to direct publishing.
+
+The buffer holds **94,208 readings** — individual register values, shared
+across all configured devices.  Divide by the total number of registers you
+poll to get the number of cycles it can hold.  At a 1-minute interval that
+works out as:
 
 .. list-table::
    :widths: 40 60
@@ -245,17 +411,20 @@ buffered for a single device at a 1-minute publish interval:
    * - 50 registers
      - ~1 day
 
-When the buffer is full, the oldest entry is overwritten automatically.
+When the buffer is full the oldest reading is overwritten, so an outage
+longer than the figures above loses the start of the outage, not the end.
 
-.. note::
+.. warning::
 
-   Buffering works for both MQTT and Google Sheets.  For Google Sheets,
-   all buffered readings are sent as a single batch when the connection is
-   restored.
+   The buffer lives in RAM.  A power cut or a reboot empties it — including
+   anything queued during an outage.  Where the site's power is as
+   unreliable as its network, shorten the publish interval so less is in
+   flight at any moment.
 
 Best practice for reliable data delivery:
 
-* Use **QoS 1** (at-least-once delivery).
-* Enable **buffering**.
-* Set the update interval to a value that produces a buffer fill time
-  greater than your typical outage duration.
+* Keep **buffering** enabled.
+* Set an update interval whose buffer fill time comfortably exceeds your
+  typical outage duration.
+* For Google Sheets, remember a long backlog drains as one large append —
+  give the device a few minutes after reconnection before judging it.

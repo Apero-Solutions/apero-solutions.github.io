@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/quickstart.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
@@ -217,12 +244,14 @@ publishing).</p></li>
 <section id="step-1-power-on-the-modbridge-pro-b15">
 <h3>Step 1 — Power on the ModBridge Pro B15<a class="headerlink" href="#step-1-power-on-the-modbridge-pro-b15" title="Link to this heading"></a></h3>
 <p>Connect the 24 V DC supply to the ModBridge Pro B15.  The Config Mode LED blinks slowly
-during startup — this is normal.</p>
+for the first 10 seconds — this is the button window described in
+<a class="reference internal" href="leds_buttons.html#leds-buttons"><span class="std std-ref">LEDs, Buttons and Outputs</span></a>, and it is normal.</p>
 </section>
 <section id="step-2-connect-to-the-configuration-access-point">
 <h3>Step 2 — Connect to the configuration access point<a class="headerlink" href="#step-2-connect-to-the-configuration-access-point" title="Link to this heading"></a></h3>
-<p>On your phone or laptop, open the Wi-Fi settings and look for a network
-named:</p>
+<p>A factory-fresh device — or one whose <strong>Internet Reset</strong> button was held at
+boot — starts its own access point.  On your phone or laptop, open the Wi-Fi
+settings and look for a network named:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ModBridgePro_XXXXXX</span>
 </pre></div>
 </div>
@@ -232,12 +261,17 @@ always have different network names. Connect to it — <strong>no password is
 required</strong>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The unique 6-character suffix is printed
-on the device label.</p>
+<p>The unique 6-character suffix is printed on the device label, next to the
+documentation QR code.  It is derived from the last three octets of the
+MAC address in reverse order, so it will not match a MAC printed
+elsewhere on the unit character-for-character — always use the SSID as
+printed on the label.</p>
 </div>
 </section>
 <section id="step-3-open-the-configuration-page">
 <h3>Step 3 — Open the configuration page<a class="headerlink" href="#step-3-open-the-configuration-page" title="Link to this heading"></a></h3>
+<p>In configuration mode both interfaces are live, so you can reach the page
+over Wi-Fi or over a directly connected Ethernet cable.</p>
 <p>If connected through WiFi then navigate to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.4.1</span>
 </pre></div>
@@ -293,19 +327,26 @@ your devices.</p></li>
 <li><p>For TCP, enter the Modbus server IP, port (default 502), and the static
 Ethernet IP to assign to the device.</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Modbus TCP claims the Ethernet port for the field network, so the
+internet connection must be Wi-Fi in that case.  The device refuses to
+start otherwise.</p>
+</div>
 </section>
 <section id="step-6-add-modbus-slave-devices-and-registers">
 <h3>Step 6 — Add Modbus slave devices and registers<a class="headerlink" href="#step-6-add-modbus-slave-devices-and-registers" title="Link to this heading"></a></h3>
 <p>On the <em>Modbus Devices</em> tab:</p>
 <ol class="arabic simple">
 <li><p>Click <strong>Add Device</strong>.</p></li>
-<li><p>Enter the <strong>Slave ID</strong> (1–247) as configured on the Modbus device.</p></li>
-<li><p>Add registers: for each register provide a name, address, data type, and
-byte-swap setting.</p></li>
-<li><p>Repeat for up to 5 devices.</p></li>
+<li><p>Enter the <strong>Device ID</strong> (1–247) as configured on the Modbus device.</p></li>
+<li><p>Add registers: for each register provide a variable name, data type,
+address, and byte order.</p></li>
+<li><p>Repeat for up to 5 devices, 50 registers each.</p></li>
 </ol>
 <p>See <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration Reference</span></a> for a full explanation of register addressing and
-data types.</p>
+data types.  Getting the address convention right is the single most common
+source of a device that reads nothing.</p>
 </section>
 <section id="step-7-set-up-cloud-publishing">
 <h3>Step 7 — Set up cloud publishing<a class="headerlink" href="#step-7-set-up-cloud-publishing" title="Link to this heading"></a></h3>
@@ -313,20 +354,31 @@ data types.</p>
 <ol class="arabic simple">
 <li><p>Select <strong>MQTT</strong> or <strong>Google Sheets</strong> (or <strong>Disabled</strong> to skip).</p></li>
 <li><p>Fill in the broker / spreadsheet credentials.</p></li>
-<li><p>Set the <strong>Update Interval</strong> (1–900 seconds).</p></li>
-<li><p>Click <strong>Test Connection</strong> to verify before saving.</p></li>
+<li><p>Choose the <strong>Update Interval</strong> — this sets both the Modbus poll cadence
+and the publish cadence.</p></li>
+<li><p>Leave <strong>Enable Data Buffering</strong> ticked.  It is the path all data takes to
+the cloud, not an optional extra.</p></li>
 </ol>
 <p>See <a class="reference internal" href="iot.html#iot"><span class="std std-ref">IoT Publishing Guide</span></a> for full MQTT and Google Sheets configuration details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Test Connection</strong> checks that the fields on this tab are filled in
+sensibly.  It does not contact the broker or the spreadsheet — the first
+real connection attempt happens after the reboot in Step 8.</p>
+</div>
 </section>
 <section id="step-8-save-and-reboot">
 <h3>Step 8 — Save and reboot<a class="headerlink" href="#step-8-save-and-reboot" title="Link to this heading"></a></h3>
 <p>Click <strong>Save Configuration</strong> at the bottom of the page.  The device saves
-all settings and reboots automatically.</p>
+all settings and reboots automatically after about 3 seconds.</p>
 <p>After reboot:</p>
 <ul class="simple">
-<li><p>The <strong>Internet LED</strong> lights solid green when the internet is reachable.</p></li>
+<li><p>The <strong>Internet LED</strong> lights solid when the internet is reachable, and the
+no-internet output stays at 0 V.</p></li>
 <li><p>The <strong>Modbus RX Activity LED</strong> pulses briefly with each successful Modbus
 poll.</p></li>
+<li><p>The first publish happens one full Update Interval after boot, not
+immediately.</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -340,7 +392,7 @@ configuration page if you leave the defaults in place.</p>
 <h2>What Next?<a class="headerlink" href="#what-next" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Customise register names and verify the JSON payload: <a class="reference internal" href="iot.html#iot"><span class="std std-ref">IoT Publishing Guide</span></a></p></li>
-<li><p>Enable TLS/SSL for MQTT: <a class="reference internal" href="iot.html#iot"><span class="std std-ref">IoT Publishing Guide</span></a></p></li>
+<li><p>Work out why a register is not reading: <a class="reference internal" href="diagnostics.html#diagnostics"><span class="std std-ref">Diagnostics and Error Codes</span></a></p></li>
 <li><p>Understand LED blink patterns: <a class="reference internal" href="leds_buttons.html#leds-buttons"><span class="std std-ref">LEDs, Buttons and Outputs</span></a></p></li>
 <li><p>Perform a firmware update: <a class="reference internal" href="ota.html#ota"><span class="std std-ref">Over-the-Air Firmware Update</span></a></p></li>
 <li><p>Security hardening checklist: <a class="reference internal" href="security.html#security"><span class="std std-ref">Security</span></a></p></li>

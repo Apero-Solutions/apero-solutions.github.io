@@ -15,7 +15,7 @@
     
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>

@@ -50,7 +50,7 @@ Specifications
    * - Operating Temperature
      - 0 °C to 70 °C
    * - Firmware Version
-     - v2.2.1
+     - v5.0.0
 
 
 Connectors and Peripherals
@@ -104,9 +104,37 @@ Connect a **24 V DC** supply to the power terminals to power the ModBridge Pro B
 Status LEDs
 -----------
 
-Four indicator LEDs are described in detail in :ref:`leds_buttons`.
+Three indicator LEDs — Config Mode, Internet and Modbus RX Activity — plus a
+24 V no-internet alert output, are described in detail in
+:ref:`leds_buttons`.
 
 Control Buttons
 ---------------
 
-Two push-buttons are described in detail in :ref:`leds_buttons`.
+Two push-buttons are described in detail in :ref:`leds_buttons`.  Both are
+read only during the first 10 seconds after power-on.
+
+
+Device Label
+============
+
+Each unit carries a printed label with the information needed to commission
+it without opening the enclosure or powering it up first:
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Field
+     - Meaning
+   * - MODEL
+     - Hardware variant, e.g. ``B15``.
+   * - ``ModBridgePro_XXXXXX``
+     - The exact SSID of this unit's configuration access point.  Type it as
+       printed — the suffix is derived from the MAC address in a way that
+       will not match a MAC printed elsewhere character-for-character.
+   * - QR code
+     - Opens this documentation.
+
+Keep the label legible.  It is the only place the AP name is written down,
+and a unit whose SSID is unknown has to be found by scanning for it.

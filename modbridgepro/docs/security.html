@@ -15,13 +15,13 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/security.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Over-the-Air Firmware Update" href="ota.html" />
+    <link rel="next" title="Diagnostics and Error Codes" href="diagnostics.html" />
     <link rel="prev" title="LEDs, Buttons and Outputs" href="leds_buttons.html" /> 
 </head>
 
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
@@ -197,9 +224,9 @@
              
   <section id="security">
 <span id="id1"></span><h1>Security<a class="headerlink" href="#security" title="Link to this heading"></a></h1>
-<p>ModBridge Pro B15 is designed with industrial deployment in mind.  Multiple
-layers of security protect your configuration, credentials, and data in
-transit.</p>
+<p>ModBridge Pro B15 is designed with industrial deployment in mind.  This page
+describes what the device protects on its own, and — just as importantly —
+what it expects the surrounding network to protect for it.</p>
 <section id="web-interface-authentication">
 <h2>Web Interface Authentication<a class="headerlink" href="#web-interface-authentication" title="Link to this heading"></a></h2>
 <p>Access to the configuration interface is protected by a username and password.
@@ -218,45 +245,113 @@ the top-right corner of the configuration page.</p>
 credentials (MQTT passwords, Google Sheets keys) — you do <strong>not</strong> need
 to re-enter them after a password change.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The configuration page is served over plain <strong>HTTP</strong> with HTTP Basic
+authentication, so the login and everything you type into the form —
+Wi-Fi password, MQTT password, Google private key — cross the local
+network unencrypted.  Configure the device over its own access point, or
+on a trusted network segment.  Do not expose it to the internet or
+port-forward to it.</p>
+</div>
 </section>
 <section id="credential-storage">
 <h2>Credential Storage<a class="headerlink" href="#credential-storage" title="Link to this heading"></a></h2>
-<p>IoT secrets (MQTT password, Google Sheets private key) are <strong>never stored
-in plain text</strong> on the device.  All credentials are encrypted before being
-saved and can only be decrypted by the device itself.</p>
+<p>IoT secrets are <strong>never stored in plain text</strong> on the device.  The Wi-Fi
+password, the MQTT password and the Google Sheets private key are each
+encrypted before <code class="docutils literal notranslate"><span class="pre">config.json</span></code> is written to flash.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Cipher</strong></p></td>
+<td><p>AES-128-CTR, with a fresh random nonce per value</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Key derivation</strong></p></td>
+<td><p>PBKDF2-SHA256, 2048 iterations</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Key input</strong></p></td>
+<td><p>The device’s own MAC address <strong>and</strong> your web UI password</p></td>
+</tr>
+</tbody>
+</table>
+<p>Binding the key to both means a flash dump on its own is not enough to
+recover the secrets — an attacker also needs the password you set.  It also
+means the secrets are re-encrypted under the new key whenever you change
+that password, which is why they survive a password change without
+re-entry.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Configuration files written by much older firmware, which stored these
+values in plain text, are still read correctly and are re-encrypted the
+next time you save.</p>
+</div>
 </section>
-<section id="network-security-recommendations">
-<h2>Network Security Recommendations<a class="headerlink" href="#network-security-recommendations" title="Link to this heading"></a></h2>
+<section id="transport-security">
+<h2>Transport Security<a class="headerlink" href="#transport-security" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Data leaves the device unencrypted in v5.0.0.</strong>  MQTT publishes over
+plain TCP on port 1883; the TLS/SSL option in the <em>IoT Publishing</em> tab
+cannot complete a connection because no CA trust store is provisioned,
+and it is ignored entirely on an Ethernet uplink.  Google Sheets is the
+exception — those uploads use the Google API client’s own HTTPS.</p>
+</div>
+<p>Plan the network around that:</p>
 <ol class="arabic simple">
 <li><p><strong>Isolate on a dedicated network.</strong>
 Place ModBridge Pro on a separate IoT or OT network, isolated from office
 and user devices.</p></li>
-<li><p><strong>Enable TLS for MQTT.</strong>
-Toggle the TLS/SSL option in the <em>IoT Publishing</em> tab to encrypt all data
-in transit between the device and your broker.</p></li>
+<li><p><strong>Keep the broker close.</strong>
+Run the MQTT broker on the same isolated segment, so plaintext MQTT never
+crosses an untrusted network.</p></li>
+<li><p><strong>Where the data must leave the site, encrypt below the application.</strong>
+A site-to-site VPN or an on-site broker that forwards over TLS puts the
+protection somewhere the gateway does not have to provide it.</p></li>
 <li><p><strong>Use a dedicated MQTT account.</strong>
-Create a dedicated MQTT user with publish-only permissions for this device.
-Do not use broker admin credentials.</p></li>
+Create a dedicated MQTT user with publish-only permissions for this
+device.  Do not use broker admin credentials — they would cross the
+network in the clear.</p></li>
+<li><p><strong>Scope the Google service account narrowly.</strong>
+Share only the target spreadsheet with the service account.  Do not reuse
+a key that has access to other Google resources, and rotate it if a unit
+is decommissioned or lost.</p></li>
 <li><p><strong>Keep firmware updated.</strong>
 Apply firmware updates promptly — see <a class="reference internal" href="ota.html#ota"><span class="std std-ref">Over-the-Air Firmware Update</span></a>.</p></li>
+</ol>
+</section>
+<section id="physical-security">
+<h2>Physical Security<a class="headerlink" href="#physical-security" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
 <li><p><strong>Factory Reset is protected by design.</strong>
-The Factory Reset button (IO0) is located inside the ModBridge Pro B15 enclosure and is
-not accessible from the outside, preventing accidental or unauthorised
-resets in the field.</p></li>
+The Factory Reset button (IO0) is located inside the ModBridge Pro B15
+enclosure and is not accessible from the outside, preventing accidental
+or unauthorised resets in the field.</p></li>
 <li><p><strong>The configuration access point closes automatically.</strong>
-The Wi-Fi access point is only active during configuration.  It closes
-as soon as the device reboots after saving settings and does <strong>not</strong> reopen
-unless the Internet Reset button is pressed.</p></li>
+The Wi-Fi access point is only active during configuration.  It closes as
+soon as the device reboots after saving settings and does <strong>not</strong> reopen
+unless the Internet Reset button is held during the boot window.</p></li>
+<li><p><strong>The boot window is a physical-access path.</strong>
+Anyone who can hold a button during the first 10 seconds after power-on
+can re-open the configuration access point — which is open and needs no
+Wi-Fi password, though the configuration page itself still requires the
+login.  Where that matters, treat enclosure access as the control:
+locked panel, locked cabinet.</p></li>
 </ol>
 </section>
 <section id="time-synchronisation">
 <h2>Time Synchronisation<a class="headerlink" href="#time-synchronisation" title="Link to this heading"></a></h2>
-<p>ModBridge Pro synchronises its clock automatically every hour.  All published
-data timestamps use <strong>IST (UTC +5:30)</strong>.  Accurate timestamps are important
-for correlating IoT data with events in process historians or ERP systems.</p>
-<p>If the internet is unavailable, the device continues to publish data but
-timestamps may drift.  The green status LED going off is a quick indicator
-that time sync may also be affected.</p>
+<p>ModBridge Pro synchronises its clock from <code class="docutils literal notranslate"><span class="pre">pool.ntp.org</span></code> at boot and every
+hour thereafter.  All published data timestamps use <strong>IST (UTC +5:30)</strong>.
+Accurate timestamps are important for correlating IoT data with events in
+process historians or ERP systems.</p>
+<p>If time has never been obtained — no internet since power-on — readings are
+stamped <code class="docutils literal notranslate"><span class="pre">1970-01-01T00:00:00</span></code>.  That marker in your data means the device
+was polling before it had a clock, not that the readings themselves are
+wrong.  Buffered readings keep the timestamp from when they were taken, so a
+backlog arrives correctly dated once it drains.</p>
 </section>
 </section>
 
@@ -265,7 +360,7 @@ that time sync may also be affected.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="leds_buttons.html" class="btn btn-neutral float-left" title="LEDs, Buttons and Outputs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="ota.html" class="btn btn-neutral float-right" title="Over-the-Air Firmware Update" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="diagnostics.html" class="btn btn-neutral float-right" title="Diagnostics and Error Codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

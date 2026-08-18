@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/configuration.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
@@ -198,9 +225,10 @@
   <section id="configuration-reference">
 <span id="configuration"></span><h1>Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this heading"></a></h1>
 <p>All settings are configured through the browser-based web interface.  Open
-<code class="docutils literal notranslate"><span class="pre">http://192.168.4.1</span></code> when in configuration (AP) mode, or the device’s
-assigned IP address once it is connected to your network.</p>
-<p>The interface is divided into five tabs, described below.</p>
+<code class="docutils literal notranslate"><span class="pre">http://192.168.4.1</span></code> (Wi-Fi) or <code class="docutils literal notranslate"><span class="pre">http://192.168.5.1</span></code> (Ethernet) when in
+configuration (AP) mode, or the device’s assigned IP address once it is
+connected to your network.</p>
+<p>The interface is divided into six tabs, described below.</p>
 <section id="internet-connection-tab">
 <h2>Internet Connection Tab<a class="headerlink" href="#internet-connection-tab" title="Link to this heading"></a></h2>
 <p>Defines how ModBridge Pro reaches the internet to publish data.</p>
@@ -241,8 +269,11 @@ SSID is highlighted.</p></td>
 <p>When <strong>Modbus TCP</strong> is selected in Protocol Settings, the Ethernet port
 is dedicated to Modbus communication and <strong>cannot</strong> simultaneously serve
 as the internet uplink.  Use Wi-Fi as the internet connection in that
-scenario.</p>
+scenario — the device aborts startup if Ethernet is selected for both.</p>
 </div>
+<p>If the link drops while running, the device retries every 30 seconds: Wi-Fi
+by re-issuing a connect, Ethernet by waiting for the link and an IP to come
+back.  Modbus polling and buffering continue throughout.</p>
 </section>
 <section id="protocol-settings-tab">
 <h2>Protocol Settings Tab<a class="headerlink" href="#protocol-settings-tab" title="Link to this heading"></a></h2>
@@ -267,7 +298,7 @@ scenario.</p>
 <td><p>Must match every slave on the bus.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Data Bits</p></td>
-<td><p>7 / 8</p></td>
+<td><p>8 / 7</p></td>
 <td><p>Virtually always 8.</p></td>
 </tr>
 <tr class="row-even"><td><p>Parity</p></td>
@@ -280,6 +311,12 @@ scenario.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Parity is the most commonly mismatched setting on a new bus.  A device
+set to 8E1 while the gateway is set to 8N1 answers nothing at all, which
+looks identical to bad wiring — see <a class="reference internal" href="diagnostics.html#diagnostics"><span class="std std-ref">Diagnostics and Error Codes</span></a>.</p>
+</div>
 </section>
 <section id="modbus-tcp-ethernet">
 <h3>Modbus TCP (Ethernet)<a class="headerlink" href="#modbus-tcp-ethernet" title="Link to this heading"></a></h3>
@@ -329,13 +366,10 @@ mode.  Must be on the same subnet as the server.</p></td>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Slave ID</p></td>
+<tr class="row-even"><td><p>Device ID</p></td>
 <td><p>1–247</p></td>
-<td><p>The Modbus device address configured on the slave.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Device Name</p></td>
-<td><p>Text</p></td>
-<td><p>A human-readable label, used in log output and the summary tab.</p></td>
+<td><p>The Modbus slave address configured on the field device.  It is also
+what identifies the device in the published payload (<code class="docutils literal notranslate"><span class="pre">slaveId</span></code>).</p></td>
 </tr>
 </tbody>
 </table>
@@ -355,21 +389,22 @@ mode.  Must be on the same subnet as the server.</p></td>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Register Name</p></td>
-<td><p>Text</p></td>
-<td><p>Becomes the JSON key in the published data payload.  Use short,
-meaningful names (e.g., <code class="docutils literal notranslate"><span class="pre">voltage_L1</span></code>, <code class="docutils literal notranslate"><span class="pre">active_power</span></code>).</p></td>
+<tr class="row-even"><td><p>Variable Name</p></td>
+<td><p>Text, up to 31 characters</p></td>
+<td><p>Becomes the <code class="docutils literal notranslate"><span class="pre">rName</span></code> field in the MQTT payload and the column
+heading in a tabular Google Sheet.  Use short, meaningful names
+(e.g., <code class="docutils literal notranslate"><span class="pre">voltage_L1</span></code>, <code class="docutils literal notranslate"><span class="pre">active_power</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p>Register Address</p></td>
-<td><p>1–49999</p></td>
-<td><p>Modbus-style 5-digit address (see table below).</p></td>
-</tr>
-<tr class="row-even"><td><p>Data Type</p></td>
+<tr class="row-odd"><td><p>Data Type</p></td>
 <td><p>Boolean, INT16, UINT16, INT32, UINT32, FLOAT32</p></td>
 <td><p>See <a class="reference internal" href="#data-types"><span class="std std-ref">Data Types</span></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Byte Swap</p></td>
-<td><p>None / Word Swap / Byte Swap / Word+Byte Swap</p></td>
+<tr class="row-even"><td><p>Register Address</p></td>
+<td><p>5-digit Modbus reference</p></td>
+<td><p>See <a class="reference internal" href="#register-address-ranges">Register address ranges</a> below.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Byte Order</p></td>
+<td><p>ABCD / CDAB / BADC / DCBA</p></td>
 <td><p>Adjust for endianness differences.  Consult the device’s Modbus
 register map.</p></td>
 </tr>
@@ -377,8 +412,10 @@ register map.</p></td>
 </table>
 </section>
 <section id="register-address-ranges">
-<h3>Register address ranges<a class="headerlink" href="#register-address-ranges" title="Link to this heading"></a></h3>
-<p>Most Modbus device manuals use a 5-digit address notation:</p>
+<span id="register-addressing"></span><h3>Register address ranges<a class="headerlink" href="#register-address-ranges" title="Link to this heading"></a></h3>
+<p>Addresses are entered in the <strong>5-digit Modbus reference notation</strong> used by
+most device manuals.  The leading digit selects the register space and the
+rest is a <strong>1-based</strong> position within it:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -393,23 +430,37 @@ register map.</p></td>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>00001–09999</p></td>
-<td><p>Coils (read/write)</p></td>
+<td><p>Coils (function 01)</p></td>
 <td><p>Digital outputs, relay states</p></td>
 </tr>
 <tr class="row-odd"><td><p>10001–19999</p></td>
-<td><p>Discrete Inputs (read-only)</p></td>
+<td><p>Discrete Inputs (function 02)</p></td>
 <td><p>Digital inputs, alarm flags</p></td>
 </tr>
 <tr class="row-even"><td><p>30001–39999</p></td>
-<td><p>Input Registers (read-only)</p></td>
+<td><p>Input Registers (function 04)</p></td>
 <td><p>Measured values (voltage, current, temperature)</p></td>
 </tr>
 <tr class="row-odd"><td><p>40001–49999</p></td>
-<td><p>Holding Registers (read/write)</p></td>
+<td><p>Holding Registers (function 03)</p></td>
 <td><p>Setpoints, configuration parameters</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Manuals that print a 0-based offset need +1.</strong>  A meter whose manual
+lists “voltage at 0, current at 2” against a 3xxxx input-register map is
+describing offsets, so those are entered here as <code class="docutils literal notranslate"><span class="pre">30001</span></code> and <code class="docutils literal notranslate"><span class="pre">30003</span></code>.
+A manual that already prints <code class="docutils literal notranslate"><span class="pre">30001</span></code> is using the same convention as
+this field and needs no adjustment.  An off-by-one usually reads a
+plausible but wrong value rather than failing outright, so check it
+before trusting the numbers.</p>
+<p>Addresses in <code class="docutils literal notranslate"><span class="pre">20001–29999</span></code>, above <code class="docutils literal notranslate"><span class="pre">49999</span></code>, or exactly on a boundary
+(<code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">10000</span></code>, <code class="docutils literal notranslate"><span class="pre">30000</span></code>, <code class="docutils literal notranslate"><span class="pre">40000</span></code>) belong to no space.  The web
+form accepts them, but they are never put on the wire and every reading
+is reported as <code class="docutils literal notranslate"><span class="pre">ADDR_UNMAPPED</span></code>.</p>
+</div>
 </section>
 <section id="data-types">
 <span id="id1"></span><h3>Data Types<a class="headerlink" href="#data-types" title="Link to this heading"></a></h3>
@@ -429,7 +480,7 @@ register map.</p></td>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>BOOL</p></td>
-<td><p>1</p></td>
+<td><p>1 bit</p></td>
 <td><p>0 or 1</p></td>
 <td><p>On/Off states, relay outputs, alarm flags</p></td>
 </tr>
@@ -460,11 +511,16 @@ register map.</p></td>
 </tr>
 </tbody>
 </table>
+<p>A 32-bit type consumes the addressed register <strong>and the one after it</strong>, so
+plan the address list accordingly.  In a coil or discrete-input space every
+type reads as a single bit regardless of what is selected.  FLOAT32 values
+are published with 6 decimal places.</p>
 </section>
 <section id="byte-swap-modes">
 <h3>Byte Swap Modes<a class="headerlink" href="#byte-swap-modes" title="Link to this heading"></a></h3>
 <p>Some devices store 32-bit values with a non-standard byte/word order.
-The four swap modes cover all common conventions:</p>
+The four modes cover all common conventions — the letters describe where
+the source bytes A, B, C, D end up:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
@@ -476,27 +532,70 @@ The four swap modes cover all common conventions:</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>No swap</p></td>
+<tr class="row-even"><td><p>No Swap (ABCD)</p></td>
 <td><p>Big-endian devices (most common; try this first).</p></td>
 </tr>
-<tr class="row-odd"><td><p>Word Swap</p></td>
+<tr class="row-odd"><td><p>Word Swap (CDAB)</p></td>
 <td><p>Little-endian 32-bit values stored as two swapped 16-bit words.</p></td>
 </tr>
-<tr class="row-even"><td><p>Byte Swap</p></td>
+<tr class="row-even"><td><p>Byte Swap (BADC)</p></td>
 <td><p>Bytes within each word are reversed.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Word + Byte Swap</p></td>
+<tr class="row-odd"><td><p>Word+Byte (DCBA)</p></td>
 <td><p>Both word and byte order reversed (fully little-endian).</p></td>
 </tr>
 </tbody>
 </table>
+<p>A wrong byte order on a FLOAT32 typically shows up as a wildly implausible
+number (<code class="docutils literal notranslate"><span class="pre">1e-38</span></code>, <code class="docutils literal notranslate"><span class="pre">4.7e24</span></code>) rather than a small error.</p>
 </section>
+<section id="how-registers-are-read">
+<h3>How registers are read<a class="headerlink" href="#how-registers-are-read" title="Link to this heading"></a></h3>
+<p>Registers are not fetched one at a time.  Before each poll the gateway maps
+every configured register onto its wire address, sorts them, and merges
+neighbours into as few requests as possible:</p>
+<ul class="simple">
+<li><p>Up to <strong>100 registers</strong> (or <strong>800 bits</strong>) per request.</p></li>
+<li><p>Gaps of up to <strong>8 registers</strong> (or <strong>16 bits</strong>) between wanted addresses
+are read across rather than split into a second request — one extra round
+trip costs far more than a few discarded values.</p></li>
+<li><p>Each register space is requested separately, since each uses its own
+function code.</p></li>
+</ul>
+<p>The practical consequence is that a tidy, contiguous address list polls
+dramatically faster than the same number of registers scattered across the
+map.  If one block fails, only the registers in that block are marked bad;
+the rest of the cycle still publishes.</p>
+<p>When a device <em>answers</em> but rejects a block — an exception such as
+<code class="docutils literal notranslate"><span class="pre">ILLEGAL_DATA_ADDRESS</span></code>, typically because the merged range crossed into
+registers the device does not implement — the gateway automatically re-reads
+that block’s registers one at a time, so the valid ones still come back.
+Transport failures (a timeout, a CRC error) are not retried that way: the
+device is not talking at all, and N more timeouts would stall the whole poll
+cycle.</p>
+</section>
+</section>
+<section id="iot-publishing-tab">
+<h2>IoT Publishing Tab<a class="headerlink" href="#iot-publishing-tab" title="Link to this heading"></a></h2>
+<p>Selects the cloud destination and how often data is sent.  Covered in full
+in <a class="reference internal" href="iot.html#iot"><span class="std std-ref">IoT Publishing Guide</span></a>.</p>
+<p>The <strong>Update Interval</strong> dropdown (1 s, 5 s, 10 s, 30 s, 1 min, 5 min,
+15 min) sets one cadence for the whole device: each interval triggers one
+Modbus poll cycle and one publish.</p>
+</section>
+<section id="firmware-update-tab">
+<h2>Firmware Update Tab<a class="headerlink" href="#firmware-update-tab" title="Link to this heading"></a></h2>
+<p>Shows the running firmware version and accepts an update bundle.  See
+<a class="reference internal" href="ota.html#ota"><span class="std std-ref">Over-the-Air Firmware Update</span></a>.</p>
 </section>
 <section id="summary-tab">
 <h2>Summary Tab<a class="headerlink" href="#summary-tab" title="Link to this heading"></a></h2>
 <p>The <em>Summary</em> tab displays a read-only overview of the current configuration
 before you click <strong>Save Configuration</strong>.  Verify the settings here before
 committing to ensure no typos in register addresses or server IPs.</p>
+<p>Saving writes <code class="docutils literal notranslate"><span class="pre">/config.json</span></code> to the device’s internal filesystem and
+reboots after about 3 seconds.  Secrets in that file are encrypted — see
+<a class="reference internal" href="security.html#security"><span class="std std-ref">Security</span></a>.</p>
 </section>
 </section>
 

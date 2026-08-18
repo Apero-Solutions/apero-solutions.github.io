@@ -5,10 +5,11 @@ Configuration Reference
 =======================
 
 All settings are configured through the browser-based web interface.  Open
-``http://192.168.4.1`` when in configuration (AP) mode, or the device's
-assigned IP address once it is connected to your network.
+``http://192.168.4.1`` (Wi-Fi) or ``http://192.168.5.1`` (Ethernet) when in
+configuration (AP) mode, or the device's assigned IP address once it is
+connected to your network.
 
-The interface is divided into five tabs, described below.
+The interface is divided into six tabs, described below.
 
 
 Internet Connection Tab
@@ -42,7 +43,11 @@ Defines how ModBridge Pro reaches the internet to publish data.
    When **Modbus TCP** is selected in Protocol Settings, the Ethernet port
    is dedicated to Modbus communication and **cannot** simultaneously serve
    as the internet uplink.  Use Wi-Fi as the internet connection in that
-   scenario.
+   scenario — the device aborts startup if Ethernet is selected for both.
+
+If the link drops while running, the device retries every 30 seconds: Wi-Fi
+by re-issuing a connect, Ethernet by waiting for the link and an IP to come
+back.  Modbus polling and buffering continue throughout.
 
 
 Protocol Settings Tab
@@ -64,7 +69,7 @@ Modbus RTU (RS-485)
      - 9600 / 19200 / 38400 / 57600 / 115200 bps
      - Must match every slave on the bus.
    * - Data Bits
-     - 7 / 8
+     - 8 / 7
      - Virtually always 8.
    * - Parity
      - None / Even / Odd
@@ -72,6 +77,12 @@ Modbus RTU (RS-485)
    * - Stop Bits
      - 1 / 2
      - Typically 1 when parity is enabled; 2 when parity is None.
+
+.. warning::
+
+   Parity is the most commonly mismatched setting on a new bus.  A device
+   set to 8E1 while the gateway is set to 8N1 answers nothing at all, which
+   looks identical to bad wiring — see :ref:`diagnostics`.
 
 Modbus TCP (Ethernet)
 ---------------------
@@ -109,12 +120,10 @@ Per-device parameters
    * - Parameter
      - Range
      - Description
-   * - Slave ID
+   * - Device ID
      - 1–247
-     - The Modbus device address configured on the slave.
-   * - Device Name
-     - Text
-     - A human-readable label, used in log output and the summary tab.
+     - The Modbus slave address configured on the field device.  It is also
+       what identifies the device in the published payload (``slaveId``).
 
 Per-register parameters
 -----------------------
@@ -126,25 +135,30 @@ Per-register parameters
    * - Parameter
      - Options / Range
      - Description
-   * - Register Name
-     - Text
-     - Becomes the JSON key in the published data payload.  Use short,
-       meaningful names (e.g., ``voltage_L1``, ``active_power``).
-   * - Register Address
-     - 1–49999
-     - Modbus-style 5-digit address (see table below).
+   * - Variable Name
+     - Text, up to 31 characters
+     - Becomes the ``rName`` field in the MQTT payload and the column
+       heading in a tabular Google Sheet.  Use short, meaningful names
+       (e.g., ``voltage_L1``, ``active_power``).
    * - Data Type
      - Boolean, INT16, UINT16, INT32, UINT32, FLOAT32
      - See :ref:`data_types`.
-   * - Byte Swap
-     - None / Word Swap / Byte Swap / Word+Byte Swap
+   * - Register Address
+     - 5-digit Modbus reference
+     - See `Register address ranges`_ below.
+   * - Byte Order
+     - ABCD / CDAB / BADC / DCBA
      - Adjust for endianness differences.  Consult the device's Modbus
        register map.
+
+.. _register_addressing:
 
 Register address ranges
 -----------------------
 
-Most Modbus device manuals use a 5-digit address notation:
+Addresses are entered in the **5-digit Modbus reference notation** used by
+most device manuals.  The leading digit selects the register space and the
+rest is a **1-based** position within it:
 
 .. list-table::
    :widths: 20 20 60
@@ -154,17 +168,32 @@ Most Modbus device manuals use a 5-digit address notation:
      - Register type
      - Typical content
    * - 00001–09999
-     - Coils (read/write)
+     - Coils (function 01)
      - Digital outputs, relay states
    * - 10001–19999
-     - Discrete Inputs (read-only)
+     - Discrete Inputs (function 02)
      - Digital inputs, alarm flags
    * - 30001–39999
-     - Input Registers (read-only)
+     - Input Registers (function 04)
      - Measured values (voltage, current, temperature)
    * - 40001–49999
-     - Holding Registers (read/write)
+     - Holding Registers (function 03)
      - Setpoints, configuration parameters
+
+.. warning::
+
+   **Manuals that print a 0-based offset need +1.**  A meter whose manual
+   lists "voltage at 0, current at 2" against a 3xxxx input-register map is
+   describing offsets, so those are entered here as ``30001`` and ``30003``.
+   A manual that already prints ``30001`` is using the same convention as
+   this field and needs no adjustment.  An off-by-one usually reads a
+   plausible but wrong value rather than failing outright, so check it
+   before trusting the numbers.
+
+   Addresses in ``20001–29999``, above ``49999``, or exactly on a boundary
+   (``0``, ``10000``, ``30000``, ``40000``) belong to no space.  The web
+   form accepts them, but they are never put on the wire and every reading
+   is reported as ``ADDR_UNMAPPED``.
 
 .. _data_types:
 
@@ -180,7 +209,7 @@ Data Types
      - Value Range
      - Typical Use
    * - BOOL
-     - 1
+     - 1 bit
      - 0 or 1
      - On/Off states, relay outputs, alarm flags
    * - INT16
@@ -204,11 +233,17 @@ Data Types
      - IEEE 754 single precision
      - Voltage, power, frequency, temperature with decimals
 
+A 32-bit type consumes the addressed register **and the one after it**, so
+plan the address list accordingly.  In a coil or discrete-input space every
+type reads as a single bit regardless of what is selected.  FLOAT32 values
+are published with 6 decimal places.
+
 Byte Swap Modes
 ---------------
 
 Some devices store 32-bit values with a non-standard byte/word order.
-The four swap modes cover all common conventions:
+The four modes cover all common conventions — the letters describe where
+the source bytes A, B, C, D end up:
 
 .. list-table::
    :widths: 25 75
@@ -216,14 +251,62 @@ The four swap modes cover all common conventions:
 
    * - Mode
      - When to use
-   * - No swap
+   * - No Swap (ABCD)
      - Big-endian devices (most common; try this first).
-   * - Word Swap
+   * - Word Swap (CDAB)
      - Little-endian 32-bit values stored as two swapped 16-bit words.
-   * - Byte Swap
+   * - Byte Swap (BADC)
      - Bytes within each word are reversed.
-   * - Word + Byte Swap
+   * - Word+Byte (DCBA)
      - Both word and byte order reversed (fully little-endian).
+
+A wrong byte order on a FLOAT32 typically shows up as a wildly implausible
+number (``1e-38``, ``4.7e24``) rather than a small error.
+
+How registers are read
+----------------------
+
+Registers are not fetched one at a time.  Before each poll the gateway maps
+every configured register onto its wire address, sorts them, and merges
+neighbours into as few requests as possible:
+
+* Up to **100 registers** (or **800 bits**) per request.
+* Gaps of up to **8 registers** (or **16 bits**) between wanted addresses
+  are read across rather than split into a second request — one extra round
+  trip costs far more than a few discarded values.
+* Each register space is requested separately, since each uses its own
+  function code.
+
+The practical consequence is that a tidy, contiguous address list polls
+dramatically faster than the same number of registers scattered across the
+map.  If one block fails, only the registers in that block are marked bad;
+the rest of the cycle still publishes.
+
+When a device *answers* but rejects a block — an exception such as
+``ILLEGAL_DATA_ADDRESS``, typically because the merged range crossed into
+registers the device does not implement — the gateway automatically re-reads
+that block's registers one at a time, so the valid ones still come back.
+Transport failures (a timeout, a CRC error) are not retried that way: the
+device is not talking at all, and N more timeouts would stall the whole poll
+cycle.
+
+
+IoT Publishing Tab
+==================
+
+Selects the cloud destination and how often data is sent.  Covered in full
+in :ref:`iot`.
+
+The **Update Interval** dropdown (1 s, 5 s, 10 s, 30 s, 1 min, 5 min,
+15 min) sets one cadence for the whole device: each interval triggers one
+Modbus poll cycle and one publish.
+
+
+Firmware Update Tab
+===================
+
+Shows the running firmware version and accepts an update bundle.  See
+:ref:`ota`.
 
 
 Summary Tab
@@ -232,3 +315,7 @@ Summary Tab
 The *Summary* tab displays a read-only overview of the current configuration
 before you click **Save Configuration**.  Verify the settings here before
 committing to ensure no typos in register addresses or server IPs.
+
+Saving writes ``/config.json`` to the device's internal filesystem and
+reboots after about 3 seconds.  Secrets in that file are encrypted — see
+:ref:`security`.

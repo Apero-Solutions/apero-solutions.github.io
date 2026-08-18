@@ -18,19 +18,30 @@ Status LEDs
    * - LED Name
      - States and Meaning
    * - Config Mode
-     - **Slow blink** — device starting up |br|
+     - **Slow blink (0.5 s)** — the 10-second boot button window is open |br|
+       **Fast blink** — a reset button is being held |br|
        **Steady ON** — configuration access point is active |br|
        **OFF** — device is in normal operating mode
    * - Internet LED
      - **Steady ON** — internet is reachable |br|
        **OFF** — no internet connectivity
    * - Modbus RX Activity
-     - **Brief pulse** — a valid Modbus response was received |br|
-       **No pulses** — no Modbus traffic (check wiring, Slave ID, or baud rate)
+     - **Brief pulse (100 ms)** — at least one register was read
+       successfully in that poll cycle |br|
+       **No pulses** — nothing is answering (check wiring, Device ID, baud
+       rate or parity)
 
 .. |br| raw:: html
 
    <br/>
+
+.. note::
+
+   The RX LED pulses once per **poll cycle**, not once per register, and the
+   cycle runs at the configured Update Interval.  At a 15-minute interval,
+   one pulse every 15 minutes is healthy.  It also cannot tell you that
+   *every* register read — one good register out of fifty still lights it.
+   Use the published ``CommQuality`` fields for per-register truth.
 
 LED Diagnostic Patterns
 ------------------------
@@ -45,9 +56,7 @@ LED Diagnostic Patterns
      - Normal — internet connected.
    * - OFF
      - Internet lost — check router, Wi-Fi password, or Ethernet cable.
-   * - Blinking fast
-     - Device error — try power-cycling.  If the issue persists, contact
-       Apero Solutions.
+       The device retries every 30 seconds by itself.
 
 .. list-table::
    :widths: 30 70
@@ -56,12 +65,45 @@ LED Diagnostic Patterns
    * - Modbus RX Activity LED state
      - Situation
    * - Pulses regularly
-     - Modbus communication is healthy.
+     - At least one device is answering.
    * - Never pulses
-     - No Modbus responses — check RS-485 wiring (A/B polarity), Slave ID,
+     - No Modbus responses — check RS-485 wiring (A/B polarity), Device ID,
        and baud rate / parity settings.
    * - Pulses then stops
-     - Some devices responding, others not — verify individual Slave IDs.
+     - Communication was working and has stopped — check for a power-cycled
+       or disconnected field device.
+
+Startup Error Codes
+-------------------
+
+If startup cannot complete, **all three LEDs blink together** in a repeating
+group, pause for two seconds, and repeat.  Count the blinks in one group:
+
+.. list-table::
+   :widths: 15 85
+   :header-rows: 1
+
+   * - Blinks
+     - Fault
+   * - 1
+     - Internal filesystem could not be mounted.  Configuration cannot be
+       read or written — the device needs a USB recovery flash
+       (see :ref:`ota`).
+   * - 2
+     - Modbus TCP transport could not be set up.  The dedicated Ethernet
+       settings on the *Protocol Settings* tab are invalid, or Ethernet was
+       also selected as the internet uplink.
+   * - 3
+     - Modbus subsystem failed to initialise — normally an invalid protocol
+       or baud rate in the saved configuration.
+   * - 5
+     - Internal resource allocation failed.  Power-cycle; if it repeats, the
+       unit needs service.
+
+In every case the device stays in the blink loop and does not poll or
+publish.  Faults 2 and 3 are configuration faults: hold **Internet Reset**
+at the next boot to get back into the configuration page and correct the
+settings.
 
 
 No-Internet Alert Output
@@ -87,6 +129,13 @@ This allows the loss of connectivity to be monitored and acted upon
 independently of the ModBridge Pro web interface — useful in installations
 where automated alerts or failover actions are required.
 
+.. note::
+
+   The output tracks the **internet link**, not the cloud destination.  It
+   stays at 0 V while the network is up but the MQTT broker is rejecting the
+   connection or the Google service account has expired.  Watch the
+   destination itself for that class of fault.
+
 
 Control Buttons
 ===============
@@ -109,6 +158,11 @@ Control Buttons
      - Erases all settings and reboots to factory defaults.
        **All configuration is lost.**
 
+While a button is held the LEDs blink rapidly; release before 3 seconds and
+the action is cancelled with no change.  Internet Reset blinks the Config
+LED alone, Factory Reset blinks three LEDs together — a useful confirmation
+that you are holding the button you meant to.
+
 .. danger::
 
    Factory Reset **permanently deletes** all configuration, including
@@ -124,4 +178,6 @@ Control Buttons
 
 .. note::
 
-   Both buttons are active during the first **10 seconds** after power-on.
+   Both buttons are read **only during the first 10 seconds after
+   power-on**, while the Config LED blinks slowly.  Pressing them later has
+   no effect — power-cycle the device and try again within the window.

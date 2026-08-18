@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/leds_buttons.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=edd18f37"></script>
+      <script src="_static/documentation_options.js?v=35c0298d"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
 </ul>
 </li>
 </ul>
@@ -105,8 +106,11 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
 </ul>
 </li>
@@ -114,21 +118,25 @@
 <li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
-<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl-setup">TLS/SSL setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iot.html#offline-buffering">Offline Buffering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#no-internet-alert-output">No-Internet Alert Output</a></li>
@@ -138,13 +146,25 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#network-security-recommendations">Network Security Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ota.html">Over-the-Air Firmware Update</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ota.html#performing-a-firmware-update">Performing a Firmware Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
@@ -154,16 +174,23 @@
 <li class="toctree-l3"><a class="reference internal" href="ota.html#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota.html#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html#flashing">Flashing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="variants/pro_v2.html">ModBridge Pro — v2.x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#feature-set">Feature set</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#known-limitations">Known limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="variants/pro_v2.html#revision-history">Revision history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
@@ -213,7 +240,8 @@ control buttons.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Config Mode</p></td>
-<td><p><strong>Slow blink</strong> — device starting up <br/>
+<td><p><strong>Slow blink (0.5 s)</strong> — the 10-second boot button window is open <br/>
+<strong>Fast blink</strong> — a reset button is being held <br/>
 <strong>Steady ON</strong> — configuration access point is active <br/>
 <strong>OFF</strong> — device is in normal operating mode</p></td>
 </tr>
@@ -222,11 +250,21 @@ control buttons.</p>
 <strong>OFF</strong> — no internet connectivity</p></td>
 </tr>
 <tr class="row-even"><td><p>Modbus RX Activity</p></td>
-<td><p><strong>Brief pulse</strong> — a valid Modbus response was received <br/>
-<strong>No pulses</strong> — no Modbus traffic (check wiring, Slave ID, or baud rate)</p></td>
+<td><p><strong>Brief pulse (100 ms)</strong> — at least one register was read
+successfully in that poll cycle <br/>
+<strong>No pulses</strong> — nothing is answering (check wiring, Device ID, baud
+rate or parity)</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The RX LED pulses once per <strong>poll cycle</strong>, not once per register, and the
+cycle runs at the configured Update Interval.  At a 15-minute interval,
+one pulse every 15 minutes is healthy.  It also cannot tell you that
+<em>every</em> register read — one good register out of fifty still lights it.
+Use the published <code class="docutils literal notranslate"><span class="pre">CommQuality</span></code> fields for per-register truth.</p>
+</div>
 <section id="led-diagnostic-patterns">
 <h3>LED Diagnostic Patterns<a class="headerlink" href="#led-diagnostic-patterns" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
@@ -244,11 +282,8 @@ control buttons.</p>
 <td><p>Normal — internet connected.</p></td>
 </tr>
 <tr class="row-odd"><td><p>OFF</p></td>
-<td><p>Internet lost — check router, Wi-Fi password, or Ethernet cable.</p></td>
-</tr>
-<tr class="row-even"><td><p>Blinking fast</p></td>
-<td><p>Device error — try power-cycling.  If the issue persists, contact
-Apero Solutions.</p></td>
+<td><p>Internet lost — check router, Wi-Fi password, or Ethernet cable.
+The device retries every 30 seconds by itself.</p></td>
 </tr>
 </tbody>
 </table>
@@ -264,17 +299,58 @@ Apero Solutions.</p></td>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Pulses regularly</p></td>
-<td><p>Modbus communication is healthy.</p></td>
+<td><p>At least one device is answering.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Never pulses</p></td>
-<td><p>No Modbus responses — check RS-485 wiring (A/B polarity), Slave ID,
+<td><p>No Modbus responses — check RS-485 wiring (A/B polarity), Device ID,
 and baud rate / parity settings.</p></td>
 </tr>
 <tr class="row-even"><td><p>Pulses then stops</p></td>
-<td><p>Some devices responding, others not — verify individual Slave IDs.</p></td>
+<td><p>Communication was working and has stopped — check for a power-cycled
+or disconnected field device.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="startup-error-codes">
+<h3>Startup Error Codes<a class="headerlink" href="#startup-error-codes" title="Link to this heading"></a></h3>
+<p>If startup cannot complete, <strong>all three LEDs blink together</strong> in a repeating
+group, pause for two seconds, and repeat.  Count the blinks in one group:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 85.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Blinks</p></th>
+<th class="head"><p>Fault</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Internal filesystem could not be mounted.  Configuration cannot be
+read or written — the device needs a USB recovery flash
+(see <a class="reference internal" href="ota.html#ota"><span class="std std-ref">Over-the-Air Firmware Update</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Modbus TCP transport could not be set up.  The dedicated Ethernet
+settings on the <em>Protocol Settings</em> tab are invalid, or Ethernet was
+also selected as the internet uplink.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Modbus subsystem failed to initialise — normally an invalid protocol
+or baud rate in the saved configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Internal resource allocation failed.  Power-cycle; if it repeats, the
+unit needs service.</p></td>
+</tr>
+</tbody>
+</table>
+<p>In every case the device stays in the blink loop and does not poll or
+publish.  Faults 2 and 3 are configuration faults: hold <strong>Internet Reset</strong>
+at the next boot to get back into the configuration page and correct the
+settings.</p>
 </section>
 </section>
 <section id="no-internet-alert-output">
@@ -305,6 +381,13 @@ module, an alarm panel, or an indicator light.</p>
 <p>This allows the loss of connectivity to be monitored and acted upon
 independently of the ModBridge Pro web interface — useful in installations
 where automated alerts or failover actions are required.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The output tracks the <strong>internet link</strong>, not the cloud destination.  It
+stays at 0 V while the network is up but the MQTT broker is rejecting the
+connection or the Google service account has expired.  Watch the
+destination itself for that class of fault.</p>
+</div>
 </section>
 <section id="control-buttons">
 <h2>Control Buttons<a class="headerlink" href="#control-buttons" title="Link to this heading"></a></h2>
@@ -335,6 +418,10 @@ the device.</p></td>
 </tr>
 </tbody>
 </table>
+<p>While a button is held the LEDs blink rapidly; release before 3 seconds and
+the action is cancelled with no change.  Internet Reset blinks the Config
+LED alone, Factory Reset blinks three LEDs together — a useful confirmation
+that you are holding the button you meant to.</p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
 <p>Factory Reset <strong>permanently deletes</strong> all configuration, including
@@ -350,7 +437,9 @@ This design prevents accidental resets in the field.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Both buttons are active during the first <strong>10 seconds</strong> after power-on.</p>
+<p>Both buttons are read <strong>only during the first 10 seconds after
+power-on</strong>, while the Config LED blinks slowly.  Pressing them later has
+no effect — power-cycle the device and try again within the window.</p>
 </div>
 </section>
 </section>

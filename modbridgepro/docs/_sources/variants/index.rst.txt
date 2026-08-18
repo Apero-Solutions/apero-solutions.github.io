@@ -12,7 +12,7 @@ As new variants are released, add a page per variant and link it from the
    :maxdepth: 2
    :caption: Variants
 
-   pro_v2
+   b15
 
 
 How Variants Are Structured
@@ -30,7 +30,7 @@ To add a new variant:
 
 1. Create ``docs/variants/<variant_name>.rst``.
 2. Add it to the ``toctree`` in this file.
-3. Document only what differs from the base ``Pro v2.2`` specification.
+3. Document only what differs from the base ``B15`` specification.
 4. If needed, guard feature sections in shared pages with the Sphinx ``only``
    directive::
 

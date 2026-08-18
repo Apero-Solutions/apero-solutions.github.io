@@ -4,9 +4,9 @@
 Security
 ========
 
-ModBridge Pro B15 is designed with industrial deployment in mind.  Multiple
-layers of security protect your configuration, credentials, and data in
-transit.
+ModBridge Pro B15 is designed with industrial deployment in mind.  This page
+describes what the device protects on its own, and — just as importantly —
+what it expects the surrounding network to protect for it.
 
 
 Web Interface Authentication
@@ -30,51 +30,117 @@ the top-right corner of the configuration page.
    credentials (MQTT passwords, Google Sheets keys) — you do **not** need
    to re-enter them after a password change.
 
+.. warning::
+
+   The configuration page is served over plain **HTTP** with HTTP Basic
+   authentication, so the login and everything you type into the form —
+   Wi-Fi password, MQTT password, Google private key — cross the local
+   network unencrypted.  Configure the device over its own access point, or
+   on a trusted network segment.  Do not expose it to the internet or
+   port-forward to it.
+
 
 Credential Storage
 ==================
 
-IoT secrets (MQTT password, Google Sheets private key) are **never stored
-in plain text** on the device.  All credentials are encrypted before being
-saved and can only be decrypted by the device itself.
+IoT secrets are **never stored in plain text** on the device.  The Wi-Fi
+password, the MQTT password and the Google Sheets private key are each
+encrypted before ``config.json`` is written to flash.
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - **Cipher**
+     - AES-128-CTR, with a fresh random nonce per value
+   * - **Key derivation**
+     - PBKDF2-SHA256, 2048 iterations
+   * - **Key input**
+     - The device's own MAC address **and** your web UI password
+
+Binding the key to both means a flash dump on its own is not enough to
+recover the secrets — an attacker also needs the password you set.  It also
+means the secrets are re-encrypted under the new key whenever you change
+that password, which is why they survive a password change without
+re-entry.
+
+.. note::
+
+   Configuration files written by much older firmware, which stored these
+   values in plain text, are still read correctly and are re-encrypted the
+   next time you save.
 
 
-Network Security Recommendations
-=================================
+Transport Security
+==================
+
+.. warning::
+
+   **Data leaves the device unencrypted in v5.0.0.**  MQTT publishes over
+   plain TCP on port 1883; the TLS/SSL option in the *IoT Publishing* tab
+   cannot complete a connection because no CA trust store is provisioned,
+   and it is ignored entirely on an Ethernet uplink.  Google Sheets is the
+   exception — those uploads use the Google API client's own HTTPS.
+
+Plan the network around that:
 
 1. **Isolate on a dedicated network.**
    Place ModBridge Pro on a separate IoT or OT network, isolated from office
    and user devices.
 
-2. **Enable TLS for MQTT.**
-   Toggle the TLS/SSL option in the *IoT Publishing* tab to encrypt all data
-   in transit between the device and your broker.
+2. **Keep the broker close.**
+   Run the MQTT broker on the same isolated segment, so plaintext MQTT never
+   crosses an untrusted network.
 
-3. **Use a dedicated MQTT account.**
-   Create a dedicated MQTT user with publish-only permissions for this device.
-   Do not use broker admin credentials.
+3. **Where the data must leave the site, encrypt below the application.**
+   A site-to-site VPN or an on-site broker that forwards over TLS puts the
+   protection somewhere the gateway does not have to provide it.
 
-4. **Keep firmware updated.**
+4. **Use a dedicated MQTT account.**
+   Create a dedicated MQTT user with publish-only permissions for this
+   device.  Do not use broker admin credentials — they would cross the
+   network in the clear.
+
+5. **Scope the Google service account narrowly.**
+   Share only the target spreadsheet with the service account.  Do not reuse
+   a key that has access to other Google resources, and rotate it if a unit
+   is decommissioned or lost.
+
+6. **Keep firmware updated.**
    Apply firmware updates promptly — see :ref:`ota`.
 
-5. **Factory Reset is protected by design.**
-   The Factory Reset button (IO0) is located inside the ModBridge Pro B15 enclosure and is
-   not accessible from the outside, preventing accidental or unauthorised
-   resets in the field.
 
-6. **The configuration access point closes automatically.**
-   The Wi-Fi access point is only active during configuration.  It closes
-   as soon as the device reboots after saving settings and does **not** reopen
-   unless the Internet Reset button is pressed.
+Physical Security
+=================
+
+1. **Factory Reset is protected by design.**
+   The Factory Reset button (IO0) is located inside the ModBridge Pro B15
+   enclosure and is not accessible from the outside, preventing accidental
+   or unauthorised resets in the field.
+
+2. **The configuration access point closes automatically.**
+   The Wi-Fi access point is only active during configuration.  It closes as
+   soon as the device reboots after saving settings and does **not** reopen
+   unless the Internet Reset button is held during the boot window.
+
+3. **The boot window is a physical-access path.**
+   Anyone who can hold a button during the first 10 seconds after power-on
+   can re-open the configuration access point — which is open and needs no
+   Wi-Fi password, though the configuration page itself still requires the
+   login.  Where that matters, treat enclosure access as the control:
+   locked panel, locked cabinet.
 
 
 Time Synchronisation
 ====================
 
-ModBridge Pro synchronises its clock automatically every hour.  All published
-data timestamps use **IST (UTC +5:30)**.  Accurate timestamps are important
-for correlating IoT data with events in process historians or ERP systems.
+ModBridge Pro synchronises its clock from ``pool.ntp.org`` at boot and every
+hour thereafter.  All published data timestamps use **IST (UTC +5:30)**.
+Accurate timestamps are important for correlating IoT data with events in
+process historians or ERP systems.
 
-If the internet is unavailable, the device continues to publish data but
-timestamps may drift.  The green status LED going off is a quick indicator
-that time sync may also be affected.
+If time has never been obtained — no internet since power-on — readings are
+stamped ``1970-01-01T00:00:00``.  That marker in your data means the device
+was polling before it had a clock, not that the readings themselves are
+wrong.  Buffered readings keep the timestamp from when they were taken, so a
+backlog arrives correctly dated once it drains.
