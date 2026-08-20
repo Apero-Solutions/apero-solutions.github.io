@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/overview.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d66abd3f"></script>
+      <script src="_static/documentation_options.js?v=29e406a8"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -102,7 +102,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#naming-a-device">Naming a device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -146,7 +150,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -299,7 +306,7 @@ connection therefore cannot stall Modbus polling.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Firmware version</strong></p></td>
-<td><p>v5.2.0</p></td>
+<td><p>v5.4.0</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Time zone</strong></p></td>
 <td><p>IST (UTC +5:30), synchronised from <code class="docutils literal notranslate"><span class="pre">pool.ntp.org</span></code> at boot and every

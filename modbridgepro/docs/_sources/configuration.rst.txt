@@ -110,6 +110,10 @@ Modbus Devices Tab
 Define each Modbus slave device and the registers you want to read.  Up to
 **5 devices** and **50 registers per device** are supported.
 
+Registers can be typed in one row at a time, copied from a device already
+configured on the page, or loaded from a previously exported file — see
+`Entering registers faster`_.
+
 Per-device parameters
 ---------------------
 
@@ -124,6 +128,65 @@ Per-device parameters
      - 1–247
      - The Modbus slave address configured on the field device.  It is also
        what identifies the device in the published payload (``slaveId``).
+   * - Slave Name
+     - Text, up to 29 characters
+     - Optional.  A naming helper, **not a stored setting** — pressing
+       **Apply** rewrites this device's register names in the table below as
+       ``SlaveName_RegisterName``.  See `Naming a device`_.
+
+.. _naming_a_device:
+
+Naming a device
+---------------
+
+Several identical meters on one bus produce identical register names, which is
+hard to read in an MQTT payload and impossible to read in a tabular Google
+Sheet — the data cells there carry no names at all, only positions, so three
+chained meters give three indistinguishable ``Voltage_L1`` columns.
+
+Typing a **Slave Name** and pressing **Apply** prefixes every register name on
+that device:
+
+.. list-table::
+   :widths: 50 50
+   :header-rows: 1
+
+   * - Before Apply
+     - After Apply with ``Chiller1``
+   * - ``Voltage_L1``
+     - ``Chiller1_Voltage_L1``
+   * - ``Power_Total``
+     - ``Chiller1_Power_Total``
+
+The prefix is written straight into the register names, which is all the device
+ever stores — there is no separate name field in the configuration.  What you
+see in the register table is exactly what gets saved, and it flows through to
+the MQTT ``rName`` field and the Google Sheets column headings with no further
+setup.
+
+.. important::
+
+   The **31-character register-name limit covers the combined result**, so the
+   Slave Name eats into the budget for each register name.  A 9-character name
+   such as ``Chiller_1`` leaves 21 characters per register.
+
+   The hint under the Slave Name box shows how much room is left as you type,
+   and Apply refuses outright — changing nothing — if any register would go
+   over.  It never shortens a name silently, because a truncated name would
+   still be published and would be very hard to spot afterwards.
+
+Working with the prefix:
+
+* Pressing **Apply** a second time **replaces** the prefix rather than adding
+  another one, so a device can be renamed freely.
+* Clearing the box and pressing **Apply** removes the prefix — that is the undo.
+* Registers added afterwards are picked up by the next **Apply**; rows that
+  already carry the prefix are not doubled.
+* When a saved configuration is loaded, the name is recovered from the register
+  names if all of them share one, so renaming after a reboot works normally.
+  A device whose registers happen to share a lead — ``Voltage_L1``,
+  ``Voltage_L2`` — may show ``Voltage`` in the box; nothing changes unless you
+  press Apply.
 
 Per-register parameters
 -----------------------
@@ -139,7 +202,8 @@ Per-register parameters
      - Text, up to 31 characters
      - Becomes the ``rName`` field in the MQTT payload and the column
        heading in a tabular Google Sheet.  Use short, meaningful names
-       (e.g., ``voltage_L1``, ``active_power``).
+       (e.g., ``voltage_L1``, ``active_power``).  A device prefix shares
+       this 31-character budget — see `Naming a device`_.
    * - Data Type
      - Boolean, INT16, UINT16, INT32, UINT32, FLOAT32
      - See :ref:`data_types`.
@@ -150,6 +214,98 @@ Per-register parameters
      - ABCD / CDAB / BADC / DCBA
      - Adjust for endianness differences.  Consult the device's Modbus
        register map.
+
+.. _entering_registers_faster:
+
+Entering registers faster
+-------------------------
+
+Typing 50 rows by hand for each of several identical meters is slow and
+error-prone.  Two shortcuts on this tab avoid it.
+
+**Duplicate** — each device card has a *Duplicate* button in its header.  It
+creates a new device carrying a copy of every register on the original and
+pre-fills the Device ID with the lowest free address at or above the source's
+own, so a chain of identical meters is built by pressing it repeatedly.  Only
+the Device ID normally needs changing afterwards.
+
+If the source device has a Slave Name, the copy takes the next free one —
+``Chiller1`` becomes ``Chiller2`` — and its register names are rewritten to
+match, so the two devices never publish under identical names.  See
+`Naming a device`_.
+
+**Import / Export** — the buttons at the top of the tab move a whole register
+map between units, described next.
+
+.. _register_map_files:
+
+Importing and exporting a register map
+--------------------------------------
+
+**Export register map** downloads the devices, their registers, and the
+Modbus link settings (protocol, baud rate, data bits, parity, stop bits, and
+the TCP server address) as a JSON file named
+``modbridge-registers-YYYYMMDD-HHMM.json``.
+
+.. important::
+
+   The export contains **no credentials** — no Wi-Fi password, no MQTT
+   password, no Google Sheets key.  It is a register map, not a device
+   backup, and is safe to email to a site engineer or keep in a project
+   folder.  There is no way to restore a device's secrets from it; those
+   must be re-entered on the unit.
+
+**Import register map** reads such a file back.  Because it replaces every
+device currently shown on the page, it asks for confirmation first, and asks
+again separately before applying the Modbus link settings — so a map can be
+loaded onto a bus that runs at a different baud rate without disturbing it.
+
+.. note::
+
+   Importing only fills in the form.  Nothing reaches the device until you
+   press **Save Configuration**, so there is always an opportunity to review
+   and adjust the imported map — in particular the Device IDs, which are
+   rarely identical between two sites.
+
+A file holding more than 5 devices or more than 50 registers on a device is
+truncated to the supported limits, and registers whose address is missing or
+out of range are dropped.  Anything adjusted this way is listed in the status
+line under the buttons rather than applied silently.
+
+The format is plain JSON and easy to generate elsewhere — useful for building
+a register map for a meter model once and reusing it across installations:
+
+.. code-block:: json
+
+   {
+     "type": "modbridge-register-map",
+     "version": 1,
+     "modbus": { "protocol": "rtu", "baudrate": "9600", "parity": "N" },
+     "slaves": [
+       {
+         "address": 1,
+         "registers": [
+           { "name": "Voltage_L1", "address": 30001,
+             "dataType": "UINT16", "byteSwap": "NO_SWAP" }
+         ]
+       }
+     ]
+   }
+
+A file containing only the ``slaves`` array — or a bare array of devices — is
+also accepted.
+
+Device ID checks
+----------------
+
+Two devices answering to the same address collide on every poll, and the
+duplicate button makes that easy to do by accident.  A Device ID entered
+twice is highlighted as you type, and **Save Configuration** is refused with
+a message naming the address and the two devices using it.
+
+Saving is also refused when a device has no Device ID, has one outside
+1–247, or has no register with both a name and an address filled in.  In each
+case the page switches to this tab and focuses the field at fault.
 
 .. _register_addressing:
 

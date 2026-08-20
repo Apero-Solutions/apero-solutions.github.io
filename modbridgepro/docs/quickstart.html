@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/quickstart.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d66abd3f"></script>
+      <script src="_static/documentation_options.js?v=29e406a8"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -102,7 +102,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#naming-a-device">Naming a device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -146,7 +150,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -339,12 +346,28 @@ start otherwise.</p>
 <h3>Step 6 — Add Modbus slave devices and registers<a class="headerlink" href="#step-6-add-modbus-slave-devices-and-registers" title="Link to this heading"></a></h3>
 <p>On the <em>Modbus Devices</em> tab:</p>
 <ol class="arabic simple">
-<li><p>Click <strong>Add Device</strong>.</p></li>
+<li><p>Click <strong>Add Modbus Device</strong>.</p></li>
 <li><p>Enter the <strong>Device ID</strong> (1–247) as configured on the Modbus device.</p></li>
 <li><p>Add registers: for each register provide a variable name, data type,
 address, and byte order.</p></li>
 <li><p>Repeat for up to 5 devices, 50 registers each.</p></li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Do not type identical maps twice.  If several meters of the same model
+are daisy-chained on the bus, configure the first one and press
+<strong>Duplicate</strong> on its card — the copy keeps every register and is given
+the next free Device ID.  Whole maps can also be moved between units with
+<strong>Export / Import register map</strong>.  See <a class="reference internal" href="configuration.html#entering-registers-faster"><span class="std std-ref">Entering registers faster</span></a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Chained meters of the same model produce identical register names, which
+is hard to tell apart in the published data.  Give each one a <strong>Slave
+Name</strong> and press <strong>Apply</strong> to prefix its register names —
+<code class="docutils literal notranslate"><span class="pre">Chiller1_Voltage_L1</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Voltage_L1</span></code>.  Duplicate advances the
+name for you.  See <a class="reference internal" href="configuration.html#naming-a-device"><span class="std std-ref">Naming a device</span></a>.</p>
+</div>
 <p>See <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration Reference</span></a> for a full explanation of register addressing and
 data types.  Getting the address convention right is the single most common
 source of a device that reads nothing.</p>

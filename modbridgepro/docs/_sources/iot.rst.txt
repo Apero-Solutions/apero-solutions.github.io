@@ -109,7 +109,11 @@ JSON object: a cycle timestamp plus one entry per configured register.
    * - ``slaveId``
      - Modbus device ID the reading came from.
    * - ``rName`` / ``rAddr``
-     - Variable name and 5-digit address as configured.
+     - Variable name and 5-digit address as configured.  If the device was
+       given a Slave Name, that name is part of the configured register name
+       (``Chiller1_voltage_L1``) — see :ref:`naming_a_device`.  ``slaveId``
+       remains the identifier to group by; the composed name is for people to
+       read, and is not reliably splittable.
    * - ``dataType`` / ``byteSwap``
      - The decoding applied, echoed back so a consumer can audit it.
    * - ``val``

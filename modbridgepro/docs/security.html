@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/security.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d66abd3f"></script>
+      <script src="_static/documentation_options.js?v=29e406a8"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -102,7 +102,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#naming-a-device">Naming a device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -146,7 +150,10 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#time-synchronisation">Time Synchronisation</a></li>
@@ -289,6 +296,21 @@ re-entry.</p>
 values in plain text, are still read correctly and are re-encrypted the
 next time you save.</p>
 </div>
+<section id="exported-register-maps">
+<h3>Exported register maps<a class="headerlink" href="#exported-register-maps" title="Link to this heading"></a></h3>
+<p>The <strong>Export register map</strong> button on the <em>Modbus Devices</em> tab writes a JSON
+file describing the devices, their registers and the Modbus link settings.
+It deliberately carries <strong>no credentials</strong> — the Wi-Fi password, the MQTT
+password and the Google Sheets key are all omitted — so the file can be
+shared with a site engineer or committed to a project repository without
+leaking anything.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The consequence is that an exported map is <strong>not a device backup</strong>.  It
+cannot restore a unit on its own; the credentials have to be re-entered
+by hand on the replacement device.  See <a class="reference internal" href="configuration.html#register-map-files"><span class="std std-ref">Importing and exporting a register map</span></a>.</p>
+</div>
+</section>
 </section>
 <section id="transport-security">
 <h2>Transport Security<a class="headerlink" href="#transport-security" title="Link to this heading"></a></h2>

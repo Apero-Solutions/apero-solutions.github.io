@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/iot.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d66abd3f"></script>
+      <script src="_static/documentation_options.js?v=29e406a8"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -102,7 +102,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#naming-a-device">Naming a device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -146,7 +150,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -344,7 +351,11 @@ it strictly should expect that value rather than fail on it.</p></td>
 <td><p>Modbus device ID the reading came from.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rName</span></code> / <code class="docutils literal notranslate"><span class="pre">rAddr</span></code></p></td>
-<td><p>Variable name and 5-digit address as configured.</p></td>
+<td><p>Variable name and 5-digit address as configured.  If the device was
+given a Slave Name, that name is part of the configured register name
+(<code class="docutils literal notranslate"><span class="pre">Chiller1_voltage_L1</span></code>) — see <a class="reference internal" href="configuration.html#naming-a-device"><span class="std std-ref">Naming a device</span></a>.  <code class="docutils literal notranslate"><span class="pre">slaveId</span></code>
+remains the identifier to group by; the composed name is for people to
+read, and is not reliably splittable.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dataType</span></code> / <code class="docutils literal notranslate"><span class="pre">byteSwap</span></code></p></td>
 <td><p>The decoding applied, echoed back so a consumer can audit it.</p></td>
