@@ -224,3 +224,13 @@ Interpreting a partly-working device
      - Check ``CommQuality`` for that register before assuming the process
        value really is zero — a failed read publishes ``0`` too, and the two
        are indistinguishable without it.
+   * - Internet LED blinking, no rows arriving in the sheet
+     - The network is fine and Google Sheets is refusing the writes — a bad
+       service account, a wrong spreadsheet ID, or a sheet never shared with
+       the service account.  See :ref:`cloud_config_fault`.
+   * - Every timestamp reads ``NTP Sync failed``
+     - The clock has not synchronised since power-on, so the device is
+       polling without a date to stamp readings with.  The Modbus side is
+       unaffected — the values are good, only their timestamps are missing.
+       Check that the gateway has a working internet route out to
+       ``pool.ntp.org`` (see :ref:`security`).

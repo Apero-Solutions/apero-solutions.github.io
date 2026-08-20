@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/leds_buttons.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=35c0298d"></script>
+      <script src="_static/documentation_options.js?v=a7bff766"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -103,6 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -136,6 +139,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blinking-internet-led-google-configuration">Blinking Internet LED — Google configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
@@ -145,7 +149,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -246,7 +253,9 @@ control buttons.</p>
 <strong>OFF</strong> — device is in normal operating mode</p></td>
 </tr>
 <tr class="row-odd"><td><p>Internet LED</p></td>
-<td><p><strong>Steady ON</strong> — internet is reachable <br/>
+<td><p><strong>Steady ON</strong> — internet is reachable and cloud writes are landing <br/>
+<strong>Blink, ~2 per second</strong> — internet is fine, but the cloud target keeps
+refusing the data (Google Sheets only) <br/>
 <strong>OFF</strong> — no internet connectivity</p></td>
 </tr>
 <tr class="row-even"><td><p>Modbus RX Activity</p></td>
@@ -279,14 +288,71 @@ Use the published <code class="docutils literal notranslate"><span class="pre">C
 </thead>
 <tbody>
 <tr class="row-even"><td><p>ON</p></td>
-<td><p>Normal — internet connected.</p></td>
+<td><p>Normal — internet connected and data is reaching the cloud.</p></td>
 </tr>
-<tr class="row-odd"><td><p>OFF</p></td>
+<tr class="row-odd"><td><p>Blinking</p></td>
+<td><p>The network is fine and Google Sheets is rejecting the writes.  The
+cause is in the Google configuration, not the wiring — see
+<a class="reference internal" href="#cloud-config-fault"><span class="std std-ref">Blinking Internet LED — Google configuration</span></a> below.</p></td>
+</tr>
+<tr class="row-even"><td><p>OFF</p></td>
 <td><p>Internet lost — check router, Wi-Fi password, or Ethernet cable.
 The device retries every 30 seconds by itself.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="blinking-internet-led-google-configuration">
+<span id="cloud-config-fault"></span><h3>Blinking Internet LED — Google configuration<a class="headerlink" href="#blinking-internet-led-google-configuration" title="Link to this heading"></a></h3>
+<p>A blinking Internet LED means the device is online but every attempt to write
+to Google Sheets is being refused.  Without it this state is invisible from
+the front panel: the LED sat steady while no data arrived in the sheet, and
+the only way to tell was a serial console.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Cause</p></th>
+<th class="head"><p>What to check</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Service account credentials rejected</p></td>
+<td><p>The private key or the service account email is wrong, or the email
+has no domain in it.  Re-paste both from the downloaded JSON key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spreadsheet ID wrong or blank</p></td>
+<td><p>Copy it again from the sheet URL, between <code class="docutils literal notranslate"><span class="pre">/d/</span></code> and <code class="docutils literal notranslate"><span class="pre">/edit</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Sheet not shared with the service account</p></td>
+<td><p>Share the spreadsheet with the service account email address, with
+<strong>Editor</strong> permission.  This is the most common cause, and the one
+that looks most like a working configuration.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Credential faults light the LED as soon as the device tries to
+authenticate.  A wrong spreadsheet ID or an unshared sheet can only be
+detected when a write is actually refused, so the LED starts blinking
+after <strong>three consecutive failed publish attempts</strong> — about three times
+your configured Update Interval.  At the default 30-second interval that
+is roughly 90 seconds; at a 15-minute interval it is closer to 45
+minutes.  This delay is deliberate — a single refused write is more often
+a dropped connection than a bad setting, and an indicator that flickers
+at every network hiccup stops being read.</p>
+<p>The LED returns to steady on the first successful write.  No reboot is
+needed after fixing the configuration.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This indicator covers <strong>Google Sheets only</strong>.  An MQTT broker that
+refuses connections does not blink the Internet LED — check the
+diagnostics page in the web UI for MQTT state.</p>
+</div>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30.0%" />

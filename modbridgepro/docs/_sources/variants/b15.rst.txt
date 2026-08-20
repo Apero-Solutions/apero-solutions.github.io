@@ -9,7 +9,7 @@ ModBridge Pro B15
    :header-rows: 0
 
    * - **Firmware version**
-     - v5.0.0
+     - |release|
    * - **Status**
      - Current production variant
 

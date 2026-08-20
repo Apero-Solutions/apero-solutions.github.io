@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/security.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=35c0298d"></script>
+      <script src="_static/documentation_options.js?v=a7bff766"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -103,6 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -136,6 +139,7 @@
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#blinking-internet-led-google-configuration">Blinking Internet LED — Google configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
@@ -145,7 +149,10 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#time-synchronisation">Time Synchronisation</a></li>
@@ -288,6 +295,21 @@ re-entry.</p>
 values in plain text, are still read correctly and are re-encrypted the
 next time you save.</p>
 </div>
+<section id="exported-register-maps">
+<h3>Exported register maps<a class="headerlink" href="#exported-register-maps" title="Link to this heading"></a></h3>
+<p>The <strong>Export register map</strong> button on the <em>Modbus Devices</em> tab writes a JSON
+file describing the devices, their registers and the Modbus link settings.
+It deliberately carries <strong>no credentials</strong> — the Wi-Fi password, the MQTT
+password and the Google Sheets key are all omitted — so the file can be
+shared with a site engineer or committed to a project repository without
+leaking anything.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The consequence is that an exported map is <strong>not a device backup</strong>.  It
+cannot restore a unit on its own; the credentials have to be re-entered
+by hand on the replacement device.  See <a class="reference internal" href="configuration.html#register-map-files"><span class="std std-ref">Importing and exporting a register map</span></a>.</p>
+</div>
+</section>
 </section>
 <section id="transport-security">
 <h2>Transport Security<a class="headerlink" href="#transport-security" title="Link to this heading"></a></h2>
@@ -347,11 +369,14 @@ locked panel, locked cabinet.</p></li>
 hour thereafter.  All published data timestamps use <strong>IST (UTC +5:30)</strong>.
 Accurate timestamps are important for correlating IoT data with events in
 process historians or ERP systems.</p>
+<p>The offset is applied directly to the synchronised UTC clock.  India observes
+no daylight saving, so a fixed +5:30 is exact year-round — which is why there
+is no time zone setting to configure and no seasonal adjustment to make.</p>
 <p>If time has never been obtained — no internet since power-on — readings are
-stamped <code class="docutils literal notranslate"><span class="pre">1970-01-01T00:00:00</span></code>.  That marker in your data means the device
-was polling before it had a clock, not that the readings themselves are
-wrong.  Buffered readings keep the timestamp from when they were taken, so a
-backlog arrives correctly dated once it drains.</p>
+stamped <code class="docutils literal notranslate"><span class="pre">NTP</span> <span class="pre">Sync</span> <span class="pre">failed</span></code> in place of a date.  That marker in your data
+means the device was polling before it had a clock, not that the readings
+themselves are wrong.  Buffered readings keep the timestamp from when they
+were taken, so a backlog arrives correctly dated once it drains.</p>
 </section>
 </section>
 

@@ -103,7 +103,9 @@ JSON object: a cycle timestamp plus one entry per configured register.
    * - ``timestamp``
      - Local time (IST) of the poll cycle, ``YYYY-MM-DDTHH:MM:SS``.  Shared
        by every reading in the message, which is what lets a consumer treat
-       them as one row.
+       them as one row.  Before the clock has ever synchronised this field
+       reads ``NTP Sync failed`` instead of a date — a consumer that parses
+       it strictly should expect that value rather than fail on it.
    * - ``slaveId``
      - Modbus device ID the reading came from.
    * - ``rName`` / ``rAddr``
@@ -307,7 +309,14 @@ In tabular mode each poll cycle becomes one row:
 Columns follow the configured order — every register of device 1, then every
 register of device 2, and so on.  A register that failed to read shows
 ``Error: <CODE>`` in its cell instead of a value, so a gap in the data is
-visible in the sheet itself rather than having to be inferred.
+visible in the sheet itself rather than having to be inferred.  Rows taken
+before the clock synchronised carry ``NTP Sync failed`` in the Timestamp
+column, which also stops the sheet from sorting them among real dates.
+
+If no rows appear in the sheet at all, check the Internet LED before checking
+anything else.  A blinking Internet LED means the device is online and Google
+is refusing the writes — most often because the spreadsheet was never shared
+with the service account.  See :ref:`cloud_config_fault`.
 
 The header row is managed for you.  On the first upload after each boot the
 device compares row 1 against the current register configuration and, if it

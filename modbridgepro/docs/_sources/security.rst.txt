@@ -70,6 +70,22 @@ re-entry.
    values in plain text, are still read correctly and are re-encrypted the
    next time you save.
 
+Exported register maps
+----------------------
+
+The **Export register map** button on the *Modbus Devices* tab writes a JSON
+file describing the devices, their registers and the Modbus link settings.
+It deliberately carries **no credentials** — the Wi-Fi password, the MQTT
+password and the Google Sheets key are all omitted — so the file can be
+shared with a site engineer or committed to a project repository without
+leaking anything.
+
+.. warning::
+
+   The consequence is that an exported map is **not a device backup**.  It
+   cannot restore a unit on its own; the credentials have to be re-entered
+   by hand on the replacement device.  See :ref:`register_map_files`.
+
 
 Transport Security
 ==================
@@ -139,8 +155,12 @@ hour thereafter.  All published data timestamps use **IST (UTC +5:30)**.
 Accurate timestamps are important for correlating IoT data with events in
 process historians or ERP systems.
 
+The offset is applied directly to the synchronised UTC clock.  India observes
+no daylight saving, so a fixed +5:30 is exact year-round — which is why there
+is no time zone setting to configure and no seasonal adjustment to make.
+
 If time has never been obtained — no internet since power-on — readings are
-stamped ``1970-01-01T00:00:00``.  That marker in your data means the device
-was polling before it had a clock, not that the readings themselves are
-wrong.  Buffered readings keep the timestamp from when they were taken, so a
-backlog arrives correctly dated once it drains.
+stamped ``NTP Sync failed`` in place of a date.  That marker in your data
+means the device was polling before it had a clock, not that the readings
+themselves are wrong.  Buffered readings keep the timestamp from when they
+were taken, so a backlog arrives correctly dated once it drains.

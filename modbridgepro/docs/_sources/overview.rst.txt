@@ -71,7 +71,7 @@ Device Information
    :header-rows: 0
 
    * - **Firmware version**
-     - v5.0.0
+     - |release|
    * - **Time zone**
      - IST (UTC +5:30), synchronised from ``pool.ntp.org`` at boot and every
        hour thereafter

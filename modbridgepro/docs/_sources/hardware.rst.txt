@@ -50,7 +50,7 @@ Specifications
    * - Operating Temperature
      - 0 °C to 70 °C
    * - Firmware Version
-     - v5.0.0
+     - |release|
 
 
 Connectors and Peripherals

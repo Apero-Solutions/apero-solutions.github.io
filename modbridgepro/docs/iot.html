@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/iot.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=35c0298d"></script>
+      <script src="_static/documentation_options.js?v=a7bff766"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -103,6 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
@@ -136,6 +139,7 @@
 <li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#blinking-internet-led-google-configuration">Blinking Internet LED — Google configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
 </ul>
 </li>
@@ -145,7 +149,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -335,7 +342,9 @@ JSON object: a cycle timestamp plus one entry per configured register.</p>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code></p></td>
 <td><p>Local time (IST) of the poll cycle, <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:MM:SS</span></code>.  Shared
 by every reading in the message, which is what lets a consumer treat
-them as one row.</p></td>
+them as one row.  Before the clock has ever synchronised this field
+reads <code class="docutils literal notranslate"><span class="pre">NTP</span> <span class="pre">Sync</span> <span class="pre">failed</span></code> instead of a date — a consumer that parses
+it strictly should expect that value rather than fail on it.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slaveId</span></code></p></td>
 <td><p>Modbus device ID the reading came from.</p></td>
@@ -555,7 +564,13 @@ payload for that poll cycle.</p></td>
 <p>Columns follow the configured order — every register of device 1, then every
 register of device 2, and so on.  A register that failed to read shows
 <code class="docutils literal notranslate"><span class="pre">Error:</span> <span class="pre">&lt;CODE&gt;</span></code> in its cell instead of a value, so a gap in the data is
-visible in the sheet itself rather than having to be inferred.</p>
+visible in the sheet itself rather than having to be inferred.  Rows taken
+before the clock synchronised carry <code class="docutils literal notranslate"><span class="pre">NTP</span> <span class="pre">Sync</span> <span class="pre">failed</span></code> in the Timestamp
+column, which also stops the sheet from sorting them among real dates.</p>
+<p>If no rows appear in the sheet at all, check the Internet LED before checking
+anything else.  A blinking Internet LED means the device is online and Google
+is refusing the writes — most often because the spreadsheet was never shared
+with the service account.  See <a class="reference internal" href="leds_buttons.html#cloud-config-fault"><span class="std std-ref">Blinking Internet LED — Google configuration</span></a>.</p>
 <p>The header row is managed for you.  On the first upload after each boot the
 device compares row 1 against the current register configuration and, if it
 differs, rewrites it — so renaming a register or adding one is reflected in

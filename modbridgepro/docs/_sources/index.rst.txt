@@ -18,7 +18,7 @@ as MQTT brokers and Google Sheets, using an ESP32-S3 microcontroller.
 
 .. note::
 
-   This documentation covers firmware **v5.0.0**.
+   This documentation covers firmware |release|.
    For variant-specific pages (future hardware revisions or product tiers),
    see :ref:`variants`.
 

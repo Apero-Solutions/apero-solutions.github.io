@@ -23,7 +23,9 @@ Status LEDs
        **Steady ON** — configuration access point is active |br|
        **OFF** — device is in normal operating mode
    * - Internet LED
-     - **Steady ON** — internet is reachable |br|
+     - **Steady ON** — internet is reachable and cloud writes are landing |br|
+       **Blink, ~2 per second** — internet is fine, but the cloud target keeps
+       refusing the data (Google Sheets only) |br|
        **OFF** — no internet connectivity
    * - Modbus RX Activity
      - **Brief pulse (100 ms)** — at least one register was read
@@ -53,10 +55,61 @@ LED Diagnostic Patterns
    * - Internet LED state
      - Situation
    * - ON
-     - Normal — internet connected.
+     - Normal — internet connected and data is reaching the cloud.
+   * - Blinking
+     - The network is fine and Google Sheets is rejecting the writes.  The
+       cause is in the Google configuration, not the wiring — see
+       :ref:`cloud_config_fault` below.
    * - OFF
      - Internet lost — check router, Wi-Fi password, or Ethernet cable.
        The device retries every 30 seconds by itself.
+
+.. _cloud_config_fault:
+
+Blinking Internet LED — Google configuration
+--------------------------------------------
+
+A blinking Internet LED means the device is online but every attempt to write
+to Google Sheets is being refused.  Without it this state is invisible from
+the front panel: the LED sat steady while no data arrived in the sheet, and
+the only way to tell was a serial console.
+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Cause
+     - What to check
+   * - Service account credentials rejected
+     - The private key or the service account email is wrong, or the email
+       has no domain in it.  Re-paste both from the downloaded JSON key.
+   * - Spreadsheet ID wrong or blank
+     - Copy it again from the sheet URL, between ``/d/`` and ``/edit``.
+   * - Sheet not shared with the service account
+     - Share the spreadsheet with the service account email address, with
+       **Editor** permission.  This is the most common cause, and the one
+       that looks most like a working configuration.
+
+.. note::
+
+   Credential faults light the LED as soon as the device tries to
+   authenticate.  A wrong spreadsheet ID or an unshared sheet can only be
+   detected when a write is actually refused, so the LED starts blinking
+   after **three consecutive failed publish attempts** — about three times
+   your configured Update Interval.  At the default 30-second interval that
+   is roughly 90 seconds; at a 15-minute interval it is closer to 45
+   minutes.  This delay is deliberate — a single refused write is more often
+   a dropped connection than a bad setting, and an indicator that flickers
+   at every network hiccup stops being read.
+
+   The LED returns to steady on the first successful write.  No reboot is
+   needed after fixing the configuration.
+
+.. note::
+
+   This indicator covers **Google Sheets only**.  An MQTT broker that
+   refuses connections does not blink the Internet LED — check the
+   diagnostics page in the web UI for MQTT state.
 
 .. list-table::
    :widths: 30 70
