@@ -115,22 +115,11 @@ Step 6 — Add Modbus slave devices and registers
 
 On the *Modbus Devices* tab:
 
-1. Click **Add Modbus Device**.
+1. Click **Add Device**.
 2. Enter the **Device ID** (1–247) as configured on the Modbus device.
 3. Add registers: for each register provide a variable name, data type,
    address, and byte order.
 4. Repeat for up to 5 devices, 50 registers each.
-
-.. tip::
-
-   Do not type identical maps twice.  If several meters of the same model
-   are daisy-chained on the bus, configure the first one and press
-   **Duplicate** on its card — the copy keeps every register and is given
-   the next free Device ID.  A long map is quicker to paste than to type:
-   the **Bulk add registers** panel under each register table takes rows
-   copied straight out of the meter's datasheet spreadsheet.  Whole maps can
-   also be moved between units with **Export / Import register map**.  See
-   :ref:`entering_registers_faster`.
 
 See :ref:`configuration` for a full explanation of register addressing and
 data types.  Getting the address convention right is the single most common

@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/configuration.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=a7bff766"></script>
+      <script src="_static/documentation_options.js?v=d66abd3f"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -103,9 +103,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#modbus-devices-tab">Modbus Devices Tab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#per-device-parameters">Per-device parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#per-register-parameters">Per-register parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#entering-registers-faster">Entering registers faster</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#device-id-checks">Device ID checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#register-address-ranges">Register address ranges</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-types">Data Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#byte-swap-modes">Byte Swap Modes</a></li>
@@ -149,10 +146,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
@@ -358,9 +352,6 @@ mode.  Must be on the same subnet as the server.</p></td>
 <h2>Modbus Devices Tab<a class="headerlink" href="#modbus-devices-tab" title="Link to this heading"></a></h2>
 <p>Define each Modbus slave device and the registers you want to read.  Up to
 <strong>5 devices</strong> and <strong>50 registers per device</strong> are supported.</p>
-<p>Registers can be typed in one row at a time, pasted in bulk from a
-spreadsheet, copied from a device already configured on the page, or loaded
-from a previously exported file — see <a class="reference internal" href="#id1">Entering registers faster</a>.</p>
 <section id="per-device-parameters">
 <h3>Per-device parameters<a class="headerlink" href="#per-device-parameters" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
@@ -421,101 +412,6 @@ register map.</p></td>
 </tbody>
 </table>
 </section>
-<section id="entering-registers-faster">
-<span id="id1"></span><h3>Entering registers faster<a class="headerlink" href="#entering-registers-faster" title="Link to this heading"></a></h3>
-<p>Typing 50 rows by hand for each of several identical meters is slow and
-error-prone.  Three shortcuts on this tab avoid it.</p>
-<p><strong>Duplicate</strong> — each device card has a <em>Duplicate</em> button in its header.  It
-creates a new device carrying a copy of every register on the original and
-pre-fills the Device ID with the lowest free address at or above the source’s
-own, so a chain of identical meters is built by pressing it repeatedly.  Only
-the Device ID normally needs changing afterwards.</p>
-<p><strong>Bulk add registers</strong> — below each register table is a <em>Bulk add registers</em>
-panel that accepts a whole register map pasted as text, one register per
-line:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Voltage_L1</span><span class="p">,</span> <span class="mi">30001</span>
-<span class="n">Current_L1</span><span class="p">,</span> <span class="mi">30003</span><span class="p">,</span> <span class="n">UINT16</span>
-<span class="n">Power_Total</span><span class="p">,</span> <span class="mi">30049</span><span class="p">,</span> <span class="n">FLOAT32</span><span class="p">,</span> <span class="n">CDAB</span>
-<span class="n">Energy_kWh</span><span class="p">,</span> <span class="mi">40001</span><span class="p">,</span> <span class="n">UINT32</span><span class="p">,</span> <span class="n">WORD_SWAP</span>
-</pre></div>
-</div>
-<p>The columns are <strong>Name, Address, Type, Byte Order</strong>.  Only the first two are
-required; omitted columns default to <code class="docutils literal notranslate"><span class="pre">UINT16</span></code> and <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">Swap</span></code>.  Fields may
-be separated by commas <em>or</em> tabs, so a block of cells copied straight out of
-Excel or Google Sheets can be pasted in unchanged.  Blank lines, lines
-starting with <code class="docutils literal notranslate"><span class="pre">#</span></code>, and a header row are ignored.</p>
-<p>Type and byte-order names are matched loosely, so the spelling used in the
-device manual usually works as-is — <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">FLOAT32</span></code> all
-select FLOAT32; <code class="docutils literal notranslate"><span class="pre">word</span></code> selects UINT16 and <code class="docutils literal notranslate"><span class="pre">dword</span></code> UINT32; <code class="docutils literal notranslate"><span class="pre">CDAB</span></code>,
-<code class="docutils literal notranslate"><span class="pre">word</span> <span class="pre">swap</span></code> and <code class="docutils literal notranslate"><span class="pre">WORD_SWAP</span></code> all select Word Swap.</p>
-<p><em>Append rows</em> adds to what is already there; <em>Replace all</em> clears the table
-first.  Lines that cannot be read are skipped and reported underneath with
-their line numbers — the valid ones are still added, so a paste is never
-all-or-nothing.  Names longer than 31 characters are shortened, and the paste
-stops at the 50-register limit with a note saying how many were left out.</p>
-<p><strong>Import / Export</strong> — the buttons at the top of the tab move a whole register
-map between units, described next.</p>
-</section>
-<section id="importing-and-exporting-a-register-map">
-<span id="register-map-files"></span><h3>Importing and exporting a register map<a class="headerlink" href="#importing-and-exporting-a-register-map" title="Link to this heading"></a></h3>
-<p><strong>Export register map</strong> downloads the devices, their registers, and the
-Modbus link settings (protocol, baud rate, data bits, parity, stop bits, and
-the TCP server address) as a JSON file named
-<code class="docutils literal notranslate"><span class="pre">modbridge-registers-YYYYMMDD-HHMM.json</span></code>.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The export contains <strong>no credentials</strong> — no Wi-Fi password, no MQTT
-password, no Google Sheets key.  It is a register map, not a device
-backup, and is safe to email to a site engineer or keep in a project
-folder.  There is no way to restore a device’s secrets from it; those
-must be re-entered on the unit.</p>
-</div>
-<p><strong>Import register map</strong> reads such a file back.  Because it replaces every
-device currently shown on the page, it asks for confirmation first, and asks
-again separately before applying the Modbus link settings — so a map can be
-loaded onto a bus that runs at a different baud rate without disturbing it.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Importing only fills in the form.  Nothing reaches the device until you
-press <strong>Save Configuration</strong>, so there is always an opportunity to review
-and adjust the imported map — in particular the Device IDs, which are
-rarely identical between two sites.</p>
-</div>
-<p>A file holding more than 5 devices or more than 50 registers on a device is
-truncated to the supported limits, and registers whose address is missing or
-out of range are dropped.  Anything adjusted this way is listed in the status
-line under the buttons rather than applied silently.</p>
-<p>The format is plain JSON and easy to generate elsewhere — useful for building
-a register map for a meter model once and reusing it across installations:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"modbridge-register-map"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"modbus"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rtu"</span><span class="p">,</span><span class="w"> </span><span class="nt">"baudrate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9600"</span><span class="p">,</span><span class="w"> </span><span class="nt">"parity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"N"</span><span class="w"> </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"slaves"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"registers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Voltage_L1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="mi">30001</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"dataType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UINT16"</span><span class="p">,</span><span class="w"> </span><span class="nt">"byteSwap"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NO_SWAP"</span><span class="w"> </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>A file containing only the <code class="docutils literal notranslate"><span class="pre">slaves</span></code> array — or a bare array of devices — is
-also accepted.</p>
-</section>
-<section id="device-id-checks">
-<h3>Device ID checks<a class="headerlink" href="#device-id-checks" title="Link to this heading"></a></h3>
-<p>Two devices answering to the same address collide on every poll, and the
-duplicate button makes that easy to do by accident.  A Device ID entered
-twice is highlighted as you type, and <strong>Save Configuration</strong> is refused with
-a message naming the address and the two devices using it.</p>
-<p>Saving is also refused when a device has no Device ID, has one outside
-1–247, or has no register with both a name and an address filled in.  In each
-case the page switches to this tab and focuses the field at fault.</p>
-</section>
 <section id="register-address-ranges">
 <span id="register-addressing"></span><h3>Register address ranges<a class="headerlink" href="#register-address-ranges" title="Link to this heading"></a></h3>
 <p>Addresses are entered in the <strong>5-digit Modbus reference notation</strong> used by
@@ -568,7 +464,7 @@ is reported as <code class="docutils literal notranslate"><span class="pre">ADDR
 </div>
 </section>
 <section id="data-types">
-<span id="id2"></span><h3>Data Types<a class="headerlink" href="#data-types" title="Link to this heading"></a></h3>
+<span id="id1"></span><h3>Data Types<a class="headerlink" href="#data-types" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 15.0%" />
