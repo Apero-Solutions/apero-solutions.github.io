@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/hardware.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=29e406a8"></script>
+      <script src="_static/documentation_options.js?v=e9216e06"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -192,6 +192,20 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Manufacturing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="production_test.html">Production Hardware Test</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-bench-needs">What the bench needs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reaching-the-unit-over-ethernet">Reaching the unit over Ethernet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#getting-the-bench-image-onto-a-bare-board">Getting the bench image onto a bare board</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#bench-sequence">Bench sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-each-step-proves">What each step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-rs-485-step-proves">What the RS-485 step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#putting-a-unit-back-into-test-mode">Putting a unit back into test mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reading-a-failure">Reading a failure</a></li>
+</ul>
+</li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
@@ -280,7 +294,7 @@ block above with:</p>
 <td><p>0 °C to 70 °C</p></td>
 </tr>
 <tr class="row-odd"><td><p>Firmware Version</p></td>
-<td><p>v5.4.0</p></td>
+<td><p>v6.0.0</p></td>
 </tr>
 </tbody>
 </table>
@@ -304,6 +318,9 @@ preferred.</p></li>
 Modbus TCP server (e.g., a PLC).  In this mode the port is not used for
 internet traffic.</p></li>
 </ul>
+<p>The configuration access point also brings up a static Ethernet interface on
+<code class="docutils literal notranslate"><span class="pre">192.168.5.1</span></code> while the device is in configuration mode, so the unit can be
+reached over either link during commissioning.</p>
 </section>
 <section id="rs-485-terminal-block">
 <h3>RS-485 Terminal Block<a class="headerlink" href="#rs-485-terminal-block" title="Link to this heading"></a></h3>
@@ -345,8 +362,18 @@ the bus with a 120 Ω resistor at each end for runs longer than ~10 m.</p>
 </section>
 <section id="control-buttons">
 <h3>Control Buttons<a class="headerlink" href="#control-buttons" title="Link to this heading"></a></h3>
-<p>Two push-buttons are described in detail in <a class="reference internal" href="leds_buttons.html#leds-buttons"><span class="std std-ref">LEDs, Buttons and Outputs</span></a>.  Both are
-read only during the first 10 seconds after power-on.</p>
+<p>Two push-buttons are described in detail in <a class="reference internal" href="leds_buttons.html#leds-buttons"><span class="std std-ref">LEDs, Buttons and Outputs</span></a>:</p>
+<ul class="simple">
+<li><p><strong>Internet Reset</strong> — reopens the configuration access point without wiping
+saved settings.  It is wired to GPIO3 and is read with <code class="docutils literal notranslate"><span class="pre">INPUT_PULLUP</span></code>.</p></li>
+<li><p><strong>Factory Reset</strong> — erases configuration and reboots to defaults.  It is
+wired to GPIO0 and is the boot-strap pin used for a full erase.</p></li>
+</ul>
+<p>Both are read only during the first 10 seconds after power-on, and both are
+active-low while the button is held.</p>
+<p>The 24 V no-internet alert output is driven from GPIO8 and goes active-high
+when the device has lost internet connectivity, matching the panel output and
+fault logic described in <a class="reference internal" href="leds_buttons.html#leds-buttons"><span class="std std-ref">LEDs, Buttons and Outputs</span></a>.</p>
 </section>
 </section>
 <section id="device-label">

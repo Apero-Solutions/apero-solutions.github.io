@@ -52,6 +52,12 @@ as MQTT brokers and Google Sheets, using an ESP32-S3 microcontroller.
    ota
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Manufacturing
+
+   production_test
+
+.. toctree::
    :maxdepth: 1
    :caption: Product Variants
 

@@ -75,6 +75,10 @@ configuration:
   Modbus TCP server (e.g., a PLC).  In this mode the port is not used for
   internet traffic.
 
+The configuration access point also brings up a static Ethernet interface on
+``192.168.5.1`` while the device is in configuration mode, so the unit can be
+reached over either link during commissioning.
+
 RS-485 Terminal Block
 ---------------------
 
@@ -111,8 +115,19 @@ Three indicator LEDs — Config Mode, Internet and Modbus RX Activity — plus a
 Control Buttons
 ---------------
 
-Two push-buttons are described in detail in :ref:`leds_buttons`.  Both are
-read only during the first 10 seconds after power-on.
+Two push-buttons are described in detail in :ref:`leds_buttons`:
+
+* **Internet Reset** — reopens the configuration access point without wiping
+  saved settings.  It is wired to GPIO3 and is read with ``INPUT_PULLUP``.
+* **Factory Reset** — erases configuration and reboots to defaults.  It is
+  wired to GPIO0 and is the boot-strap pin used for a full erase.
+
+Both are read only during the first 10 seconds after power-on, and both are
+active-low while the button is held.
+
+The 24 V no-internet alert output is driven from GPIO8 and goes active-high
+when the device has lost internet connectivity, matching the panel output and
+fault logic described in :ref:`leds_buttons`.
 
 
 Device Label

@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/quickstart.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=29e406a8"></script>
+      <script src="_static/documentation_options.js?v=e9216e06"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -192,6 +192,20 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Manufacturing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="production_test.html">Production Hardware Test</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-bench-needs">What the bench needs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reaching-the-unit-over-ethernet">Reaching the unit over Ethernet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#getting-the-bench-image-onto-a-bare-board">Getting the bench image onto a bare board</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#bench-sequence">Bench sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-each-step-proves">What each step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-rs-485-step-proves">What the RS-485 step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#putting-a-unit-back-into-test-mode">Putting a unit back into test mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reading-a-failure">Reading a failure</a></li>
+</ul>
+</li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
@@ -280,6 +294,10 @@ printed on the label.</p>
 <h3>Step 3 — Open the configuration page<a class="headerlink" href="#step-3-open-the-configuration-page" title="Link to this heading"></a></h3>
 <p>In configuration mode both interfaces are live, so you can reach the page
 over Wi-Fi or over a directly connected Ethernet cable.</p>
+<p>The unit advertises a configuration access point named
+<code class="docutils literal notranslate"><span class="pre">ModBridgePro_XXXXXX</span></code> and also brings up a static Ethernet interface on
+<code class="docutils literal notranslate"><span class="pre">192.168.5.1</span></code>.  The Wi-Fi AP is always available on <code class="docutils literal notranslate"><span class="pre">192.168.4.1</span></code> while
+configuration mode is active, regardless of the chosen internet uplink.</p>
 <p>If connected through WiFi then navigate to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.4.1</span>
 </pre></div>

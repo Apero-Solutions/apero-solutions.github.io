@@ -58,12 +58,17 @@ Step 3 — Open the configuration page
 In configuration mode both interfaces are live, so you can reach the page
 over Wi-Fi or over a directly connected Ethernet cable.
 
+The unit advertises a configuration access point named
+``ModBridgePro_XXXXXX`` and also brings up a static Ethernet interface on
+``192.168.5.1``.  The Wi-Fi AP is always available on ``192.168.4.1`` while
+configuration mode is active, regardless of the chosen internet uplink.
+
 If connected through WiFi then navigate to::
 
    http://192.168.4.1
 
 If connected through Ethernet then navigate to::
-   
+
    http://192.168.5.1
 
 Log in with the default credentials:
