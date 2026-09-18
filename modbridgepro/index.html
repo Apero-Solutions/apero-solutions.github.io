@@ -142,6 +142,8 @@
   .video-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
   .video-copy strong{font-family:var(--display);font-size:1.04rem;letter-spacing:-.02em;}
 
+  .flow-card{padding:14px 12px 12px;}
+
   .flow{display:flex;flex-direction:column;}
   .flow-top{display:flex;align-items:center;}
 
@@ -383,12 +385,8 @@
       </div>
     </div>
 
-    <div class="hero-visual" aria-label="ModbridgePro product image and video preview">
+    <div class="hero-visual" aria-label="ModbridgePro product video and animated flow preview">
       <div class="media-stack">
-        <div class="media-card product-card" aria-label="ModbridgePro product image">
-          <img src="assets/1789732848497.png" alt="ModbridgePro gateway device" />
-        </div>
-
         <div class="media-card video-card" aria-label="ModbridgePro product video preview">
           <video controls playsinline poster="assets/1789732848497.png">
             <source src="assets/gemini_generated_video_1dc19084.mp4" type="video/mp4" />
@@ -399,51 +397,53 @@
             <strong>Watch the overview</strong>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="flow" aria-hidden="true" style="display:none;">
-      <div class="flow-top">
-        <div class="sensor">
-          <div class="s-k">Modbus slave</div>
-          <div class="s-name">Energy meter</div>
-          <div class="lcd"><b id="lcdVal">228.4</b><span>Volts</span></div>
-          <div class="s-meta">Slave ID 01 · 9600 8N1</div>
+        <div class="media-card flow-card" aria-label="ModbridgePro animated data flow preview">
+          <div class="flow" aria-hidden="true">
+            <div class="flow-top">
+              <div class="sensor">
+                <div class="s-k">Modbus slave</div>
+                <div class="s-name">Energy meter</div>
+                <div class="lcd"><b id="lcdVal">228.4</b><span>Volts</span></div>
+                <div class="s-meta">Slave ID 01 · 9600 8N1</div>
+              </div>
+
+              <div class="wire">
+                <span class="wire-tag">Modbus RTU</span>
+                <span class="wire-line"></span>
+                <span class="wire-tag">RS-485</span>
+              </div>
+
+              <div class="device">
+                <span class="led"></span>
+                <div class="d-title">Gateway</div>
+                <div class="d-name">ModbridgePro</div>
+                <div class="d-sub">B15 · ESP32-S3</div>
+                <div class="chips"><span class="on">Wi-Fi</span><span>MQTT</span><span class="on">Sheets</span></div>
+                <div class="terminals"><span></span><span></span><span></span><span></span></div>
+              </div>
+            </div>
+
+            <div class="downlink">
+              <div class="dl-line"><span class="dl-tag">Wi-Fi / Ethernet</span></div>
+            </div>
+
+            <div class="sheet">
+              <div class="sheet-bar">
+                <span class="tabdot g"></span><span class="tabdot"></span><span class="tabdot"></span>
+                <span class="fname">plant_readings.gsheet</span>
+                <span class="status">Live</span>
+              </div>
+              <table class="grid-tbl" id="liveSheet">
+                <thead>
+                  <tr><th>Timestamp</th><th>Volt (V)</th><th>Curr (A)</th><th>Power (kW)</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="rowcount" id="rowCount">appending rows…</div>
+            </div>
+          </div>
         </div>
-
-        <div class="wire">
-          <span class="wire-tag">Modbus RTU</span>
-          <span class="wire-line"></span>
-          <span class="wire-tag">RS-485</span>
-        </div>
-
-        <div class="device">
-          <span class="led"></span>
-          <div class="d-title">Gateway</div>
-          <div class="d-name">ModbridgePro</div>
-          <div class="d-sub">B15 · ESP32-S3</div>
-          <div class="chips"><span class="on">Wi-Fi</span><span>MQTT</span><span class="on">Sheets</span></div>
-          <div class="terminals"><span></span><span></span><span></span><span></span></div>
-        </div>
-      </div>
-
-      <div class="downlink">
-        <div class="dl-line"><span class="dl-tag">Wi-Fi / Ethernet</span></div>
-      </div>
-
-      <div class="sheet">
-        <div class="sheet-bar">
-          <span class="tabdot g"></span><span class="tabdot"></span><span class="tabdot"></span>
-          <span class="fname">plant_readings.gsheet</span>
-          <span class="status">Live</span>
-        </div>
-        <table class="grid-tbl" id="liveSheet">
-          <thead>
-            <tr><th>Timestamp</th><th>Volt (V)</th><th>Curr (A)</th><th>Power (kW)</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <div class="rowcount" id="rowCount">appending rows…</div>
       </div>
     </div>
   </div>
@@ -589,6 +589,84 @@
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  (function(){
+    var tbody = document.querySelector('#liveSheet tbody');
+    var rowCount = document.getElementById('rowCount');
+    var lcd = document.getElementById('lcdVal');
+    if(!tbody) return;
+
+    var ROWS = 5, TICK = 5000;
+
+    function two(n){ return (n<10?'0':'')+n; }
+    function stamp(d){
+      return d.getFullYear()+'-'+two(d.getMonth()+1)+'-'+two(d.getDate())+' '+
+             two(d.getHours())+':'+two(d.getMinutes())+':'+two(d.getSeconds());
+    }
+    function reading(at){
+      var v = 228 + Math.random()*6;
+      var i = 11.4 + Math.random()*2.2;
+      return [stamp(at), v.toFixed(1), i.toFixed(2), (2.6 + Math.random()*0.6).toFixed(2)];
+    }
+    function addRow(){
+      var tr = document.createElement('tr');
+      for(var j=0;j<4;j++){
+        var td = document.createElement('td');
+        var s = document.createElement('span'); s.className='cellval';
+        td.appendChild(s); tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+      return tr;
+    }
+    function write(tr, r){
+      var spans = tr.querySelectorAll('.cellval');
+      for(var j=0;j<r.length;j++){ spans[j].textContent = r[j]; }
+      requestAnimationFrame(function(){
+        tr.querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
+      });
+    }
+
+    for(var i=0;i<ROWS;i++){ addRow(); }
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var total = 0, filled = 0;
+
+    function count(){
+      rowCount.textContent = total ? total + ' rows appended · every 5 s' : 'waiting for first reading…';
+    }
+    count();
+
+    if(reduce){
+      var base = new Date(), trs = tbody.querySelectorAll('tr'), last;
+      for(var k=0;k<ROWS;k++){
+        last = reading(new Date(base.getTime() - (ROWS-1-k)*TICK));
+        write(trs[k], last);
+        trs[k].querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
+      }
+      total = ROWS; count();
+      if(lcd) lcd.textContent = last[1];
+      return;
+    }
+
+    function poll(){
+      if(document.hidden) return;
+      var r = reading(new Date());
+      if(lcd) lcd.textContent = r[1];
+      var tr;
+      if(filled < ROWS){
+        tr = tbody.children[filled];
+        filled++;
+      } else {
+        tbody.removeChild(tbody.firstElementChild);
+        tr = addRow();
+      }
+      write(tr, r);
+      total++;
+      count();
+    }
+
+    setTimeout(function(){ poll(); setInterval(poll, TICK); }, 900);
+  })();
 </script>
 </body>
 </html>
