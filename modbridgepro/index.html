@@ -46,7 +46,6 @@
     background:var(--paper);
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
-    /* faint engineering grid on the page background */
     background-image:
       linear-gradient(var(--grid-soft) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-soft) 1px, transparent 1px);
@@ -72,7 +71,6 @@
     box-shadow:0 0 0 3px rgba(18,147,90,.18);
   }
 
-  /* ---------- buttons ---------- */
   .btn{
     display:inline-flex;align-items:center;gap:.5rem;
     font-family:var(--body);font-weight:600;font-size:.95rem;
@@ -89,7 +87,6 @@
 
   a:focus-visible,.btn:focus-visible{outline:3px solid var(--spark);outline-offset:2px;}
 
-  /* ---------- nav ---------- */
   .nav{
     position:sticky;top:0;z-index:50;
     background:rgba(237,241,240,.82);
@@ -107,10 +104,8 @@
   .nav-links{display:flex;gap:1.6rem;align-items:center;font-size:.92rem;font-weight:500;color:var(--ink-soft);}
   .nav-links a:hover{color:var(--ink);}
   .nav-cta{display:flex;align-items:center;gap:1rem;}
-  .nav-links, .nav-cta .btn-ghost{}
   @media(max-width:860px){ .nav-links{display:none;} }
 
-  /* ---------- hero ---------- */
   .hero{padding:74px 0 60px;}
   .hero-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:center;}
   @media(max-width:920px){ .hero-grid{grid-template-columns:1fr;gap:40px;} }
@@ -126,7 +121,27 @@
   .hero-spec b{color:var(--ink);font-weight:500;}
   .hero-spec .dot{color:var(--grid);}
 
-  /* ---------- signature: sensor → gateway → live sheet ---------- */
+  .hero-visual{display:flex;justify-content:center;}
+  .media-stack{display:grid;gap:18px;width:min(100%,520px);}
+  .media-card{
+    background:rgba(255,255,255,.72);
+    border:1px solid var(--grid);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .product-card{padding:12px;}
+  .product-card img{display:block;width:100%;height:auto;border-radius:12px;}
+
+  .video-card{padding:12px;}
+  .video-card video{
+    display:block;width:100%;max-height:240px;border-radius:12px;background:#07161c;object-fit:cover;
+  }
+
+  .video-copy{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;font-size:.9rem;}
+  .video-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .video-copy strong{font-family:var(--display);font-size:1.04rem;letter-spacing:-.02em;}
+
   .flow{display:flex;flex-direction:column;}
   .flow-top{display:flex;align-items:center;}
 
@@ -134,7 +149,6 @@
   @keyframes flowx{to{background-position:13px 0;}}
   @keyframes flowy{to{background-position:0 13px;}}
 
-  /* the field device speaking Modbus */
   .sensor{
     flex:1 1 auto;min-width:140px;
     background:var(--surface);border:1px solid var(--grid);border-radius:10px;
@@ -157,7 +171,6 @@
   .lcd span{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:#8AA1AB;}
   .sensor .s-meta{font-family:var(--mono);font-size:.58rem;letter-spacing:.05em;color:var(--ink-soft);margin-top:9px;line-height:1.5;}
 
-  /* RS-485 run between sensor and gateway */
   .wire{flex:0 0 84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:0 5px;}
   .wire-tag{font-family:var(--mono);font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;}
   .wire-line{
@@ -192,7 +205,6 @@
   .device .terminals{display:flex;gap:5px;margin-top:12px;}
   .device .terminals span{flex:1;height:15px;border-radius:2px;background:#22414d;border-bottom:2px solid var(--live);}
 
-  /* uplink drop from the gateway into the sheet */
   .downlink{display:flex;justify-content:flex-end;padding-right:99px;}
   .dl-line{
     position:relative;width:2px;height:40px;
@@ -208,7 +220,6 @@
     font-family:var(--mono);font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
   }
 
-  /* stack the chain on very narrow screens */
   @media(max-width:430px){
     .flow-top{flex-direction:column;align-items:stretch;}
     .wire{flex:0 0 auto;padding:10px 0;}
@@ -250,7 +261,6 @@
     color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
   table.grid-tbl th:first-child, table.grid-tbl td:first-child{color:var(--ink-soft);}
-  /* the timestamp needs the room; the other three split what's left */
   table.grid-tbl th:first-child{width:38%;}
   @media(max-width:560px){
     table.grid-tbl{font-size:.66rem;}
@@ -267,19 +277,16 @@
   table.grid-tbl tr:last-child td{border-bottom:none;}
   .rowcount{font-family:var(--mono);font-size:.64rem;color:var(--ink-soft);padding:7px 12px;border-top:1px solid var(--grid);background:#F7F9F8;}
 
-  /* ---------- value band ---------- */
   .band{border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);background:var(--surface);}
   .band .wrap{padding:34px 24px;}
   .band p{font-family:var(--display);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.6rem);max-width:46ch;margin:0;line-height:1.25;}
   .band p .u{color:var(--live-deep);}
 
-  /* ---------- generic section ---------- */
   section.blk{padding:76px 0;}
   .sec-head{max-width:52ch;margin-bottom:44px;}
   .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:700;margin:14px 0 12px;}
   .sec-head p{color:var(--ink-soft);font-size:1.05rem;margin:0;}
 
-  /* ---------- how it works ---------- */
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   @media(max-width:820px){ .steps{grid-template-columns:1fr;} }
   .step{background:var(--surface);border:1px solid var(--grid);border-radius:12px;padding:26px 24px;position:relative;overflow:hidden;}
@@ -288,7 +295,6 @@
   .step p{color:var(--ink-soft);font-size:.96rem;margin:0;}
   .step .rail{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--live);opacity:.9;}
 
-  /* ---------- features ---------- */
   .specsheet{background:var(--surface);border:1px solid var(--grid);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
   .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);}
   @media(max-width:820px){ .feat-grid{grid-template-columns:1fr;} }
@@ -300,7 +306,6 @@
   .feat-note{padding:16px 24px;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);background:#F7F9F8;}
   .feat-note b{color:var(--ink);font-weight:500;}
 
-  /* ---------- use cases ---------- */
   .uses{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   @media(max-width:820px){ .uses{grid-template-columns:1fr;} }
   .use{background:var(--surface);border:1px solid var(--grid);border-radius:12px;padding:26px 24px;}
@@ -310,12 +315,11 @@
   .use .hook{font-size:.9rem;color:var(--ink);border-top:1px dashed var(--grid);padding-top:12px;}
   .use .hook span{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:4px;}
 
-  /* ---------- pricing ---------- */
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;}
   @media(max-width:820px){ .price-grid{grid-template-columns:1fr;} }
   .tier{background:var(--surface);border:1px solid var(--grid);border-radius:14px;padding:28px 26px;display:flex;flex-direction:column;}
   .tier.feature{border-color:var(--live);box-shadow:0 0 0 1px var(--live), var(--shadow);}
-  .tier .badge{align-self:flex-start;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--live);padding:.3rem .55rem;border-radius:5px;margin-bottom:14px;}
+  .tier .badge{align-self:flex-start;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--live);padding:.3rem .55rem;border-radius:5px;}
   .tier .tname{font-family:var(--display);font-weight:700;font-size:1.05rem;}
   .tier .amt{font-family:var(--display);font-weight:800;font-size:2.3rem;margin:10px 0 2px;letter-spacing:-.03em;}
   .tier .amt small{font-size:1rem;font-weight:600;color:var(--ink-soft);}
@@ -323,13 +327,11 @@
   .tier .btn{width:100%;justify-content:center;margin-top:auto;}
   .price-foot{margin-top:22px;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);}
 
-  /* ---------- cta band ---------- */
   .cta{background:var(--ink);color:#fff;border-radius:16px;padding:52px 44px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;}
   .cta h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;max-width:20ch;}
   .cta p{color:#B7C6CC;margin:10px 0 0;max-width:40ch;}
   .cta .cta-actions{display:flex;gap:12px;flex-wrap:wrap;}
 
-  /* ---------- footer ---------- */
   footer{padding:44px 0 60px;color:var(--ink-soft);}
   .foot-inner{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid var(--grid);padding-top:28px;}
   .foot-brand{font-family:var(--display);font-weight:800;color:var(--ink);font-size:1.05rem;}
@@ -345,7 +347,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="#top">
@@ -365,7 +366,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero" id="top">
   <div class="wrap hero-grid">
     <div>
@@ -383,8 +383,26 @@
       </div>
     </div>
 
-    <!-- SIGNATURE: sensor → gateway → live-filling sheet -->
-    <div class="flow" aria-hidden="true">
+    <div class="hero-visual" aria-label="ModbridgePro product image and video preview">
+      <div class="media-stack">
+        <div class="media-card product-card" aria-label="ModbridgePro product image">
+          <img src="assets/1789732848497.png" alt="ModbridgePro gateway device" />
+        </div>
+
+        <div class="media-card video-card" aria-label="ModbridgePro product video preview">
+          <video controls playsinline poster="assets/1789732848497.png">
+            <source src="assets/gemini_generated_video_1dc19084.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="video-copy">
+            <span class="video-label">Product video</span>
+            <strong>Watch the overview</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow" aria-hidden="true" style="display:none;">
       <div class="flow-top">
         <div class="sensor">
           <div class="s-k">Modbus slave</div>
@@ -423,7 +441,7 @@
           <thead>
             <tr><th>Timestamp</th><th>Volt (V)</th><th>Curr (A)</th><th>Power (kW)</th></tr>
           </thead>
-          <tbody><!-- rows injected by script; static fallback below --></tbody>
+          <tbody></tbody>
         </table>
         <div class="rowcount" id="rowCount">appending rows…</div>
       </div>
@@ -431,14 +449,12 @@
   </div>
 </header>
 
-<!-- VALUE BAND -->
 <div class="band">
   <div class="wrap">
     <p>Most gateways stop at MQTT and a broker you still have to run. This one drops readings <span class="u">straight into a Google Sheet you already know how to use.</span></p>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
 <section class="blk" id="how">
   <div class="wrap">
     <div class="sec-head">
@@ -466,7 +482,6 @@
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="blk" id="features" style="padding-top:0;">
   <div class="wrap">
     <div class="sec-head">
@@ -492,7 +507,6 @@
   </div>
 </section>
 
-<!-- USE CASES -->
 <section class="blk" id="uses" style="padding-top:0;">
   <div class="wrap">
     <div class="sec-head">
@@ -522,7 +536,6 @@
   </div>
 </section>
 
-<!-- PRICING -->
 <section class="blk" id="pricing" style="padding-top:0;">
   <div class="wrap">
     <div class="sec-head">
@@ -542,7 +555,6 @@
   </div>
 </section>
 
-<!-- CTA -->
 <section class="blk" id="contact" style="padding-top:0;">
   <div class="wrap">
     <div class="cta">
@@ -558,7 +570,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="wrap foot-inner">
     <div>
@@ -578,96 +589,6 @@
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
-
-  // ---- live sheet fill animation (with reduced-motion fallback) ----
-  (function(){
-    var tbody = document.querySelector('#liveSheet tbody');
-    var rowCount = document.getElementById('rowCount');
-    var lcd = document.getElementById('lcdVal');
-    if(!tbody) return;
-
-    // the device polls and publishes on the interval the user picks;
-    // the demo runs that at five seconds
-    var ROWS = 5, TICK = 5000;
-
-    function two(n){ return (n<10?'0':'')+n; }
-    // same shape the device writes: YYYY-MM-DD HH:MM:SS
-    function stamp(d){
-      return d.getFullYear()+'-'+two(d.getMonth()+1)+'-'+two(d.getDate())+' '+
-             two(d.getHours())+':'+two(d.getMinutes())+':'+two(d.getSeconds());
-    }
-    // one poll of the meter: voltage, current, derived power
-    function reading(at){
-      var v = 228 + Math.random()*6;
-      var i = 11.4 + Math.random()*2.2;
-      return [stamp(at), v.toFixed(1), i.toFixed(2), (2.6 + Math.random()*0.6).toFixed(2)];
-    }
-    function addRow(){
-      var tr = document.createElement('tr');
-      for(var j=0;j<4;j++){
-        var td = document.createElement('td');
-        var s = document.createElement('span'); s.className='cellval';
-        td.appendChild(s); tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-      return tr;
-    }
-    function write(tr, r){
-      var spans = tr.querySelectorAll('.cellval');
-      for(var j=0;j<r.length;j++){ spans[j].textContent = r[j]; }
-      requestAnimationFrame(function(){
-        tr.querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
-      });
-    }
-
-    // an empty grid up front holds the sheet's height while readings arrive
-    for(var i=0;i<ROWS;i++){ addRow(); }
-
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var total = 0, filled = 0;
-
-    function count(){
-      rowCount.textContent = total
-        ? total + ' rows appended · every 5 s'
-        : 'waiting for first reading…';
-    }
-    count();
-
-    if(reduce){
-      // no timers: show the sheet as it looks after five polls
-      var base = new Date(), trs = tbody.querySelectorAll('tr'), last;
-      for(var k=0;k<ROWS;k++){
-        last = reading(new Date(base.getTime() - (ROWS-1-k)*TICK));
-        write(trs[k], last);
-        trs[k].querySelectorAll('td').forEach(function(c){ c.classList.add('filled'); });
-      }
-      total = ROWS; count();
-      if(lcd) lcd.textContent = last[1];
-      return;
-    }
-
-    // one poll = one published row, so the value on the meter is the value
-    // that lands in the sheet — a row per interval, exactly as the device runs
-    function poll(){
-      if(document.hidden) return;
-      var r = reading(new Date());
-      if(lcd) lcd.textContent = r[1];
-      var tr;
-      if(filled < ROWS){
-        tr = tbody.children[filled];
-        filled++;
-      } else {
-        tbody.removeChild(tbody.firstElementChild);
-        tr = addRow();
-      }
-      write(tr, r);
-      total++;
-      count();
-    }
-
-    // first reading lands shortly after the page settles, then on the interval
-    setTimeout(function(){ poll(); setInterval(poll, TICK); }, 900);
-  })();
 </script>
 </body>
 </html>
