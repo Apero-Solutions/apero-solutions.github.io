@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Over-the-Air Firmware Update &mdash; ModBridge Pro Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=81b034b1" />
+
+  
+    <link rel="canonical" href="https://aperosolutions.in/modbridgepro/docs/ota.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e9216e06"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Production Hardware Test" href="production_test.html" />
+    <link rel="prev" title="Diagnostics and Error Codes" href="diagnostics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ModBridge Pro
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-modbridge-pro">What is ModBridge Pro?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#key-capabilities">Key capabilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#device-information">Device Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#document-conventions">Document Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#step-by-step-setup">Step-by-Step Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-1-power-on-the-modbridge-pro-b15">Step 1 — Power on the ModBridge Pro B15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-2-connect-to-the-configuration-access-point">Step 2 — Connect to the configuration access point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-3-open-the-configuration-page">Step 3 — Open the configuration page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-4-configure-internet-connectivity">Step 4 — Configure internet connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-5-configure-the-modbus-protocol">Step 5 — Configure the Modbus protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-6-add-modbus-slave-devices-and-registers">Step 6 — Add Modbus slave devices and registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-7-set-up-cloud-publishing">Step 7 — Set up cloud publishing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#step-8-save-and-reboot">Step 8 — Save and reboot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#what-next">What Next?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hardware Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-photo">Device Photo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#connectors-and-peripherals">Connectors and Peripherals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#wi-fi">Wi-Fi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#ethernet-port">Ethernet Port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#rs-485-terminal-block">RS-485 Terminal Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#power-supply">Power Supply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#status-leds">Status LEDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardware.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html#device-label">Device Label</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#internet-connection-tab">Internet Connection Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#protocol-settings-tab">Protocol Settings Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-rtu-rs-485">Modbus RTU (RS-485)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#modbus-tcp-ethernet">Modbus TCP (Ethernet)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#modbus-devices-tab">Modbus Devices Tab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-device-parameters">Per-device parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#naming-a-device">Naming a device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#per-register-parameters">Per-register parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#entering-registers-faster">Entering registers faster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#importing-and-exporting-a-register-map">Importing and exporting a register map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#device-id-checks">Device ID checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#register-address-ranges">Register address ranges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#data-types">Data Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#byte-swap-modes">Byte Swap Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#how-registers-are-read">How registers are read</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#iot-publishing-tab">IoT Publishing Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#firmware-update-tab">Firmware Update Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#summary-tab">Summary Tab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iot.html">IoT Publishing Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#mqtt">MQTT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#configuration-parameters">Configuration parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#payload-format">Payload format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#quality-of-service">Quality of Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tls-ssl">TLS/SSL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#google-sheets">Google Sheets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#setting-up-a-google-cloud-service-account">Setting up a Google Cloud Service Account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#google-sheets-parameters">Google Sheets parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#tabular-output">Tabular output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iot.html#automatic-row-trimming">Automatic row trimming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#publish-interval">Publish Interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iot.html#store-and-forward-buffering">Store-and-forward buffering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="leds_buttons.html">LEDs, Buttons and Outputs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#status-leds">Status LEDs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#led-diagnostic-patterns">LED Diagnostic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#blinking-internet-led-google-configuration">Blinking Internet LED — Google configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="leds_buttons.html#startup-error-codes">Startup Error Codes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#no-internet-alert-output">No-Internet Alert Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds_buttons.html#control-buttons">Control Buttons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security.html#web-interface-authentication">Web Interface Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#credential-storage">Credential Storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security.html#exported-register-maps">Exported register maps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#transport-security">Transport Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#physical-security">Physical Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html#time-synchronisation">Time Synchronisation</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="diagnostics.html">Diagnostics and Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#where-the-codes-appear">Where the codes appear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#error-code-reference">Error code reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#exception-codes-the-device-answered-and-refused">Exception codes — the device answered and refused</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics.html#transport-failures-nothing-usable-came-back">Transport failures — nothing usable came back</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#working-through-a-silent-device">Working through a silent device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostics.html#interpreting-a-partly-working-device">Interpreting a partly-working device</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Over-the-Air Firmware Update</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#performing-a-firmware-update">Performing a Firmware Update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-obtain-the-update-file">Step 1 — Obtain the update file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-open-the-firmware-update-tab">Step 2 — Open the Firmware Update tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-upload-the-file">Step 3 — Upload the file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-wait-for-the-reboot">Step 4 — Wait for the reboot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-verify-the-new-version">Step 5 — Verify the new version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#what-survives-an-update">What survives an update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usb-recovery-flash">USB Recovery Flash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-you-need">What you need</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wiring">Wiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flashing">Flashing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Manufacturing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="production_test.html">Production Hardware Test</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-bench-needs">What the bench needs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reaching-the-unit-over-ethernet">Reaching the unit over Ethernet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#getting-the-bench-image-onto-a-bare-board">Getting the bench image onto a bare board</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#bench-sequence">Bench sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-each-step-proves">What each step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#what-the-rs-485-step-proves">What the RS-485 step proves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#putting-a-unit-back-into-test-mode">Putting a unit back into test mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html#reading-a-failure">Reading a failure</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Product Variants</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variants/index.html">Product Variants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variants/b15.html">ModBridge Pro B15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#feature-set">Feature set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#known-limitations">Known limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="variants/b15.html#revision-history">Revision history</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="variants/index.html#how-variants-are-structured">How Variants Are Structured</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ModBridge Pro</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Over-the-Air Firmware Update</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ota.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="over-the-air-firmware-update">
+<span id="ota"></span><h1>Over-the-Air Firmware Update<a class="headerlink" href="#over-the-air-firmware-update" title="Link to this heading"></a></h1>
+<p>ModBridge Pro B15 supports wireless firmware updates delivered through the
+built-in browser interface.  No additional cables or tools are required.</p>
+<p>An update is shipped as a single <code class="docutils literal notranslate"><span class="pre">update_bundle.bin</span></code> — the application and
+the web interface travel together, so the two can never end up mismatched.</p>
+<section id="performing-a-firmware-update">
+<h2>Performing a Firmware Update<a class="headerlink" href="#performing-a-firmware-update" title="Link to this heading"></a></h2>
+<section id="step-1-obtain-the-update-file">
+<h3>Step 1 — Obtain the update file<a class="headerlink" href="#step-1-obtain-the-update-file" title="Link to this heading"></a></h3>
+<p>Contact Apero Solutions to receive the latest <code class="docutils literal notranslate"><span class="pre">update_bundle.bin</span></code> file for
+your device.</p>
+</section>
+<section id="step-2-open-the-firmware-update-tab">
+<h3>Step 2 — Open the Firmware Update tab<a class="headerlink" href="#step-2-open-the-firmware-update-tab" title="Link to this heading"></a></h3>
+<p>In the web configuration interface, click the <strong>Firmware Update</strong> tab.  The
+current firmware version is displayed at the top of the page.</p>
+</section>
+<section id="step-3-upload-the-file">
+<h3>Step 3 — Upload the file<a class="headerlink" href="#step-3-upload-the-file" title="Link to this heading"></a></h3>
+<p>Drag and drop <code class="docutils literal notranslate"><span class="pre">update_bundle.bin</span></code> onto the upload area, or click it and
+browse to the file.  A progress bar tracks the upload in real time.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The upload may take 30–90 seconds depending on your Wi-Fi connection
+speed.  Do not close the browser tab or power off the device during the
+upload.</p>
+</div>
+</section>
+<section id="step-4-wait-for-the-reboot">
+<h3>Step 4 — Wait for the reboot<a class="headerlink" href="#step-4-wait-for-the-reboot" title="Link to this heading"></a></h3>
+<p>Once the upload completes, the device installs the update and reboots
+automatically — this takes approximately 10–15 seconds.  The browser will
+lose connectivity momentarily during the reboot.</p>
+</section>
+<section id="step-5-verify-the-new-version">
+<h3>Step 5 — Verify the new version<a class="headerlink" href="#step-5-verify-the-new-version" title="Link to this heading"></a></h3>
+<p>Reconnect to the device and re-open the web configuration interface.  The
+version shown on the <strong>Firmware Update</strong> tab should reflect the new release.</p>
+</section>
+</section>
+<section id="what-survives-an-update">
+<h2>What survives an update<a class="headerlink" href="#what-survives-an-update" title="Link to this heading"></a></h2>
+<p>The update replaces both the application and the filesystem holding the web
+interface, but your <strong>configuration is carried across</strong>: the device copies
+<code class="docutils literal notranslate"><span class="pre">config.json</span></code> out before the filesystem is rewritten and restores it
+afterwards.  Wi-Fi credentials, Modbus register definitions, IoT settings
+and your web login all survive.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Buffered readings do <strong>not</strong> survive — the buffer lives in RAM and the
+device reboots.  If an outage has left a large backlog, wait until it has
+drained to the cloud before starting an update.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only use update files provided by Apero Solutions for your specific
+device model.  Uploading an incompatible file may cause the device to
+stop responding.</p>
+</div>
+</section>
+<section id="usb-recovery-flash">
+<span id="usb-recovery"></span><h2>USB Recovery Flash<a class="headerlink" href="#usb-recovery-flash" title="Link to this heading"></a></h2>
+<p>If a wireless update is interrupted — power lost mid-write, or the browser
+closed during the upload — the device may be left unable to update itself
+again.  It can always be recovered over USB.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Recovery <strong>erases the chip completely</strong>, including the saved
+configuration.  The device comes back as factory-fresh and must be
+reconfigured from scratch.  Use it only when over-the-air updating is no
+longer possible.</p>
+</div>
+<section id="what-you-need">
+<h3>What you need<a class="headerlink" href="#what-you-need" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>A CH340 USB-to-UART adapter and four jumper wires.</p></li>
+<li><p>Chrome or Edge — the flashing tool needs Web Serial, which Safari and
+Firefox do not support.</p></li>
+<li><p>The four image files for your firmware version, supplied by Apero
+Solutions: <code class="docutils literal notranslate"><span class="pre">bootloader.bin</span></code>, <code class="docutils literal notranslate"><span class="pre">partitions.bin</span></code>, <code class="docutils literal notranslate"><span class="pre">firmware.bin</span></code> and
+<code class="docutils literal notranslate"><span class="pre">littlefs.bin</span></code>.</p></li>
+</ul>
+</section>
+<section id="wiring">
+<h3>Wiring<a class="headerlink" href="#wiring" title="Link to this heading"></a></h3>
+<p>Open the enclosure and connect the adapter to the board.  <strong>TX and RX
+cross over</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>USB/UART adapter pin</p></th>
+<th class="head"><p>ESP32-S3 board pin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GND</p></td>
+<td><p>GND</p></td>
+</tr>
+<tr class="row-odd"><td><p>TXD</p></td>
+<td><p>RX</p></td>
+</tr>
+<tr class="row-even"><td><p>RXD</p></td>
+<td><p>TX</p></td>
+</tr>
+</tbody>
+</table>
+<p>A bare CH340 adapter has no auto-reset circuit, so the board must be put
+into download mode by hand: <strong>press Reset and IO0 together, release Reset
+first, then release IO0.</strong></p>
+</section>
+<section id="flashing">
+<h3>Flashing<a class="headerlink" href="#flashing" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Plug the adapter into your computer and open
+<a class="reference external" href="https://adafruit.github.io/Adafruit_WebSerial_ESPTool/">the Adafruit WebSerial ESPTool</a>
+in Chrome or Edge.</p></li>
+<li><p>Click <strong>Connect</strong> and choose the board’s serial port.  If it does not
+appear, re-check the wiring and repeat the download-mode button sequence.</p></li>
+<li><p>Click <strong>Erase</strong> and wait for it to finish (10–20 seconds).  This clears
+any leftover state from the failed update and is not optional.</p></li>
+<li><p>Add all four files at these exact addresses:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>File</p></th>
+<th class="head"><p>Address</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bootloader.bin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">partitions.bin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x8000</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">firmware.bin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x10000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">littlefs.bin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0x3E1000</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Click <strong>Program</strong>.  This takes a minute or two — do not unplug the board
+or close the tab while it runs.</p></li>
+<li><p>Power-cycle the board when it finishes.</p></li>
+</ol>
+<p>The device boots factory-fresh and starts its configuration access point.
+Work through <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quick Start</span></a> again to reconfigure it.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="diagnostics.html" class="btn btn-neutral float-left" title="Diagnostics and Error Codes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="production_test.html" class="btn btn-neutral float-right" title="Production Hardware Test" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Apero Solutions.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

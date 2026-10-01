@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="aperoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#66e3ff"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="#0d1117"/>
+  <path d="M30.6 16 23.3 28.64H8.7L1.4 16 8.7 3.36h14.6L30.6 16Z" fill="none" stroke="url(#aperoGrad)" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M16 8.2 8.4 23.2h2.5l1.824-3.6h6.552l1.824 3.6h2.5L16 8.2Zm0 4.934 2.16 4.266h-4.32l2.16-4.266Z" fill="url(#aperoGrad)" fill-rule="evenodd"/>
+</svg>

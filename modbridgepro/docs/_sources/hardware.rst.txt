@@ -1,0 +1,155 @@
+.. _hardware:
+
+==================
+Hardware Reference
+==================
+
+Device Photo
+============
+
+.. raw:: html
+
+   <div class="hw-photo-placeholder">
+     📷 &nbsp;<strong>[ Insert hardware photo here ]</strong><br><br>
+     Replace this block with a top-down photograph of the assembled
+     ModBridge Pro B15, showing all connectors, LEDs, and the
+     RS-485 terminal block.<br><br>
+     Recommended: 1200 × 900 px, good lighting, plain background.
+   </div>
+
+To add the photo, place the image file in ``docs/images/`` and replace the
+block above with:
+
+.. code-block:: rst
+
+   .. figure:: images/modbridge_pro_top.jpg
+      :alt: ModBridge Pro top view
+      :align: center
+      :width: 80%
+
+      ModBridge Pro — assembled device (top view)
+
+
+Specifications
+==============
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Parameter
+     - Value
+   * - Wi-Fi
+     - 2.4 GHz, built-in antenna
+   * - Ethernet
+     - 10 Mbps wired port
+   * - RS-485
+     - 3-pin screw terminal (A, B, GND)
+   * - Power Supply
+     - 24 V DC
+   * - Operating Temperature
+     - 0 °C to 70 °C
+   * - Firmware Version
+     - |release|
+
+
+Connectors and Peripherals
+===========================
+
+Wi-Fi
+-----
+
+Built-in 2.4 GHz antenna — no external antenna required.  Place the
+ModBridge Pro B15 away from large metal enclosures to avoid signal
+interference.
+
+Ethernet Port
+-------------
+
+A wired Ethernet port that serves one of two roles depending on
+configuration:
+
+* **Internet uplink** — alternative to Wi-Fi when a wired connection is
+  preferred.
+* **Modbus TCP transport** — dedicated network for communicating with a
+  Modbus TCP server (e.g., a PLC).  In this mode the port is not used for
+  internet traffic.
+
+The configuration access point also brings up a static Ethernet interface on
+``192.168.5.1`` while the device is in configuration mode, so the unit can be
+reached over either link during commissioning.
+
+RS-485 Terminal Block
+---------------------
+
+A 3-pin screw terminal for connecting Modbus RTU devices over RS-485 cable:
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Pin label
+     - Description
+   * - **A (D+)**
+     - RS-485 non-inverting data line
+   * - **B (D−)**
+     - RS-485 inverting data line
+   * - **GND**
+     - Signal ground — connect to Modbus bus ground
+
+Use twisted-pair cable (e.g., CAT5e) for runs longer than 3 m.  Terminate
+the bus with a 120 Ω resistor at each end for runs longer than ~10 m.
+
+Power Supply
+------------
+
+Connect a **24 V DC** supply to the power terminals to power the ModBridge Pro B15.
+
+Status LEDs
+-----------
+
+Three indicator LEDs — Config Mode, Internet and Modbus RX Activity — plus a
+24 V no-internet alert output, are described in detail in
+:ref:`leds_buttons`.
+
+Control Buttons
+---------------
+
+Two push-buttons are described in detail in :ref:`leds_buttons`:
+
+* **Internet Reset** — reopens the configuration access point without wiping
+  saved settings.  It is wired to GPIO3 and is read with ``INPUT_PULLUP``.
+* **Factory Reset** — erases configuration and reboots to defaults.  It is
+  wired to GPIO0 and is the boot-strap pin used for a full erase.
+
+Both are read only during the first 10 seconds after power-on, and both are
+active-low while the button is held.
+
+The 24 V no-internet alert output is driven from GPIO8 and goes active-high
+when the device has lost internet connectivity, matching the panel output and
+fault logic described in :ref:`leds_buttons`.
+
+
+Device Label
+============
+
+Each unit carries a printed label with the information needed to commission
+it without opening the enclosure or powering it up first:
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Field
+     - Meaning
+   * - MODEL
+     - Hardware variant, e.g. ``B15``.
+   * - ``ModBridgePro_XXXXXX``
+     - The exact SSID of this unit's configuration access point.  Type it as
+       printed — the suffix is derived from the MAC address in a way that
+       will not match a MAC printed elsewhere character-for-character.
+   * - QR code
+     - Opens this documentation.
+
+Keep the label legible.  It is the only place the AP name is written down,
+and a unit whose SSID is unknown has to be found by scanning for it.

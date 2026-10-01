@@ -1,0 +1,198 @@
+.. _quickstart:
+
+===========
+Quick Start
+===========
+
+Get ModBridge Pro up and running in under 10 minutes by following the steps
+below.
+
+Prerequisites
+=============
+
+* ModBridge Pro B15, powered via 24 V DC.
+* A laptop with Wi-Fi or Ethernet connectivity to configure the ModBridge Pro B15.
+* In case of Wi-Fi configuration, your network name and password.
+* In case of Ethernet configuration, the static IP address settings or DHCP server on the network.
+* Modbus device(s) connected to the RS-485 terminal (for RTU) or Ethernet
+  (for TCP).
+* MQTT broker credentials **or** a Google Sheets service account (for cloud
+  publishing).
+
+
+Step-by-Step Setup
+==================
+
+Step 1 — Power on the ModBridge Pro B15
+----------------------------------------
+
+Connect the 24 V DC supply to the ModBridge Pro B15.  The Config Mode LED blinks slowly
+for the first 10 seconds — this is the button window described in
+:ref:`leds_buttons`, and it is normal.
+
+Step 2 — Connect to the configuration access point
+---------------------------------------------------
+
+A factory-fresh device — or one whose **Internet Reset** button was held at
+boot — starts its own access point.  On your phone or laptop, open the Wi-Fi
+settings and look for a network named::
+
+   ModBridgePro_XXXXXX
+
+The last 6 characters are the unique identifier of your device derived from
+its hardware address, so multiple ModBridge Pro units on the same site will
+always have different network names. Connect to it — **no password is
+required**.
+
+.. note::
+
+   The unique 6-character suffix is printed on the device label, next to the
+   documentation QR code.  It is derived from the last three octets of the
+   MAC address in reverse order, so it will not match a MAC printed
+   elsewhere on the unit character-for-character — always use the SSID as
+   printed on the label.
+
+Step 3 — Open the configuration page
+--------------------------------------
+
+In configuration mode both interfaces are live, so you can reach the page
+over Wi-Fi or over a directly connected Ethernet cable.
+
+The unit advertises a configuration access point named
+``ModBridgePro_XXXXXX`` and also brings up a static Ethernet interface on
+``192.168.5.1``.  The Wi-Fi AP is always available on ``192.168.4.1`` while
+configuration mode is active, regardless of the chosen internet uplink.
+
+If connected through WiFi then navigate to::
+
+   http://192.168.4.1
+
+If connected through Ethernet then navigate to::
+
+   http://192.168.5.1
+
+Log in with the default credentials:
+
+.. list-table::
+   :widths: 30 70
+
+   * - **Username**
+     - ``admin``
+.. list-table::
+   :widths: 30 70
+
+   * - **Password**
+     - ``admin``
+
+A pop-up will prompt you to change these immediately.  **Do so before
+continuing.**
+
+Step 4 — Configure internet connectivity
+-----------------------------------------
+
+On the *Internet Connection* tab:
+
+1. Choose **Wi-Fi** or **Ethernet** as the internet source.
+2. For Wi-Fi, click **Scan Networks** and select your network, then enter the
+   password.
+3. For Ethernet, choose **DHCP** (automatic) or enter a **Static IP**
+   configuration.
+
+Step 5 — Configure the Modbus protocol
+----------------------------------------
+
+On the *Protocol Settings* tab:
+
+1. Select **Modbus RTU** (RS-485 serial) or **Modbus TCP** (Ethernet).
+2. For RTU, set the baud rate, data bits, parity, and stop bits to match
+   your devices.
+3. For TCP, enter the Modbus server IP, port (default 502), and the static
+   Ethernet IP to assign to the device.
+
+.. note::
+
+   Modbus TCP claims the Ethernet port for the field network, so the
+   internet connection must be Wi-Fi in that case.  The device refuses to
+   start otherwise.
+
+Step 6 — Add Modbus slave devices and registers
+-------------------------------------------------
+
+On the *Modbus Devices* tab:
+
+1. Click **Add Modbus Device**.
+2. Enter the **Device ID** (1–247) as configured on the Modbus device.
+3. Add registers: for each register provide a variable name, data type,
+   address, and byte order.
+4. Repeat for up to 5 devices, 50 registers each.
+
+.. tip::
+
+   Do not type identical maps twice.  If several meters of the same model
+   are daisy-chained on the bus, configure the first one and press
+   **Duplicate** on its card — the copy keeps every register and is given
+   the next free Device ID.  Whole maps can also be moved between units with
+   **Export / Import register map**.  See :ref:`entering_registers_faster`.
+
+.. tip::
+
+   Chained meters of the same model produce identical register names, which
+   is hard to tell apart in the published data.  Give each one a **Slave
+   Name** and press **Apply** to prefix its register names —
+   ``Chiller1_Voltage_L1`` instead of ``Voltage_L1``.  Duplicate advances the
+   name for you.  See :ref:`naming_a_device`.
+
+See :ref:`configuration` for a full explanation of register addressing and
+data types.  Getting the address convention right is the single most common
+source of a device that reads nothing.
+
+Step 7 — Set up cloud publishing
+----------------------------------
+
+On the *IoT Publishing* tab:
+
+1. Select **MQTT** or **Google Sheets** (or **Disabled** to skip).
+2. Fill in the broker / spreadsheet credentials.
+3. Choose the **Update Interval** — this sets both the Modbus poll cadence
+   and the publish cadence.
+4. Leave **Enable Data Buffering** ticked.  It is the path all data takes to
+   the cloud, not an optional extra.
+
+See :ref:`iot` for full MQTT and Google Sheets configuration details.
+
+.. note::
+
+   **Test Connection** checks that the fields on this tab are filled in
+   sensibly.  It does not contact the broker or the spreadsheet — the first
+   real connection attempt happens after the reboot in Step 8.
+
+Step 8 — Save and reboot
+--------------------------
+
+Click **Save Configuration** at the bottom of the page.  The device saves
+all settings and reboots automatically after about 3 seconds.
+
+After reboot:
+
+* The **Internet LED** lights solid when the internet is reachable, and the
+  no-internet output stays at 0 V.
+* The **Modbus RX Activity LED** pulses briefly with each successful Modbus
+  poll.
+* The first publish happens one full Update Interval after boot, not
+  immediately.
+
+.. warning::
+
+   The default credentials ``admin / admin`` are publicly known.  Change
+   them during Step 3.  Anyone on the same network can access the
+   configuration page if you leave the defaults in place.
+
+
+What Next?
+==========
+
+* Customise register names and verify the JSON payload: :ref:`iot`
+* Work out why a register is not reading: :ref:`diagnostics`
+* Understand LED blink patterns: :ref:`leds_buttons`
+* Perform a firmware update: :ref:`ota`
+* Security hardening checklist: :ref:`security`

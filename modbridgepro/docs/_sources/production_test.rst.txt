@@ -1,0 +1,286 @@
+.. _production_test:
+
+========================
+Production Hardware Test
+========================
+
+Every ModBridge Pro B15 is checked interface by interface before it ships.  The
+check runs from a single page served by the board itself, so the bench needs
+nothing but a laptop — production boards have no serial console, and the
+enclosure stays closed.
+
+The unit is flashed once over USB with the **bench image**, tested over the
+network, and then turned into a product from the same page by uploading the
+release bundle.  There is no second USB step.
+
+.. warning::
+
+   The bench image is not a product.  It has no configuration UI, no Modbus and
+   no login, and it must be replaced by the release bundle before the unit
+   ships.  Step 3 on the page does exactly that.
+
+
+What the bench needs
+====================
+
+* A 24 V DC supply.
+* A laptop with Wi-Fi **or** Ethernet — either one reaches the page, and the
+  whole run happens on whichever you pick.  Driving it over **Ethernet** is
+  worth a little extra trouble: it is what proves the Ethernet cable and
+  magnetics.
+* An Ethernet cable to a switch or straight to the laptop, so the Ethernet
+  controller has a link to prove.
+* The release ``update_bundle_<version>.bin`` on the laptop, produced by
+  ``pio run`` for the ``esp32-s3-devkitc1-n16r2`` environment.  The bench build
+  produces ``hwtest_bundle_<version>.bin`` — same version, different prefix.
+  The page refuses the bench one, but keep them apart anyway.
+
+Nothing is wired to the RS-485 terminal — no slave, no termination, and **no
+jumper between A and B** (see :ref:`rs485_test_scope`).
+
+
+.. _eth_addressing:
+
+Reaching the unit over Ethernet
+===============================
+
+Both interfaces come up at once: the access point on ``192.168.4.1`` and
+Ethernet on a **static** ``192.168.5.1``.  There is no DHCP server behind the
+Ethernet address — only the access point hands out addresses — so a laptop left
+on automatic addressing cannot reach it.  Plugged in directly it self-assigns a
+``169.254.x.x`` address; through a switch it takes that network's subnet.
+Neither routes to ``192.168.5.1``.
+
+Either give the adapter a static ``192.168.5.2`` with mask ``255.255.255.0`` and
+no gateway, or use the mDNS name ``modbridgepro-xxxxxx.local``, where ``xxxxxx``
+is the suffix printed on the enclosure label.
+
+.. note::
+
+   The ENC28J60 is **10BASE-T only**.  Some USB-C adapters and gigabit switches
+   will not negotiate 10 Mbps half-duplex.  If the RJ45 link LED never lights,
+   try a different adapter or an older switch before suspecting the board.
+
+
+Getting the bench image onto a bare board
+=========================================
+
+There is no USB connector and no onboard USB-to-UART bridge, so the very first
+flash has to be wired by hand — the same way :ref:`ota` describes for recovery:
+
+1. With the enclosure open and the board accessible, wire a CH340 adapter to
+   **GND**, **TXD → RX** and **RXD → TX**.
+2. Put the board into download mode: hold **Reset** and **IO0** together,
+   release Reset first, then IO0.  There is no auto-reset circuit, so this is
+   manual every time.
+3. Flash::
+
+      pio run -e esp32-s3-devkitc1-n16r2-hwtest -t upload
+
+   The bench image needs **no filesystem image**: its page is compiled into the
+   firmware, so ``bootloader.bin``, ``partitions.bin`` and ``firmware.bin`` are
+   the whole story.  There is no ``-t uploadfs`` step.
+4. Unwire the adapter and close the enclosure.
+
+.. important::
+
+   This is the **only** time a unit has to be opened and wired.  Everything
+   after it — the whole test run, and turning the unit into a product — happens
+   over the network.  The natural place for step 1 is **during assembly, before
+   the enclosure is closed**, while the board is already accessible.
+
+   Flashing the bench image rather than the release image costs nothing extra:
+   either way the board is wired exactly once, because the release image can
+   also update itself from its own configuration page.  What the bench image
+   buys is that the firmware which finally ships is a clean release build with
+   no test code compiled into it, and that the product image only goes on after
+   the board has passed.
+
+A board that fails the test keeps the bench image, so after rework it can be
+re-tested over the network with no further wiring.
+
+
+Bench sequence
+==============
+
+1. Power the unit from 24 V.  The bench image boots straight into test mode —
+   it brings up the access point and Ethernet and serves one page.  The **Config
+   Mode LED comes on steady** once it is ready to be tested, which means the
+   same thing it does on a product: the unit is up and serving its page.  It
+   goes dark only while a step is driving the panel, so it can never be confused
+   with the LED under test.
+2. Reach the unit:
+
+   * over Wi-Fi, join ``ModBridgePro_XXXXXX`` and open ``http://192.168.4.1``
+   * over Ethernet, open ``http://modbridgepro-xxxxxx.local``, or set the
+     adapter to a static ``192.168.5.2`` and open ``http://192.168.5.1``
+     (see :ref:`eth_addressing`)
+
+3. Press **Run all tests**.  The run advances by itself and stops on the first
+   failure.  When a step needs your eyes — an LED, the 24 V output — it shows
+   the question and two buttons.
+4. Press **Download report** and file it against the unit.  The MAC and the AP
+   SSID are shown in the page header and carried in the report, so the label can
+   be produced without a serial connection::
+
+      ./tools/sticker/gen_stickers.py --mac AA:BB:CC:DD:EE:FF --pdf -o one.pdf
+5. Choose the release ``update_bundle_<version>.bin`` and press **Flash and
+   finish**.  The unit flashes firmware and web files, reboots as a product,
+   and this page stops answering — that is the expected end of a run.
+
+.. note::
+
+   Download the report before flashing.  The flash replaces the page that holds
+   it, and the page will warn you if you have not.
+
+
+What each step proves
+=====================
+
+.. list-table::
+   :widths: 28 72
+   :header-rows: 1
+
+   * - Step
+     - What a pass means
+   * - Chip, flash and identity
+     - ESP32-S3 with 16 MB of flash.  Reports the MAC, the AP SSID and the mDNS
+       name — the values that go on the label — and warns if the previous boot
+       ended in a brownout, which points at the 24 V rail or the regulator.
+   * - PSRAM
+     - About 2 MB present, and a 64 KB block written and read back word for
+       word.  A presence check alone would pass a marginal joint on the memory
+       bus.
+   * - LittleFS
+     - Mounted, and a scratch file written, read back and deleted.
+   * - Ethernet controller
+     - The ENC28J60 answered over SPI and took its MAC.  It passes outright only
+       when this page is being served **over Ethernet** — that proves the
+       controller, the PHY, the magnetics and the cable in one go.  Driving the
+       run over Wi-Fi instead leaves the cable untested and the step warns; open
+       the page over Ethernet and re-run it to clear that.
+   * - Wi-Fi radio
+     - The scan found networks at a sane signal level.  A detuned or
+       unconnected antenna still scans, just weakly — that is a warning rather
+       than a reject, because it depends on what is within earshot.
+   * - RS-485
+     - See :ref:`rs485_test_scope`.
+   * - LEDs
+     - You confirmed each one on the panel.  Each is *blinked* rather than held
+       on, because a shorted output reads as permanently lit and would be
+       passed.
+   * - 24 V output
+     - You measured 24 V at the terminal.  This one is held steady rather than
+       blinked, because it is read with a meter rather than with your eyes.
+   * - Buttons
+     - The press was seen on the pin, held long enough not to be a noise spike.
+
+A step can also come back **WARN**.  That is something to look at rather than a
+reason to scrap a board, and it does not block the flash step.
+
+.. note::
+
+   Internet reachability is deliberately not tested.  Leasing a DHCP address and
+   routing to the internet exercises the bench network far more than the board,
+   and testing it meant reconfiguring the interface the operator was connected
+   on — which dropped the page mid-run.  The radio and the Ethernet controller
+   are proven by the scan and the link, and the first commissioning covers the
+   rest.
+
+
+.. _rs485_test_scope:
+
+What the RS-485 step proves
+===========================
+
+Leave the RS-485 terminal **completely unwired** — no slave, no termination,
+and in particular **no jumper between A and B**.
+
+A jumper is a natural thing to reach for and it is actively wrong here.  On a
+half-duplex transceiver the driver output and the receiver input are the same
+two pins, so the receiver already hears whatever the driver transmits; no
+jumper is needed to close the loop.  Shorting A to B only collapses the
+differential voltage the receiver needs in order to resolve a bit, which breaks
+the very echo it looks like it should enable.
+
+Two things are checked, and only the first is a hard verdict.
+
+**UART2 works** — a byte pattern goes through the UART's own internal loopback,
+inside the chip, at both 9600 and 115200 baud.  This proves the peripheral and
+its pin mux.  Nothing reaches the bus.  A failure here fails the unit.
+
+**A transceiver is fitted, and how its /RE is strapped** — an enabled receiver
+drives its output to a hard level and beats a pull-down on the RX pin; a
+disabled one lets that output go high-impedance and the pull-down wins.  Reading
+the pin with the driver off and then on says whether the part is there and
+whether GPIO4 reaches its receiver-enable.  The ``i`` button reports what it
+found under ``re_strapping``.
+
+This half is reported as a **warning** rather than a failure when it comes back
+ambiguous, because what the receiver output idles at depends on the bias network
+and neither that nor the /RE strapping is recorded for this board.  Once the
+schematic settles it, the check can be tightened into a real verdict.
+
+.. note::
+
+   The A and B lines out to the screw terminal are **not** exercised.  Proving
+   those needs a second device on the bus, which the production bench does not
+   have.  If a unit passes here but a customer sees ``TIMEOUT`` on every
+   register, look at A/B wiring, polarity and bias rather than at the
+   transceiver — see :ref:`diagnostics`.
+
+
+.. _bench_round_trip:
+
+Putting a unit back into test mode
+==================================
+
+The bundle path works in both directions, so a returned unit can be re-tested
+without opening it or touching USB:
+
+.. list-table::
+   :widths: 30 30 40
+   :header-rows: 1
+
+   * - From
+     - Upload
+     - Where
+   * - Bench image
+     - ``update_bundle_<version>.bin``
+     - Step 3 of the test page — the unit becomes a product.
+   * - Product
+     - ``hwtest_bundle_<version>.bin``
+     - The **Firmware Update** tab of the normal configuration page — the unit
+       becomes a bench appliance again.
+
+Build the bench bundle the same way as any other::
+
+   pio run -e esp32-s3-devkitc1-n16r2-hwtest -t buildfs
+   pio run -e esp32-s3-devkitc1-n16r2-hwtest
+
+.. warning::
+
+   Both builds bundle at the same version number, so the filename prefix is the
+   only thing telling them apart.  Flashing ``hwtest_bundle_*`` to a unit that
+   is about to ship leaves it running a passwordless test appliance that drives
+   the LEDs and asserts the 24 V output.  Step 3 of the test page rejects that
+   file by name; the configuration page's Firmware Update tab does not, because
+   that is exactly the route you use on purpose.
+
+.. note::
+
+   A bundled update preserves ``/config.json``, so a round trip brings the
+   customer's settings back with it.  That is usually what you want for an RMA.
+   To ship a unit factory-fresh instead, hold **Factory Reset** at the next boot
+   after flashing the product image.
+
+
+Reading a failure
+=================
+
+Each row carries the measured values behind the **i** button, and any step can
+be re-run on its own with its **Run** button — use that after correcting the
+bench, rather than repeating the whole sequence.
+
+The downloaded report is a JSON file holding the unit's MAC, the AP SSID, the
+firmware version and every step's verdict and measurements.

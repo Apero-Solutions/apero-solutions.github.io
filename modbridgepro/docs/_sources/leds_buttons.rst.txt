@@ -1,0 +1,236 @@
+.. _leds_buttons:
+
+=========================
+LEDs, Buttons and Outputs
+=========================
+
+ModBridge Pro has three status LEDs, a digital output signal, and two
+control buttons.
+
+
+Status LEDs
+===========
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - LED Name
+     - States and Meaning
+   * - Config Mode
+     - **Slow blink (0.5 s)** — the 10-second boot button window is open |br|
+       **Fast blink** — a reset button is being held |br|
+       **Steady ON** — configuration access point is active |br|
+       **OFF** — device is in normal operating mode
+   * - Internet LED
+     - **Steady ON** — internet is reachable and cloud writes are landing |br|
+       **Blink, ~2 per second** — internet is fine, but the cloud target keeps
+       refusing the data (Google Sheets only) |br|
+       **OFF** — no internet connectivity
+   * - Modbus RX Activity
+     - **Brief pulse (100 ms)** — at least one register was read
+       successfully in that poll cycle |br|
+       **No pulses** — nothing is answering (check wiring, Device ID, baud
+       rate or parity)
+
+.. |br| raw:: html
+
+   <br/>
+
+.. note::
+
+   The RX LED pulses once per **poll cycle**, not once per register, and the
+   cycle runs at the configured Update Interval.  At a 15-minute interval,
+   one pulse every 15 minutes is healthy.  It also cannot tell you that
+   *every* register read — one good register out of fifty still lights it.
+   Use the published ``CommQuality`` fields for per-register truth.
+
+LED Diagnostic Patterns
+------------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Internet LED state
+     - Situation
+   * - ON
+     - Normal — internet connected and data is reaching the cloud.
+   * - Blinking
+     - The network is fine and Google Sheets is rejecting the writes.  The
+       cause is in the Google configuration, not the wiring — see
+       :ref:`cloud_config_fault` below.
+   * - OFF
+     - Internet lost — check router, Wi-Fi password, or Ethernet cable.
+       The device retries every 30 seconds by itself.
+
+.. _cloud_config_fault:
+
+Blinking Internet LED — Google configuration
+--------------------------------------------
+
+A blinking Internet LED means the device is online but every attempt to write
+to Google Sheets is being refused.  Without it this state is invisible from
+the front panel: the LED sat steady while no data arrived in the sheet, and
+the only way to tell was a serial console.
+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Cause
+     - What to check
+   * - Service account credentials rejected
+     - The private key or the service account email is wrong, or the email
+       has no domain in it.  Re-paste both from the downloaded JSON key.
+   * - Spreadsheet ID wrong or blank
+     - Copy it again from the sheet URL, between ``/d/`` and ``/edit``.
+   * - Sheet not shared with the service account
+     - Share the spreadsheet with the service account email address, with
+       **Editor** permission.  This is the most common cause, and the one
+       that looks most like a working configuration.
+
+.. note::
+
+   Credential faults light the LED as soon as the device tries to
+   authenticate.  A wrong spreadsheet ID or an unshared sheet can only be
+   detected when a write is actually refused, so the LED starts blinking
+   after **three consecutive failed publish attempts** — about three times
+   your configured Update Interval.  At the default 30-second interval that
+   is roughly 90 seconds; at a 15-minute interval it is closer to 45
+   minutes.  This delay is deliberate — a single refused write is more often
+   a dropped connection than a bad setting, and an indicator that flickers
+   at every network hiccup stops being read.
+
+   The LED returns to steady on the first successful write.  No reboot is
+   needed after fixing the configuration.
+
+.. note::
+
+   This indicator covers **Google Sheets only**.  An MQTT broker that
+   refuses connections does not blink the Internet LED — check the
+   diagnostics page in the web UI for MQTT state.
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Modbus RX Activity LED state
+     - Situation
+   * - Pulses regularly
+     - At least one device is answering.
+   * - Never pulses
+     - No Modbus responses — check RS-485 wiring (A/B polarity), Device ID,
+       and baud rate / parity settings.
+   * - Pulses then stops
+     - Communication was working and has stopped — check for a power-cycled
+       or disconnected field device.
+
+Startup Error Codes
+-------------------
+
+If startup cannot complete, **all three LEDs blink together** in a repeating
+group, pause for two seconds, and repeat.  Count the blinks in one group:
+
+.. list-table::
+   :widths: 15 85
+   :header-rows: 1
+
+   * - Blinks
+     - Fault
+   * - 1
+     - Internal filesystem could not be mounted.  Configuration cannot be
+       read or written — the device needs a USB recovery flash
+       (see :ref:`ota`).
+   * - 2
+     - Modbus TCP transport could not be set up.  The dedicated Ethernet
+       settings on the *Protocol Settings* tab are invalid, or Ethernet was
+       also selected as the internet uplink.
+   * - 3
+     - Modbus subsystem failed to initialise — normally an invalid protocol
+       or baud rate in the saved configuration.
+   * - 5
+     - Internal resource allocation failed.  Power-cycle; if it repeats, the
+       unit needs service.
+
+In every case the device stays in the blink loop and does not poll or
+publish.  Faults 2 and 3 are configuration faults: hold **Internet Reset**
+at the next boot to get back into the configuration page and correct the
+settings.
+
+
+No-Internet Alert Output
+========================
+
+ModBridge Pro provides a **24 V DC digital output** that activates when the
+device loses internet connectivity.  This output can be wired directly into
+any external system that accepts a digital input — for example, a PLC input
+module, an alarm panel, or an indicator light.
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Output State
+     - Meaning
+   * - 24 V (HIGH)
+     - Internet connection lost
+   * - 0 V (LOW)
+     - Internet connection OK
+
+This allows the loss of connectivity to be monitored and acted upon
+independently of the ModBridge Pro web interface — useful in installations
+where automated alerts or failover actions are required.
+
+.. note::
+
+   The output tracks the **internet link**, not the cloud destination.  It
+   stays at 0 V while the network is up but the MQTT broker is rejecting the
+   connection or the Google service account has expired.  Watch the
+   destination itself for that class of fault.
+
+
+Control Buttons
+===============
+
+.. list-table::
+   :widths: 25 20 55
+   :header-rows: 1
+
+   * - Button
+     - Action
+     - Effect
+   * - Internet Reset
+     - Hold for **3 seconds**
+     - Re-opens the configuration Wi-Fi access point.
+       All existing settings are **preserved**.
+       Use this to change credentials or any configuration without wiping
+       the device.
+   * - Factory Reset (IO0)
+     - Hold for **3 seconds**
+     - Erases all settings and reboots to factory defaults.
+       **All configuration is lost.**
+
+While a button is held the LEDs blink rapidly; release before 3 seconds and
+the action is cancelled with no change.  Internet Reset blinks the Config
+LED alone, Factory Reset blinks three LEDs together — a useful confirmation
+that you are holding the button you meant to.
+
+.. danger::
+
+   Factory Reset **permanently deletes** all configuration, including
+   Modbus device definitions, IoT credentials, and network settings.
+   There is no undo.
+
+.. warning::
+
+   The Factory Reset button is located **inside the ModbridgePro B15 enclosure** and
+   is intentionally not accessible from the outside.  To perform a factory
+   reset, carefully open the enclosure door and press the internal button.
+   This design prevents accidental resets in the field.
+
+.. note::
+
+   Both buttons are read **only during the first 10 seconds after
+   power-on**, while the Config LED blinks slowly.  Pressing them later has
+   no effect — power-cycle the device and try again within the window.
